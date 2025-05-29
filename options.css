@@ -1,0 +1,307 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f4f8fa; /* Um cinza bem claro */
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #ffffff; /* Branco da paleta */
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.options-header {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+  color: #0278bc; /* Azul da paleta */
+}
+
+#headerLogo {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
+
+.header-text h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+}
+
+.header-text p {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #0278bc; /* Azul da paleta */
+}
+
+.tab-link {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #555;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px; /* Alinha com a borda do container .tabs */
+  transition: color 0.2s ease, border-bottom-color 0.2s ease;
+}
+
+.tab-link:hover {
+  color: #0278bc; /* Azul da paleta */
+}
+
+.tab-link.active {
+  color: #0278bc; /* Azul da paleta */
+  border-bottom-color: #ffd401; /* Amarelo da paleta */
+  font-weight: 700;
+}
+
+.tab-content {
+  display: none;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  background-color: #fdfdfd;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tab-content h2 {
+  font-size: 1.5rem;
+  color: #0278bc; /* Azul da paleta */
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+.tab-content h3 {
+  font-size: 1.1rem;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Estilos para itens de configuração (copiado e adaptado do popup.css) */
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 5px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.setting-item:last-child {
+  border-bottom: none;
+}
+.setting-item label {
+  font-size: 0.95rem;
+  color: #444;
+}
+.setting-item input[type="checkbox"] {
+  transform: scale(1.3);
+  cursor: pointer;
+  accent-color: #0278bc; /* Azul da paleta */
+}
+.master-switch label {
+  font-weight: bold;
+  font-size: 1.05rem;
+  color: #0278bc; /* Azul da paleta */
+}
+hr {
+  border: 0;
+  height: 1px;
+  background: #e0e0e0;
+  margin: 15px 0;
+}
+
+/* Editor JSON */
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.warning {
+  background-color: #fff3cd; /* Amarelo claro para avisos */
+  color: #856404;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  border: 1px solid #ffeeba;
+  font-size: 0.9rem;
+}
+.warning strong {
+    color: #664d03;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px; /* Espaço entre os botões */
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.save-button, .reset-button, .add-button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.save-button {
+  background-color: #0278bc; /* Azul da paleta */
+  color: #ffffff; /* Branco da paleta */
+}
+.save-button:hover {
+  background-color: #025a8e;
+}
+
+.reset-button {
+  background-color: #6c757d; /* Cinza */
+  color: white;
+}
+.reset-button:hover {
+  background-color: #5a6268;
+}
+
+.add-button {
+  background-color: #ffd401; /* Amarelo da paleta */
+  color: #333;
+}
+.add-button:hover {
+  background-color: #f0c300;
+}
+
+
+.status-message {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  padding: 8px;
+  border-radius: 4px;
+  display: none; /* Inicialmente oculto */
+}
+.status-message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  display: block;
+}
+.status-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  display: block;
+}
+
+/* Gerenciador de Feriados */
+.holiday-manager ul {
+  list-style-type: none;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+.holiday-manager li {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+.holiday-manager li:last-child {
+  border-bottom: none;
+}
+.holiday-manager .remove-holiday {
+  background-color: #dc3545; /* Vermelho para remover */
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.holiday-manager .remove-holiday:hover {
+  background-color: #c82333;
+}
+.holiday-input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.holiday-input-group input[type="text"] {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.save-all-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+}
+.global-save {
+    padding: 12px 25px;
+    font-size: 1.05rem;
+    font-weight: bold;
+}
+#tab-general .setting-item label { /* Ajuste para garantir consistência se necessário */
+  margin-right: 10px; /* Espaço entre label e input */
+  flex-grow: 1; /* Permite que o label ocupe mais espaço se necessário */
+}
+
+/* Estilo para o input numérico de Qtd Itens */
+#tab-general .setting-item input[type="number"]#qtdItensTratarTriar {
+  width: 70px; /* Largura do input */
+  text-align: right; /* Alinhamento do texto (número) */
+  padding: 6px 8px; /* Padding interno */
+  border: 1px solid #ccc; /* Borda */
+  border-radius: 4px; /* Bordas arredondadas */
+  font-size: 0.9rem; /* Tamanho da fonte */
+  margin-left: 10px; /* Margem à esquerda para separar do label */
+  flex-shrink: 0; /* Impede que o input encolha */
+}
+
+/* Estilo para o parágrafo de descrição da configuração */
+.setting-description {
+  font-size: 0.85rem;
+  color: #555; /* Cor do texto */
+  margin-top: 6px; /* Espaçamento acima */
+  margin-bottom: 10px; /* Espaçamento abaixo */
+  padding-left: 15px; /* Um pequeno recuo */
+  border-left: 3px solid #0278bc; /* Uma barra lateral para destaque */
+  line-height: 1.4;
+}

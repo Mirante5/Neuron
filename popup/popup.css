@@ -1,0 +1,168 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #ffffff; /* Alterado para branco, conforme paleta sugerida */ /* */
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  width: 290px; /* Levemente ajustado para o novo header */ /* */
+  min-height: 320px; /* Altura mínima */ /* */
+  height: auto;
+}
+
+header {
+  background-color: #0278bc; /* Azul da paleta */ /* */
+  color: #ffffff; /* Branco da paleta */ /* */
+  padding: 10px 15px; /* Ajustado */ /* */
+  text-align: left; /* Ajustado para alinhar conteúdo */ /* */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+#headerLogo {
+  width: 48px; /* Tamanho ajustado para o logo no header */ /* */
+  height: 48px;
+  margin-right: 10px;
+}
+
+.header-text h1 {
+  font-size: 1.7rem; /* Ajustado */ /* */
+  font-weight: 700;
+  margin-bottom: 2px; /* Espaço entre título e subtítulo */ /* */
+}
+
+.header-text .subtitle {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #e0e0e0; /* Um branco um pouco mais suave para o subtítulo */ /* */
+}
+
+main {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background-color: #ffffff; /* Fundo principal branco */ /* */
+}
+
+.settings-container {
+  width: 100%;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 4px; /* Ajustado */ /* */
+  border-bottom: 1px solid #eeeeee; /* Borda mais suave */ /* */
+}
+.setting-item:last-child {
+  border-bottom: none; /* */
+}
+
+.setting-item label {
+  font-size: 0.9rem;
+  color: #444; /* Texto um pouco mais escuro para contraste em fundo branco */ /* */
+  margin-right: 8px; /* Adiciona espaço entre o label e o input */
+  flex-shrink: 0; /* Impede que o label encolha demais */
+}
+
+.setting-item input[type="checkbox"] {
+  transform: scale(1.2);
+  cursor: pointer;
+  accent-color: #0278bc; /* Checkbox usa a cor azul primária */ /* */
+}
+
+/* NOVO: Estilos para input numérico dentro de .setting-item */
+.setting-item input[type="number"] {
+  width: 65px; /* Largura um pouco maior para acomodar números e setas */
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: right;
+  margin-left: auto; /* Alinha à direita se o label for curto */
+  accent-color: #0278bc; /* Cor das setas (spin buttons) */
+}
+
+/* Remove setas do input number no Chrome, Edge, Safari, Opera (opcional, se preferir sem) */
+/* .setting-item input[type="number"]::-webkit-outer-spin-button,
+.setting-item input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} */
+
+/* Remove setas do input number no Firefox (opcional) */
+/* .setting-item input[type="number"] {
+  -moz-appearance: textfield;
+} */
+
+
+.master-switch label {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #0278bc; /* Azul para o master switch */ /* */
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #e0e0e0; /* Linha mais suave */ /* */
+    margin: 10px 0; /* */
+}
+
+h3 {
+    font-size: 1rem;
+    color: #0278bc; /* Azul para o título das funcionalidades */ /* */
+    margin-top: 10px;
+    margin-bottom: 8px; /* Ajustado */ /* */
+    text-align: center;
+    font-weight: bold;
+}
+
+/* NOVO: Estilos para o container de configurações específicas */
+#scriptSpecificSettings {
+  margin-top: 10px; /* Espaço acima do container de Qtd Itens */
+}
+
+/* O container #qtdItensContainer já usa a classe .setting-item,
+   então herdará display:flex, padding, border-bottom, etc.
+   A visibilidade é controlada por JS (display: none/flex).
+*/
+#qtdItensContainer label { /* Estilo específico se necessário para o label do Qtd Itens */
+    /* Ex: font-style: italic; */
+}
+
+
+footer {
+  text-align: center;
+  padding: 12px; /* Ajustado */ /* */
+  background: #0278bc; /* Azul da paleta */ /* */
+  color: #ffffff; /* Branco da paleta */ /* */
+}
+
+#saveAndReloadButton {
+  background-color: #ffd401; /* Amarelo da paleta */ /* */
+  color: #333333; /* Texto escuro para contraste com amarelo */ /* */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px; /* Bordas mais arredondadas */ /* */
+  cursor: pointer;
+  font-size: 0.95rem; /* Aumentado */ /* */
+  font-weight: bold;
+  width: 100%;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+}
+
+#saveAndReloadButton:hover {
+  background-color: #f0c300; /* Amarelo um pouco mais escuro no hover */ /* */
+}

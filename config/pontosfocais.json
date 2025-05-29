@@ -1,0 +1,90 @@
+{
+  "AECI": [
+    "AECI - Assessoria Especial de Controle Interno"
+  ],
+  "AECS": [
+    "AECS - Assessoria Especial de Comunicação Social"
+  ],
+  "COR": [
+    "CORREG - Corregedoria"
+  ],
+  "SDA": [
+    "SDA - Secretaria de Defesa Agropecuária"
+  ],
+  "SDA/DIPOA": [
+    "SDA/DIPOA - Departamento de Inspeção de Produtos de Origem Animal",
+    "SDA/DIPOA/1º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+    "SDA/DIPOA/2º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+    "SDA/DIPOA/3º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+    "SDA/DIPOA/4º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+    "SDA/DIPOA/5º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+    "SDA/DIPOA/6º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",      
+    "SDA/DIPOA/7º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+    "SDA/DIPOA/8º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+    "SDA/DIPOA/9º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+    "SDA/DIPOA/10º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+    "SDA/DIPOA/11º SIPOA - Serviço de Inspeção de Produtos de Origem Animal"
+  ],
+  "SSDA/DIPOV": [
+    "SDA/DIPOV - Departamento de Inspeção de Produtos de Origem Vegetal"
+  ],
+  "SDA/DSA": [
+    "SDA/DSA - Departamento de Saúde Animal"
+  ],
+  "SDA/DSN": [
+    "SDA/DSN - Departamento de Suporte e Normas"
+  ],
+  "SDA/DTEC": [
+    "SDA/DTEC - Departamento de Serviços Técnicos"
+  ],
+  "SDI": [
+    "SDI - Secretaria de Inovação, Desenvolvimento Sustentável, Irrigação e Cooperativismo"
+  ],
+  "SE": [
+    "SE - Secretaria-Executiva",
+    "SE/CGAS - Coordenação-Geral de Apoio às Superintendências"
+  ],
+  "SE/SGP": [
+    "SE/SGP - Subsecretaria de Gestão de Pessoas e Gestão do Conhecimento"
+  ],
+  "SE/SPOA": [
+    "SE/SPOA - Subsecretaria de Orçamento, Planejamento e Administração"
+  ],
+  "SE/STI": [
+    "SE/STI - Gabinete do Subsecretário"
+  ],
+  "SFA/XX": [
+    "SFA - Superintendências de Agricultura e Pecuária",
+    "SFA/AC - Superintendência de Agricultura e Pecuária do Estado do Acre",
+    "SFA/AL - Superintendência de Agricultura e Pecuária do Estado de Alagoas",
+    "SFA/AM - Superintendência de Agricultura e Pecuária do Estado de Amazonas",
+    "SFA/AP - Superintendência de Agricultura e Pecuária do Estado de Amapá",
+    "SFA/BA - Superintendência de Agricultura e Pecuária do Estado da Bahia",
+    "SFA/CE - Superintendência de Agricultura e Pecuária no Estado do Ceará",
+    "SFA/DF - Superintendência de Agricultura e Pecuária do Distrito Federal",
+    "SFA/ES - Superintendência de Agricultura e Pecuária do Espírito Santo",
+    "SFA/GO - Superintendência de Agricultura e Pecuária do Estado de Goiás",
+    "SFA/MA - Superintendência de Agricultura e Pecuária do Estado do Maranhão",
+    "SFA/MG - Superintendência de Agricultura e Pecuária de Minas Gerais",
+    "SFA/MS - Superintendência de Agricultura e Pecuária do Estado do Mato Grosso do Sul",
+    "SFA/MT - Superintendência de Agricultura e Pecuária do Estado do Mato Grosso",
+    "SFA/PA - Superintendência de Agricultura e Pecuária do Estado do Pará",
+    "SFA/PB - Superintendência de Agricultura e Pecuária do Estado da Paraíba",
+    "SFA/PE - Superintendência de Agricultura e Pecuária no Estado do Pernambuco",
+    "SFA/PI - Superintendência de Agricultura e Pecuária no Estado do Piauí",
+    "SFA/PR - Superintendência de Agricultura e Pecuária do Estado do Paraná",
+    "SFA/RJ - Superintendência de Agricultura e Pecuária do Rio de Janeiro",
+    "SFA/RN - Superintendência de Agricultura e Pecuária no Estado do Rio Grande do Norte",
+    "SFA/RO - Superintendência de Agricultura e Pecuária no Estado de Rondônia",
+    "SFA/RR - Superintendência de Agricultura e Pecuária no Estado de Roraima",
+    "SFA/RS - Superintendência de Agricultura e Pecuária no Estado do Rio Grande do Sul",
+    "SFA/SC - Superintendência de Agricultura e Pecuária no Estado de Santa Catarina",
+    "SFA/SE - Superintendência de Agricultura e Pecuária do Estado de Sergipe",
+    "SFA/SP - Superintendência de Agricultura e Pecuária do Estado de São Paulo",
+    "SFA/TO - Superintendência de Agricultura e Pecuária do Estado do Tocantins"
+  ],
+  "SPA":[
+    "SPA - Secretaria de Política Agrícola"
+  ]
+
+}

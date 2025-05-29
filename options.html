@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Neuron - Opções de Configuração</title>
+  <link rel="stylesheet" href="options.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="options-header">
+      <img src="../images/neuronon128.png" alt="Neuron Logo" id="headerLogo" />
+      <div class="header-text">
+        <h1>Neuron - Configurações</h1>
+        <p>Personalize o comportamento da extensão.</p>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab-link active" data-tab="tab-general">Geral</button>
+      <button class="tab-link" data-tab="tab-textos">Modelos de Texto</button>
+      <button class="tab-link" data-tab="tab-pontosfocais">Pontos Focais</button>
+      <button class="tab-link" data-tab="tab-feriados">Feriados</button>
+    </nav>
+
+    <main class="options-content">
+      <section id="tab-general" class="tab-content active">
+        <h2>Configurações Gerais</h2>
+        <div class="setting-item master-switch">
+          <label for="masterEnableOptions">Habilitar Neuron Globalmente</label>
+          <input type="checkbox" id="masterEnableOptions" name="masterEnableOptions" />
+        </div>
+        <hr>
+        <h3>Habilitar/Desabilitar Funcionalidades Específicas:</h3>
+        <div id="scriptsListOptions">
+          </div>
+        <hr>
+        <h3>Configurações de Funcionalidades:</h3>
+        <div class="setting-item">
+          <label for="qtdItensTratarTriar">Itens por Página (Telas Triar/Tratar):</label>
+          <input type="number" id="qtdItensTratarTriar" name="qtdItensTratarTriar" min="5" max="50" step="5"/>
+        </div>
+        <p class="setting-description">Define o número de manifestações exibidas por página nas telas "Triar Manifestações" e "Tratar Manifestações". Requer que a funcionalidade "Melhorias Telas Triar/Tratar" esteja habilitada. O valor padrão é 15.</p>
+
+      </section>
+
+      <section id="tab-textos" class="tab-content">
+        <h2>Editar Modelos de Texto (text.json)</h2>
+        <p class="warning"><strong>Atenção:</strong> Editar este JSON incorretamente pode quebrar funcionalidades. Faça um backup antes de alterar.</p>
+        <textarea id="textJsonEditor" rows="20" spellcheck="false"></textarea>
+        <div class="action-buttons">
+          <button id="saveTextJson" class="save-button">Salvar Textos</button>
+          <button id="resetTextJson" class="reset-button">Restaurar Padrão (Textos)</button>
+        </div>
+        <div id="textJsonStatus" class="status-message"></div>
+      </section>
+
+      <section id="tab-pontosfocais" class="tab-content">
+        <h2>Editar Pontos Focais (pontosfocais.json)</h2>
+        <p class="warning"><strong>Atenção:</strong> Editar este JSON incorretamente pode quebrar funcionalidades. Faça um backup antes de alterar.</p>
+        <textarea id="pontosFocaisJsonEditor" rows="20" spellcheck="false"></textarea>
+        <div class="action-buttons">
+          <button id="savePontosFocaisJson" class="save-button">Salvar Pontos Focais</button>
+          <button id="resetPontosFocaisJson" class="reset-button">Restaurar Padrão (Pontos Focais)</button>
+        </div>
+        <div id="pontosFocaisJsonStatus" class="status-message"></div>
+      </section>
+
+      <section id="tab-feriados" class="tab-content">
+        <h2>Configurar Feriados Nacionais/Locais</h2>
+        <p>Adicione ou remova feriados no formato DD/MM/AAAA. Estes serão considerados no cálculo de prazos.</p>
+        <div class="holiday-manager">
+          <div class="holiday-input-group">
+            <input type="text" id="holidayInput" placeholder="DD/MM/AAAA">
+            <button id="addHolidayButton" class="add-button">Adicionar Feriado</button>
+          </div>
+          <ul id="holidaysList">
+            </ul>
+        </div>
+        <div id="holidaysStatus" class="status-message"></div>
+         <div class="action-buttons">
+            <button id="saveHolidays" class="save-button">Salvar Feriados</button>
+            <button id="resetHolidays" class="reset-button">Restaurar Padrão (Feriados)</button>
+        </div>
+      </section>
+    </main>
+    
+    <div class="save-all-footer">
+        <button id="saveAllOptionsButton" class="save-button global-save">Salvar Todas as Alterações</button>
+        <div id="globalStatus" class="status-message"></div>
+    </div>
+
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>
