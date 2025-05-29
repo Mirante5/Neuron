@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/Intro-Neuron.gif" alt="Neuron Loading Animation" width="500"/>
+  <img src="https://github.com/Mirante5/Neuron/blob/main/images/Intro-Neuron.gif" alt="Neuron Loading Animation" width="500"/>
 </p>
 
 # Neuron Extension v0.3.0
