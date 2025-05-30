@@ -1,6 +1,3 @@
-// Neuron 0.1.5 β/background.js
-
-// Define o ícone padrão ao instalar/atualizar
 chrome.runtime.onInstalled.addListener(() => {
   console.log('Extensão Neuron instalada/atualizada.');
   // Não é ideal iterar por todas as abas aqui para definir o ícone inicial.

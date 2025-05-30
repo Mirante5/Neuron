@@ -18,9 +18,9 @@
 
     <nav class="tabs">
       <button class="tab-link active" data-tab="tab-general">Geral</button>
+      <button class="tab-link" data-tab="tab-prazos">Prazos & Feriados</button>
       <button class="tab-link" data-tab="tab-textos">Modelos de Texto</button>
       <button class="tab-link" data-tab="tab-pontosfocais">Pontos Focais</button>
-      <button class="tab-link" data-tab="tab-feriados">Feriados</button>
     </nav>
 
     <main class="options-content">
@@ -31,7 +31,7 @@
           <input type="checkbox" id="masterEnableOptions" name="masterEnableOptions" />
         </div>
         <hr>
-        <h3>Habilitar/Desabilitar Funcionalidades Específicas:</h3>
+        <h3>Habilitar/Desabilitar Funcionalidades Específicas (ordenado alfabeticamente):</h3>
         <div id="scriptsListOptions">
           </div>
         <hr>
@@ -41,38 +41,90 @@
           <input type="number" id="qtdItensTratarTriar" name="qtdItensTratarTriar" min="5" max="50" step="5"/>
         </div>
         <p class="setting-description">Define o número de manifestações exibidas por página nas telas "Triar Manifestações" e "Tratar Manifestações". Requer que a funcionalidade "Melhorias Telas Triar/Tratar" esteja habilitada. O valor padrão é 15.</p>
-
       </section>
 
-      <section id="tab-textos" class="tab-content">
-        <h2>Editar Modelos de Texto (text.json)</h2>
-        <p class="warning"><strong>Atenção:</strong> Editar este JSON incorretamente pode quebrar funcionalidades. Faça um backup antes de alterar.</p>
-        <textarea id="textJsonEditor" rows="20" spellcheck="false"></textarea>
-        <div class="action-buttons">
-          <button id="saveTextJson" class="save-button">Salvar Textos</button>
-          <button id="resetTextJson" class="reset-button">Restaurar Padrão (Textos)</button>
+      <section id="tab-prazos" class="tab-content">
+        <h2>Configurações de Prazos e Feriados</h2>
+        <h3>Configurações de Prazos:</h3>
+        <div class="setting-item">
+            <label for="configTramitacaoInternaDias">Prazo Tramitação Interna (dias de antecedência):</label>
+            <input type="number" id="configTramitacaoInternaDias" name="configTramitacaoInternaDias" style="width: 60px;">
         </div>
-        <div id="textJsonStatus" class="status-message"></div>
-      </section>
-
-      <section id="tab-pontosfocais" class="tab-content">
-        <h2>Editar Pontos Focais (pontosfocais.json)</h2>
-        <p class="warning"><strong>Atenção:</strong> Editar este JSON incorretamente pode quebrar funcionalidades. Faça um backup antes de alterar.</p>
-        <textarea id="pontosFocaisJsonEditor" rows="20" spellcheck="false"></textarea>
-        <div class="action-buttons">
-          <button id="savePontosFocaisJson" class="save-button">Salvar Pontos Focais</button>
-          <button id="resetPontosFocaisJson" class="reset-button">Restaurar Padrão (Pontos Focais)</button>
+        <div class="setting-item">
+            <label for="configTramitacaoInternaDiasUteis">Prazo Tramitação Interna é em dias úteis:</label>
+            <input type="checkbox" id="configTramitacaoInternaDiasUteis" name="configTramitacaoInternaDiasUteis">
         </div>
-        <div id="pontosFocaisJsonStatus" class="status-message"></div>
-      </section>
+        <p class="setting-description">Define o prazo para "Tramitar em" (telas Triar/Tratar) e para o campo data/placeholder '{PRAZO}' (tela Tramitar Manifestação). Calculado a partir do prazo de atendimento. Ex: -10 para 10 dias antes. Se "dias úteis" marcado, considera apenas dias úteis (seg-sex). Para as telas Triar/Tratar, os feriados configurados também são descontados.</p>
 
-      <section id="tab-feriados" class="tab-content">
-        <h2>Configurar Feriados Nacionais/Locais</h2>
-        <p>Adicione ou remova feriados no formato DD/MM/AAAA. Estes serão considerados no cálculo de prazos.</p>
+        <div class="setting-item">
+            <label for="cobrancaAntesDias">"Cobrança em" (dias de antecedência):</label>
+            <input type="number" id="cobrancaAntesDias" name="cobrancaAntesDias" style="width: 60px;">
+        </div>
+        <div class="setting-item">
+            <label for="cobrancaAntesDiasUteis">"Cobrança em" é em dias úteis:</label>
+            <input type="checkbox" id="cobrancaAntesDiasUteis" name="cobrancaAntesDiasUteis">
+        </div>
+        <p class="setting-description">Define o cálculo para "Cobrança em:" nas telas Triar/Tratar.</p>
+
+        <div class="setting-item">
+            <label for="prorrogarEmDias">"Prorrogar em" (dias do prazo original):</label>
+            <input type="number" id="prorrogarEmDias" name="prorrogarEmDias" style="width: 60px;">
+        </div>
+        <div class="setting-item">
+            <label for="prorrogarEmDiasUteis">"Prorrogar em" é em dias úteis:</label>
+            <input type="checkbox" id="prorrogarEmDiasUteis" name="prorrogarEmDiasUteis">
+        </div>
+        <p class="setting-description">Define o cálculo para "Prorrogar em:" nas telas Triar/Tratar. 0 dias refere-se à data original do prazo.</p>
+
+        <div class="setting-item">
+            <label for="improrrogavelAposProrrogacaoDias">"Improrrogável após prorr." (dias após prazo original):</label>
+            <input type="number" id="improrrogavelAposProrrogacaoDias" name="improrrogavelAposProrrogacaoDias" style="width: 60px;">
+        </div>
+        <div class="setting-item">
+            <label for="improrrogavelAposProrrogacaoDiasUteis">"Improrrogável após prorr." é em dias úteis:</label>
+            <input type="checkbox" id="improrrogavelAposProrrogacaoDiasUteis" name="improrrogavelAposProrrogacaoDiasUteis">
+        </div>
+        <p class="setting-description">Define o cálculo para "Improrrogável (após prorr.):" nas telas Triar/Tratar, contado a partir do prazo original.</p>
+
+        <div class="setting-item">
+            <label for="cobrancaAntesProrrogadoDias">"Cobrança em" (Prorrogado, dias de antecedência):</label>
+            <input type="number" id="cobrancaAntesProrrogadoDias" name="cobrancaAntesProrrogadoDias" style="width: 60px;">
+        </div>
+        <div class="setting-item">
+            <label for="cobrancaAntesProrrogadoDiasUteis">"Cobrança em" (Prorrogado) é em dias úteis:</label>
+            <input type="checkbox" id="cobrancaAntesProrrogadoDiasUteis" name="cobrancaAntesProrrogadoDiasUteis">
+        </div>
+        <p class="setting-description">Define o cálculo para "Cobrança em:" nas telas Triar/Tratar quando a manifestação já foi prorrogada.</p>
+        <hr>
+        <h3>Configurações de Ajuste de Data (Fim de Semana e Feriados):</h3>
+
+        <div class="setting-item">
+          <label for="weekendAdjustmentRule">Ajuste para Fim de Semana:</label>
+          <select id="weekendAdjustmentRule" name="weekendAdjustmentRule">
+            <option value="next">Mover para Próximo Dia Útil (Ex: Sáb/Dom -> Seg)</option>
+            <option value="previous">Mover para Dia Útil Anterior (Ex: Sáb/Dom -> Sex)</option>
+            <option value="split">Dividir (Sáb -> Sex, Dom -> Seg)</option>
+          </select>
+        </div>
+        <p class="setting-description">Define como as datas calculadas que caem em fins de semana devem ser ajustadas.</p>
+
+        <div class="setting-item">
+          <label for="holidayAdjustmentRule">Ajuste para Feriados (em dias de semana):</label>
+          <select id="holidayAdjustmentRule" name="holidayAdjustmentRule">
+            <option value="next">Mover para Próximo Dia Útil Seguinte</option>
+            <option value="previous">Mover para Dia Útil Anterior</option>
+            <option value="none">Não ajustar, manter no feriado (se for dia de semana)</option>
+          </select>
+        </div>
+        <p class="setting-description">Define como as datas calculadas que caem em feriados (que são dias de semana) devem ser ajustadas. O ajuste do feriado ocorre após o ajuste do fim de semana, se aplicável.</p>
+        <hr>
+        <h3>Configuração de Feriados:</h3>
+        <p>Adicione ou remova feriados no formato DD/MM/AAAA com uma breve descrição. Estes serão considerados no cálculo de prazos que utilizam "dias úteis" (principalmente nas telas Triar/Tratar).</p>
         <div class="holiday-manager">
           <div class="holiday-input-group">
             <input type="text" id="holidayInput" placeholder="DD/MM/AAAA">
-            <button id="addHolidayButton" class="add-button">Adicionar Feriado</button>
+            <input type="text" id="holidayDescriptionInput" placeholder="Descrição do Feriado">
+            <button id="addHolidayButton" class="add-button">Adicionar</button>
           </div>
           <ul id="holidaysList">
             </ul>
@@ -83,6 +135,66 @@
             <button id="resetHolidays" class="reset-button">Restaurar Padrão (Feriados)</button>
         </div>
       </section>
+
+      <section id="tab-textos" class="tab-content">
+        <h2>Editar Modelos de Texto (text.json)</h2>
+        <p><strong>Exemplo da estrutura JSON esperada:</strong></p>
+        <pre class="json-example">
+{
+  "Tramitar": {
+    "Nome da Opção 1 (Ex: Encaminhar para Setor X)": "Texto completo da mensagem para a Opção 1...",
+    "Nome da Opção 2 (Ex: Solicitar Revisão)": "Texto para a Opção 2. Placeholders: {PRAZO}, {SECRETARIA}"
+  },
+  "Prorrogar": {
+    "Modelo Prorrogação Padrão": "Texto para prorrogação..."
+  },
+  "OutraCategoria": {
+    "ChaveUnica": "Valor do texto..."
+  }
+  // ... mais categorias e opções (chaves de primeiro nível são categorias, como 'Tramitar')
+  // Dentro de cada categoria, cada par chave-valor é um modelo de texto.
+  // A "chave" é o nome que aparecerá no dropdown de seleção.
+  // O "valor" é o texto completo da mensagem.
+}
+</pre>
+        <p class="warning"><strong>Atenção:</strong> Editar este JSON incorretamente pode quebrar funcionalidades. Faça um backup antes de alterar.</p>
+        <textarea id="textJsonEditor" rows="15" spellcheck="false"></textarea>
+        <div class="action-buttons">
+          <button id="saveTextJson" class="save-button">Salvar Textos</button>
+          <button id="resetTextJson" class="reset-button">Restaurar Padrão (Textos)</button>
+        </div>
+        <div id="textJsonStatus" class="status-message"></div>
+      </section>
+
+      <section id="tab-pontosfocais" class="tab-content">
+        <h2>Editar Pontos Focais (pontosfocais.json)</h2>
+        <p><strong>Exemplo da estrutura JSON esperada:</strong></p>
+        <pre class="json-example">
+{
+  "SIGLA_DA_SECRETARIA_1": [
+    "Nome Completo do Ponto Focal 1",
+    "Nome Completo do Ponto Focal 2"
+  ],
+  "SIGLA_DA_SECRETARIA_2": [
+    "Nome Ponto Focal Único para esta Secretaria"
+  ],
+  "OUTRA_SIGLA": [
+    "Responsável A",
+    "Responsável B (Substituto)"
+  ]
+  // A "chave" é a sigla da Unidade/Secretaria (Ex: "OUV-ABC", "GABINETE").
+  // O "valor" é uma lista (array) de nomes completos dos pontos focais para essa sigla.
+}
+</pre>
+        <p class="warning"><strong>Atenção:</strong> Editar este JSON incorretamente pode quebrar funcionalidades. Faça um backup antes de alterar.</p>
+        <textarea id="pontosFocaisJsonEditor" rows="15" spellcheck="false"></textarea>
+        <div class="action-buttons">
+          <button id="savePontosFocaisJson" class="save-button">Salvar Pontos Focais</button>
+          <button id="resetPontosFocaisJson" class="reset-button">Restaurar Padrão (Pontos Focais)</button>
+        </div>
+        <div id="pontosFocaisJsonStatus" class="status-message"></div>
+      </section>
+
     </main>
     
     <div class="save-all-footer">

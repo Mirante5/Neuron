@@ -1,6 +1,6 @@
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #f4f8fa; /* Um cinza bem claro */
+  background-color: #f4f8fa; 
   color: #333;
   margin: 0;
   padding: 20px;
@@ -10,7 +10,7 @@ body {
 .container {
   max-width: 900px;
   margin: 0 auto;
-  background-color: #ffffff; /* Branco da paleta */
+  background-color: #ffffff; 
   padding: 25px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -22,7 +22,7 @@ body {
   padding-bottom: 20px;
   border-bottom: 1px solid #e0e0e0;
   margin-bottom: 20px;
-  color: #0278bc; /* Azul da paleta */
+  color: #0278bc; 
 }
 
 #headerLogo {
@@ -46,7 +46,7 @@ body {
 .tabs {
   display: flex;
   margin-bottom: 25px;
-  border-bottom: 2px solid #0278bc; /* Azul da paleta */
+  border-bottom: 2px solid #0278bc; 
 }
 
 .tab-link {
@@ -58,17 +58,17 @@ body {
   font-weight: 500;
   color: #555;
   border-bottom: 2px solid transparent;
-  margin-bottom: -2px; /* Alinha com a borda do container .tabs */
+  margin-bottom: -2px; 
   transition: color 0.2s ease, border-bottom-color 0.2s ease;
 }
 
 .tab-link:hover {
-  color: #0278bc; /* Azul da paleta */
+  color: #0278bc; 
 }
 
 .tab-link.active {
-  color: #0278bc; /* Azul da paleta */
-  border-bottom-color: #ffd401; /* Amarelo da paleta */
+  color: #0278bc; 
+  border-bottom-color: #ffd401; 
   font-weight: 700;
 }
 
@@ -87,7 +87,7 @@ body {
 
 .tab-content h2 {
   font-size: 1.5rem;
-  color: #0278bc; /* Azul da paleta */
+  color: #0278bc; 
   margin-top: 0;
   margin-bottom: 15px;
   border-bottom: 1px solid #eee;
@@ -100,7 +100,6 @@ body {
   margin-bottom: 10px;
 }
 
-/* Estilos para itens de configuração (copiado e adaptado do popup.css) */
 .setting-item {
   display: flex;
   justify-content: space-between;
@@ -114,25 +113,37 @@ body {
 .setting-item label {
   font-size: 0.95rem;
   color: #444;
+  margin-right: 10px; 
+  flex-grow: 1; 
 }
 .setting-item input[type="checkbox"] {
   transform: scale(1.3);
   cursor: pointer;
-  accent-color: #0278bc; /* Azul da paleta */
+  accent-color: #0278bc; 
+  flex-shrink: 0; 
 }
+.setting-item input[type="number"] {
+  padding: 6px 8px; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  font-size: 0.9rem; 
+  margin-left: 10px; 
+  text-align: right;
+  flex-shrink: 0; 
+}
+
 .master-switch label {
   font-weight: bold;
   font-size: 1.05rem;
-  color: #0278bc; /* Azul da paleta */
+  color: #0278bc; 
 }
 hr {
   border: 0;
   height: 1px;
   background: #e0e0e0;
-  margin: 15px 0;
+  margin: 20px 0; 
 }
 
-/* Editor JSON */
 textarea {
   width: 100%;
   padding: 10px;
@@ -147,7 +158,7 @@ textarea {
 }
 
 .warning {
-  background-color: #fff3cd; /* Amarelo claro para avisos */
+  background-color: #fff3cd; 
   color: #856404;
   padding: 10px;
   border-radius: 4px;
@@ -159,14 +170,29 @@ textarea {
     color: #664d03;
 }
 
+pre.json-example {
+  background-color: #f0f0f0; 
+  border: 1px solid #ddd;    
+  padding: 15px;             
+  border-radius: 4px;        
+  font-family: 'Courier New', Courier, monospace; 
+  font-size: 0.85em;         
+  line-height: 1.5;          
+  white-space: pre-wrap;     
+  word-break: break-all;     
+  margin-top: 5px;          
+  margin-bottom: 15px;       
+  color: #333;                
+}
+
 .action-buttons {
   display: flex;
-  gap: 10px; /* Espaço entre os botões */
+  gap: 10px; 
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.save-button, .reset-button, .add-button {
+.save-button, .reset-button, .add-button, .action-button { /* Added .action-button */
   padding: 10px 18px;
   border: none;
   border-radius: 5px;
@@ -177,15 +203,15 @@ textarea {
 }
 
 .save-button {
-  background-color: #0278bc; /* Azul da paleta */
-  color: #ffffff; /* Branco da paleta */
+  background-color: #0278bc; 
+  color: #ffffff; 
 }
 .save-button:hover {
   background-color: #025a8e;
 }
 
 .reset-button {
-  background-color: #6c757d; /* Cinza */
+  background-color: #6c757d; 
   color: white;
 }
 .reset-button:hover {
@@ -193,11 +219,29 @@ textarea {
 }
 
 .add-button {
-  background-color: #ffd401; /* Amarelo da paleta */
+  background-color: #ffd401; 
   color: #333;
+  padding: 8px 15px; 
 }
 .add-button:hover {
   background-color: #f0c300;
+}
+
+/* Specific styles for Import/Export buttons if needed, or they can use .action-button */
+.export-button {
+  background-color: #28a745; /* Green */
+  color: white;
+}
+.export-button:hover {
+  background-color: #218838;
+}
+
+.import-button {
+  background-color: #17a2b8; /* Info Blue */
+  color: white;
+}
+.import-button:hover {
+  background-color: #138496;
 }
 
 
@@ -206,7 +250,7 @@ textarea {
   font-size: 0.9rem;
   padding: 8px;
   border-radius: 4px;
-  display: none; /* Inicialmente oculto */
+  display: none; 
 }
 .status-message.success {
   background-color: #d4edda;
@@ -221,7 +265,6 @@ textarea {
   display: block;
 }
 
-/* Gerenciador de Feriados */
 .holiday-manager ul {
   list-style-type: none;
   padding: 0;
@@ -242,29 +285,42 @@ textarea {
 .holiday-manager li:last-child {
   border-bottom: none;
 }
+.holiday-manager li .holiday-text { 
+  flex-grow: 1;
+  margin-right: 10px;
+}
 .holiday-manager .remove-holiday {
-  background-color: #dc3545; /* Vermelho para remover */
+  background-color: #dc3545; 
   color: white;
   border: none;
   padding: 4px 8px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.8rem;
+  flex-shrink: 0;
 }
 .holiday-manager .remove-holiday:hover {
   background-color: #c82333;
 }
+
 .holiday-input-group {
   display: flex;
-  gap: 10px;
+  gap: 10px; 
+  align-items: center; 
   margin-bottom: 10px;
 }
-.holiday-input-group input[type="text"] {
-  flex-grow: 1;
-  padding: 10px;
+.holiday-input-group input[type="text"] { 
+  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 0.9rem;
+}
+.holiday-input-group input#holidayInput { 
+  flex-basis: 140px; 
+  flex-grow: 0;
+}
+.holiday-input-group input#holidayDescriptionInput { 
+  flex-grow: 1; 
 }
 
 .save-all-footer {
@@ -278,30 +334,44 @@ textarea {
     font-size: 1.05rem;
     font-weight: bold;
 }
-#tab-general .setting-item label { /* Ajuste para garantir consistência se necessário */
-  margin-right: 10px; /* Espaço entre label e input */
-  flex-grow: 1; /* Permite que o label ocupe mais espaço se necessário */
-}
 
-/* Estilo para o input numérico de Qtd Itens */
 #tab-general .setting-item input[type="number"]#qtdItensTratarTriar {
-  width: 70px; /* Largura do input */
-  text-align: right; /* Alinhamento do texto (número) */
-  padding: 6px 8px; /* Padding interno */
-  border: 1px solid #ccc; /* Borda */
-  border-radius: 4px; /* Bordas arredondadas */
-  font-size: 0.9rem; /* Tamanho da fonte */
-  margin-left: 10px; /* Margem à esquerda para separar do label */
-  flex-shrink: 0; /* Impede que o input encolha */
+  width: 70px; 
 }
 
-/* Estilo para o parágrafo de descrição da configuração */
+#tab-prazos .setting-item input[type="number"] { /* Target number inputs in prazos tab */
+  width: 60px; 
+}
+
 .setting-description {
   font-size: 0.85rem;
-  color: #555; /* Cor do texto */
-  margin-top: 6px; /* Espaçamento acima */
-  margin-bottom: 10px; /* Espaçamento abaixo */
-  padding-left: 15px; /* Um pequeno recuo */
-  border-left: 3px solid #0278bc; /* Uma barra lateral para destaque */
+  color: #555; 
+  margin-top: 6px; 
+  margin-bottom: 10px; 
+  padding-left: 15px; 
+  border-left: 3px solid #0278bc; 
   line-height: 1.4;
+}
+
+/* Styles for Import/Export Section */
+.config-management-section {
+  padding: 15px;
+  border: 1px solid #e9ecef;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  margin-bottom: 20px;
+}
+.config-management-section h3 {
+  margin-top: 0;
+  color: #0278bc;
+}
+.config-management-section p {
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+#importConfigFileInput { /* Style for the file input */
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 0.9rem;
 }

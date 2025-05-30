@@ -66,8 +66,7 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "config/text.json",
-        "config/pontosfocais.json",
+        "config/*.json",
         "images/*.gif",
         "images/*.png"
       ],
