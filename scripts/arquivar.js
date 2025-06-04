@@ -1,78 +1,80 @@
-// Neuron 0.1.5 β/scripts/arquivar.js - REFATORADO COM JSON DINÂMICO
+// Neuron 0.3.1/scripts/arquivar.js - CENTRALIZED CONFIG
 (async function () {
     'use strict';
 
     const SCRIPT_NOME_PARA_LOG = 'arquivar';
-    const SCRIPT_ID_STORAGE_KEY = 'scriptEnabled_arquivar'; //
+    const SCRIPT_ID = 'arquivar'; // Usado para buscar config.featureSettings[SCRIPT_ID]
+    const CONFIG_STORAGE_KEY_ARQUIVAR = 'neuronUserConfig';
+    const DEFAULT_CONFIG_PATH_ARQUIVAR = 'config/config.json';
 
-    // IDs e Seletores da página e do script
-    const DROPDOWN_ID_NEURON = 'neuronDropdownArquivar'; // Novo ID padronizado
-    const LABEL_CLASS_NEURON = 'neuronLabelArquivar';   // Classe para o label Neuron
-    const LABEL_FOR_MOTIVO_ORIGINAL = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_cmbMotivoArquivamento'; // Âncora
-    const INPUT_JUSTIFICATIVA_ID_PAGINA = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_txtJustificativaArquivamento'; //
-    const NUMERO_MANIFESTACAO_ID_PAGINA = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_infoManifestacoes_infoManifestacao_txtNumero'; //
+    const DROPDOWN_ID_NEURON = 'neuronDropdownArquivar';
+    const LABEL_CLASS_NEURON = 'neuronLabelArquivar';
+    const LABEL_FOR_MOTIVO_ORIGINAL = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_cmbMotivoArquivamento';
+    const INPUT_JUSTIFICATIVA_ID_PAGINA = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_txtJustificativaArquivamento';
+    const NUMERO_MANIFESTACAO_ID_PAGINA = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_infoManifestacoes_infoManifestacao_txtNumero';
     const URL_ALVO_DO_SCRIPT = 'ArquivarManifestacao.aspx';
     const STYLE_CLASS_NEURON = `neuron-${SCRIPT_NOME_PARA_LOG}-styles`;
 
     let currentMasterEnabled = false;
     let currentScriptEnabled = false;
-    let textConfig = { Arquivar: {} }; // Configuração carregada
+    let textModelsArquivar = {}; // Apenas a seção "Arquivar" dos modelos de texto
 
     let uiMutationObserver = null;
     let observerConfiguradoGlobal = false;
-
-    // Referências aos elementos da UI criados pelo Neuron
     let neuronDropdownElement = null;
     let neuronLabelElement = null;
 
-    // --- Carregamento de Configuração JSON ---
-    async function carregarTextConfigNeuron() {
-        try {
-            const storageResult = await chrome.storage.local.get('userTextJson');
-            if (storageResult.userTextJson && typeof storageResult.userTextJson === 'string') {
-                const parsedConfig = JSON.parse(storageResult.userTextJson);
-                textConfig = parsedConfig;
-            } else {
-                const response = await fetch(chrome.runtime.getURL('config/text.json')); //
-                if (!response.ok) throw new Error(`Erro HTTP ao carregar padrão: ${response.status}`);
-                textConfig = await response.json(); //
+    async function carregarConfiguracoesArquivar() {
+        const result = await chrome.storage.local.get(CONFIG_STORAGE_KEY_ARQUIVAR);
+        let fullConfig = {};
+
+        if (result[CONFIG_STORAGE_KEY_ARQUIVAR] && typeof result[CONFIG_STORAGE_KEY_ARQUIVAR] === 'object') {
+            fullConfig = result[CONFIG_STORAGE_KEY_ARQUIVAR];
+        } else {
+            try {
+                const response = await fetch(chrome.runtime.getURL(DEFAULT_CONFIG_PATH_ARQUIVAR));
+                if (!response.ok) throw new Error(`Erro HTTP ao carregar config padrão: ${response.status}`);
+                fullConfig = await response.json();
+            } catch (e) {
+                console.error(`Neuron (${SCRIPT_NOME_PARA_LOG}): Erro crítico ao carregar ${DEFAULT_CONFIG_PATH_ARQUIVAR}:`, e);
+                // Define um fallback mínimo para evitar que a extensão quebre completamente
+                fullConfig = { masterEnableNeuron: false, featureSettings: {}, textModels: { Arquivar: {} } };
             }
-            if (!textConfig.Arquivar) {
-                textConfig.Arquivar = {};
-                console.warn(`Neuron (${SCRIPT_NOME_PARA_LOG}): Seção 'Arquivar' não encontrada no text.json.`);
-            }
-        } catch (e) {
-            console.error(`Neuron (${SCRIPT_NOME_PARA_LOG}): Erro ao carregar text.json:`, e);
-            textConfig = { Arquivar: { "Erro": "Erro ao carregar justificativas de arquivamento." } }; // Fallback
+        }
+        
+        currentMasterEnabled = fullConfig.masterEnableNeuron !== false;
+        currentScriptEnabled = fullConfig.featureSettings?.[SCRIPT_ID]?.enabled !== false;
+        textModelsArquivar = fullConfig.textModels?.Arquivar || {};
+
+        if (Object.keys(textModelsArquivar).length === 0) {
+            console.warn(`Neuron (${SCRIPT_NOME_PARA_LOG}): Seção 'Arquivar' não encontrada ou vazia nos modelos de texto.`);
+            textModelsArquivar = { "Erro": "Modelos de arquivamento não carregados." };
         }
     }
 
-    // --- Estilos ---
-    function inserirEstilosNeuron() { //
+    function inserirEstilosNeuron() {
         if (document.querySelector('.' + STYLE_CLASS_NEURON)) return;
         const style = document.createElement('style');
         style.className = STYLE_CLASS_NEURON;
-        // Estilos adaptados do original, usando classes e IDs padronizados
         style.textContent = `
             .${LABEL_CLASS_NEURON} { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold; color: #333; }
             #${DROPDOWN_ID_NEURON} { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; box-sizing: border-box; margin-bottom: 10px; }
         `;
         document.head.appendChild(style);
     }
+
     function removerEstilosNeuron() {
         document.querySelector('.' + STYLE_CLASS_NEURON)?.remove();
     }
 
-    // --- Criação e Remoção de UI ---
-    function removerElementosCriadosArquivar() { //
+    function removerElementosCriadosArquivar() {
         neuronDropdownElement?.remove();
         neuronLabelElement?.remove();
         neuronDropdownElement = null;
         neuronLabelElement = null;
-        // console.log(`Neuron (${SCRIPT_NOME_PARA_LOG}): UI de Arquivamento removida.`);
     }
 
-    function criarOuAtualizarUIArquivar() { // Adaptado de criarOuAtualizarDropdown
+    function criarOuAtualizarUIArquivar() {
         if (!currentMasterEnabled || !currentScriptEnabled || !window.location.href.includes(URL_ALVO_DO_SCRIPT)) {
             removerElementosCriadosArquivar();
             return;
@@ -83,18 +85,15 @@
         const numeroManifestacaoElement = document.getElementById(NUMERO_MANIFESTACAO_ID_PAGINA);
 
         if (!motivoArquivamentoLabelAncora || !justificativaInputAlvo || !numeroManifestacaoElement) {
-            // console.warn(`Neuron (${SCRIPT_NOME_PARA_LOG}): Elementos âncora da página não encontrados. UI não será criada.`);
             return;
         }
         
-        if (neuronDropdownElement) { // Remove para recriar se JSON mudou
+        if (neuronDropdownElement) {
             removerElementosCriadosArquivar();
         }
-        // console.log(`Neuron (${SCRIPT_NOME_PARA_LOG}): Criando/Atualizando UI de Arquivamento.`);
 
         const numeroManifestacao = numeroManifestacaoElement.innerText.trim() || '{NUP_NAO_ENCONTRADO}';
-        const arquivarConfig = textConfig?.Arquivar || {};
-
+        
         neuronLabelElement = document.createElement('label');
         neuronLabelElement.setAttribute('for', DROPDOWN_ID_NEURON);
         neuronLabelElement.textContent = 'Neuron - Justificativa Pré-definida:';
@@ -102,29 +101,20 @@
 
         neuronDropdownElement = document.createElement('select');
         neuronDropdownElement.id = DROPDOWN_ID_NEURON;
-        // neuronDropdownElement.className = 'form-control'; // Se quiser estilo Bootstrap
 
         const optDefault = document.createElement('option');
         optDefault.value = '';
         optDefault.textContent = 'Selecione uma justificativa...';
         neuronDropdownElement.appendChild(optDefault);
 
-        Object.entries(arquivarConfig).forEach(([key, textoTemplate]) => {
+        Object.entries(textModelsArquivar).forEach(([key, textoTemplate]) => {
             const option = document.createElement('option');
-            // Substitui placeholders no template. O original usava {NUP}|{datalimite}
-            // O text.json para Arquivar/Duplicidade usa (NUP)
-            // Vamos usar uma regex mais genérica ou placeholders consistentes.
-            // Assumindo que o placeholder no JSON é {NUP_MANIFESTACAO} para o número.
-            // O text.json atual usa (NUP) para Duplicidade e {datalimite} para prorrogação.
-            // Para arquivamento, não há placeholder dinâmico nos textos padrão, exceto o NUP em "Duplicidade".
-            // Vamos ajustar para substituir (NUP) se for o caso.
             let textoFinalOpcao = textoTemplate;
-            if (typeof textoTemplate === 'string') { //
-                 textoFinalOpcao = textoTemplate.replace(/\(NUP\)/g, `(${numeroManifestacao})`); //
-                 // Adicione outros placeholders se necessário, ex: .replace(/{PLACEHOLDER}/g, valor)
+            if (typeof textoTemplate === 'string') {
+                 textoFinalOpcao = textoTemplate.replace(/\(NUP\)/g, `(${numeroManifestacao})`);
             }
             option.value = textoFinalOpcao; 
-            option.textContent = key; // Nome da justificativa
+            option.textContent = key;
             neuronDropdownElement.appendChild(option);
         });
 
@@ -132,33 +122,21 @@
             if(justificativaInputAlvo) justificativaInputAlvo.value = this.value || '';
         });
 
-        // Insere após o label original do motivo do arquivamento
         const parentOfAncora = motivoArquivamentoLabelAncora.parentNode;
-        const nextSiblingOfAncoraOriginalControl = motivoArquivamentoLabelAncora.nextElementSibling?.nextElementSibling; // Tenta pular o select original
-
         if (parentOfAncora) {
-            if (nextSiblingOfAncoraOriginalControl) {
-                 parentOfAncora.insertBefore(neuronLabelElement,neuronDropdownElement.nextSibling);
-                 parentOfAncora.insertBefore(neuronDropdownElement,neuronLabelElement.nextSibling );
-            } else { // Se não houver próximo após o select original, anexa ao final do pai do label
-                 parentOfAncora.appendChild(neuronLabelElement);
-                 parentOfAncora.appendChild(neuronDropdownElement);
-            }
+            // Insere o label antes do select original, e o dropdown Neuron depois do label Neuron
+            parentOfAncora.insertBefore(neuronLabelElement, neuronDropdownElement.nextElementSibling);
+            parentOfAncora.insertBefore(neuronDropdownElement, neuronLabelElement.nextElementSibling);
+
         } else {
-             console.warn(`Neuron (${SCRIPT_NOME_PARA_LOG}): ParentNode do label âncora não encontrado.`);
-             neuronLabelElement?.remove(); neuronDropdownElement?.remove(); // Limpa
+             neuronLabelElement?.remove(); neuronDropdownElement?.remove();
              return;
         }
         inserirEstilosNeuron();
     }
 
-    // --- Controle da Extensão e Observer Principal ---
     async function verificarEstadoAtualEAgirArquivar() {
-        const settings = await chrome.storage.local.get(['masterEnableNeuron', SCRIPT_ID_STORAGE_KEY, 'userTextJson']);
-        currentMasterEnabled = settings.masterEnableNeuron !== false;
-        currentScriptEnabled = settings[SCRIPT_ID_STORAGE_KEY] !== false;
-
-        await carregarTextConfigNeuron();
+        await carregarConfiguracoesArquivar();
 
         if (currentMasterEnabled && currentScriptEnabled && window.location.href.includes(URL_ALVO_DO_SCRIPT)) {
             criarOuAtualizarUIArquivar();
@@ -202,10 +180,8 @@
     }
 
     chrome.storage.onChanged.addListener((changes, namespace) => {
-        if (namespace === 'local') {
-            if (changes.masterEnableNeuron || changes[SCRIPT_ID_STORAGE_KEY] || changes.userTextJson) {
-                verificarEstadoAtualEAgirArquivar();
-            }
+        if (namespace === 'local' && changes[CONFIG_STORAGE_KEY_ARQUIVAR]) {
+            verificarEstadoAtualEAgirArquivar();
         }
     });
 
@@ -217,7 +193,7 @@
         await verificarEstadoAtualEAgirArquivar();
     }
 
-    if (window.location.href.includes(URL_ALVO_DO_SCRIPT)) { //
+    if (window.location.href.includes(URL_ALVO_DO_SCRIPT)) {
         initArquivar();
     }
 })();

@@ -1,163 +1,199 @@
-// Neuron 0.1.5 β/popup/popup.js - COM MODIFICAÇÕES
+// Neuron/popup/popup.js
+'use strict';
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Chave para config no storage e caminho para config padrão.
+  const CONFIG_STORAGE_KEY_POPUP = 'neuronUserConfig'; // Config centralizada
+  const DEFAULT_CONFIG_PATH_POPUP = 'config/config.json';
+
+  // Elementos da UI.
   const masterEnableCheckbox = document.getElementById('masterEnable');
   const scriptsListDiv = document.getElementById('scriptsList');
   const saveAndReloadButton = document.getElementById('saveAndReloadButton');
-
-  // NOVO: Elementos para Qtd Itens
   const qtdItensContainer = document.getElementById('qtdItensContainer');
   const qtdItensTratarTriarPopupInput = document.getElementById('qtdItensTratarTriarPopup');
-  const QTD_ITENS_STORAGE_KEY_POPUP = 'neuronTratarTriarQtdItens'; // Mesma chave usada em tratar-triar.js e options.js
-  const QTD_ITENS_DEFAULT_POPUP = 15;
 
-  const toggleableScripts = { //
-    'style': { label: 'Animação de Loading', default: true }, //
-    'arquivar': { label: 'Assistente de Arquivamento', default: true }, //
-    'encaminhar': { label: 'Assistente de Encaminhamento', default: true }, //
-    'prorrogar': { label: 'Assistente de Prorrogação', default: true }, //
-    'tramitar': { label: 'Assistente de Tramitação', default: true }, //
-    'tratarTriar': { label: 'Melhorias Triar/Tratar', default: true }, //
-    'tratar': { label: 'Melhorias Tratar Manifestação', default: true } //
-    // Se 'resposta.js' for controlado individualmente, adicionar:
-    // 'resposta': { label: 'Assistente de Resposta Rápida', default: true },
-  };
+  let currentPopupConfig = {}; // Armazena a configuração carregada.
 
-  // Função para controlar visibilidade e estado do input Qtd Itens
+  // Busca a configuração padrão (usada como fallback).
+  async function fetchDefaultPopupConfig() {
+    try {
+      const response = await fetch(chrome.runtime.getURL(DEFAULT_CONFIG_PATH_POPUP));
+      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.error("Neuron Popup: Erro ao carregar config padrão:", error);
+      return null;
+    }
+  }
+
+  // Atualiza a visibilidade e estado do input 'qtdItensTratarTriar'.
   function updateQtdItensInputState() {
     const masterEnabled = masterEnableCheckbox.checked;
-    const tratarTriarEnabled = document.getElementById('chk_tratarTriar')?.checked || false;
+    // Encontra o checkbox da funcionalidade 'tratarTriar' dinamicamente.
+    const tratarTriarCheckbox = document.getElementById('chk_tratarTriar');
+    const tratarTriarEnabled = tratarTriarCheckbox ? tratarTriarCheckbox.checked : false;
 
-    if (masterEnabled && tratarTriarEnabled) {
-      if (qtdItensContainer) qtdItensContainer.style.display = 'flex'; // Ou 'block' conforme seu CSS
-      if (qtdItensTratarTriarPopupInput) qtdItensTratarTriarPopupInput.disabled = false;
+    const displayStyle = (masterEnabled && tratarTriarEnabled) ? 'flex' : 'none';
+    const isDisabled = !(masterEnabled && tratarTriarEnabled);
+
+    if (qtdItensContainer) qtdItensContainer.style.display = displayStyle;
+    if (qtdItensTratarTriarPopupInput) qtdItensTratarTriarPopupInput.disabled = isDisabled;
+  }
+
+  // Carrega as configurações do storage ou do arquivo padrão.
+  async function loadSettings() {
+    const result = await chrome.storage.local.get(CONFIG_STORAGE_KEY_POPUP);
+    const defaultConfig = await fetchDefaultPopupConfig();
+
+    if (result[CONFIG_STORAGE_KEY_POPUP] && typeof result[CONFIG_STORAGE_KEY_POPUP] === 'object') {
+      currentPopupConfig = result[CONFIG_STORAGE_KEY_POPUP];
+    } else if (defaultConfig) {
+      currentPopupConfig = defaultConfig; // Usa o default se não houver config salva.
     } else {
-      if (qtdItensContainer) qtdItensContainer.style.display = 'none';
-      if (qtdItensTratarTriarPopupInput) qtdItensTratarTriarPopupInput.disabled = true;
-    }
-  }
-
-  async function loadSettings() { //
-    const scriptKeysToGet = Object.keys(toggleableScripts).map(id => `scriptEnabled_${id}`); //
-    const keysToGet = ['masterEnableNeuron', ...scriptKeysToGet, QTD_ITENS_STORAGE_KEY_POPUP]; //
-    
-    const result = await chrome.storage.local.get(keysToGet); //
-
-    const masterEnabled = result.masterEnableNeuron !== false; //
-    masterEnableCheckbox.checked = masterEnabled; //
-    // toggleScriptCheckboxesAvailability(masterEnabled); // Será chamado dentro de updateQtdItensInputState indiretamente ou após scripts
-
-    for (const scriptId in toggleableScripts) { //
-      const scriptConfig = toggleableScripts[scriptId]; //
-      const checkbox = document.getElementById(`chk_${scriptId}`); //
-      if (checkbox) { //
-        checkbox.checked = result[`scriptEnabled_${scriptId}`] !== undefined ? result[`scriptEnabled_${scriptId}`] : scriptConfig.default; //
-        checkbox.disabled = !masterEnabled; // Desabilita se master estiver off
-      }
-    }
-    
-    // Carregar valor de Qtd Itens
-    if (qtdItensTratarTriarPopupInput) {
-      qtdItensTratarTriarPopupInput.value = result[QTD_ITENS_STORAGE_KEY_POPUP] !== undefined ? result[QTD_ITENS_STORAGE_KEY_POPUP] : QTD_ITENS_DEFAULT_POPUP;
+      // Fallback crítico se nem config salva nem default puderem ser carregados.
+      currentPopupConfig = {
+        masterEnableNeuron: true,
+        featureSettings: {},
+        generalSettings: { qtdItensTratarTriar: 15 }
+      };
+      console.warn("Neuron Popup: Usando config de fallback crítico.");
     }
 
-    // Atualizar estado do input de Qtd Itens e opacidade da lista de scripts
-    toggleScriptsListOpacity(masterEnabled); // Função separada para opacidade
-    updateQtdItensInputState(); // Atualiza visibilidade/estado do input Qtd Itens
-  }
+    // Garante que as seções da config existam para evitar erros.
+    currentPopupConfig.featureSettings = currentPopupConfig.featureSettings || {};
+    currentPopupConfig.generalSettings = currentPopupConfig.generalSettings || {};
 
-  // Função para controlar opacidade da lista de scripts
-  function toggleScriptsListOpacity(masterEnabled) {
-    const h3Element = scriptsListDiv.previousElementSibling; //
-    if (h3Element && h3Element.tagName === 'H3') { //
-      h3Element.style.opacity = masterEnabled ? '1' : '0.5'; //
-    }
-    scriptsListDiv.style.opacity = masterEnabled ? '1' : '0.5'; //
-  }
+    // Define o estado do masterEnable e dos checkboxes de funcionalidades.
+    masterEnableCheckbox.checked = currentPopupConfig.masterEnableNeuron !== false;
 
-  masterEnableCheckbox.addEventListener('change', async () => { //
-    const isEnabled = masterEnableCheckbox.checked; //
-    await chrome.storage.local.set({ masterEnableNeuron: isEnabled }); //
-    console.log(`Neuron master switch: ${isEnabled}`); //
-    
-    // Atualizar estado de todos os checkboxes de scripts
-    for (const scriptId in toggleableScripts) { //
-      const checkbox = document.getElementById(`chk_${scriptId}`); //
-      if (checkbox) { //
-        checkbox.disabled = !isEnabled; //
-      }
-    }
-    toggleScriptsListOpacity(isEnabled); //
-    updateQtdItensInputState(); // Atualiza o input de Qtd Itens também
-  });
+    const featureSettings = currentPopupConfig.featureSettings;
+    // Cria um array de scripts para ordenação e popul popula a lista.
+    const scriptsArrayForPopup = Object.keys(featureSettings)
+      .map(id => ({
+        id: id,
+        // Usa o label da config; se não houver, um label genérico.
+        label: featureSettings[id].label || `Funcionalidade ${id}`,
+        // Usa enabled da config; default true se não definido.
+        enabled: featureSettings[id].enabled !== undefined ? featureSettings[id].enabled : true
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label)); // Ordena alfabeticamente.
 
-  // Criar checkboxes para scripts
-  for (const scriptId in toggleableScripts) { //
-    const scriptConfig = toggleableScripts[scriptId]; //
-    const itemDiv = document.createElement('div'); //
-    itemDiv.classList.add('setting-item'); //
+    scriptsListDiv.innerHTML = ''; // Limpa para recriar.
+    scriptsArrayForPopup.forEach(scriptConfig => {
+      const scriptId = scriptConfig.id;
+      const itemDiv = document.createElement('div');
+      itemDiv.classList.add('setting-item');
 
-    const label = document.createElement('label'); //
-    label.htmlFor = `chk_${scriptId}`; //
-    label.textContent = scriptConfig.label; //
+      const label = document.createElement('label');
+      label.htmlFor = `chk_${scriptId}`;
+      label.textContent = scriptConfig.label;
 
-    const checkbox = document.createElement('input'); //
-    checkbox.type = 'checkbox'; //
-    checkbox.id = `chk_${scriptId}`; //
-    checkbox.name = `chk_${scriptId}`; //
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.id = `chk_${scriptId}`; // ID usado por updateQtdItensInputState
+      checkbox.name = `chk_${scriptId}`;
+      checkbox.checked = scriptConfig.enabled;
+      checkbox.disabled = !masterEnableCheckbox.checked; // Desabilitado se master estiver OFF.
 
-    checkbox.addEventListener('change', async () => { //
-      await chrome.storage.local.set({ [`scriptEnabled_${scriptId}`]: checkbox.checked }); //
-      console.log(`${scriptConfig.label} ${checkbox.checked ? 'habilitado' : 'desabilitado'}`); //
-      if (scriptId === 'tratarTriar') { // Se o checkbox de Melhorias Triar/Tratar mudou
-        updateQtdItensInputState(); // Atualiza o estado do input Qtd Itens
-      }
+      // Listener para salvar mudanças no estado da funcionalidade.
+      checkbox.addEventListener('change', async () => {
+        currentPopupConfig.featureSettings[scriptId].enabled = checkbox.checked;
+        await chrome.storage.local.set({ [CONFIG_STORAGE_KEY_POPUP]: currentPopupConfig });
+        console.log(`Neuron Popup: '${scriptConfig.label}' ${checkbox.checked ? 'habilitado' : 'desabilitado'}.`);
+        // Se a funcionalidade 'tratarTriar' mudar, atualiza o estado do input de quantidade.
+        if (scriptId === 'tratarTriar') { // ID da feature conforme config.json
+          updateQtdItensInputState();
+        }
+      });
+
+      itemDiv.appendChild(label);
+      itemDiv.appendChild(checkbox);
+      scriptsListDiv.appendChild(itemDiv);
     });
 
-    itemDiv.appendChild(label); //
-    itemDiv.appendChild(checkbox); //
-    scriptsListDiv.appendChild(itemDiv); //
+    // Define valor do input de quantidade.
+    if (qtdItensTratarTriarPopupInput) {
+      qtdItensTratarTriarPopupInput.value = currentPopupConfig.generalSettings?.qtdItensTratarTriar || 15;
+    }
+
+    // Ajusta a opacidade da lista de scripts e o estado do input de quantidade.
+    toggleScriptsListOpacity(masterEnableCheckbox.checked);
+    updateQtdItensInputState();
   }
 
-  // NOVO: Event listener para o input Qtd Itens
+  // Controla a opacidade da lista de scripts baseada no masterEnable.
+  function toggleScriptsListOpacity(masterEnabled) {
+    const h3Element = scriptsListDiv.previousElementSibling; // Assume H3 antes de scriptsListDiv.
+    if (h3Element && h3Element.tagName === 'H3') {
+      h3Element.style.opacity = masterEnabled ? '1' : '0.5';
+    }
+    scriptsListDiv.style.opacity = masterEnabled ? '1' : '0.5';
+  }
+
+  // Listener para o checkbox master (habilitar/desabilitar tudo).
+  masterEnableCheckbox.addEventListener('change', async () => {
+    const isEnabled = masterEnableCheckbox.checked;
+    currentPopupConfig.masterEnableNeuron = isEnabled;
+    await chrome.storage.local.set({ [CONFIG_STORAGE_KEY_POPUP]: currentPopupConfig });
+    console.log(`Neuron Popup: Master switch ${isEnabled ? 'ON' : 'OFF'}.`);
+
+    // Habilita/desabilita todos os checkboxes de funcionalidades.
+    Object.keys(currentPopupConfig.featureSettings).forEach(scriptId => {
+      const checkbox = document.getElementById(`chk_${scriptId}`);
+      if (checkbox) {
+        checkbox.disabled = !isEnabled;
+      }
+    });
+    toggleScriptsListOpacity(isEnabled);
+    updateQtdItensInputState();
+  });
+
+  // Listener para o input de quantidade de itens (Triar/Tratar).
   if (qtdItensTratarTriarPopupInput) {
     qtdItensTratarTriarPopupInput.addEventListener('change', async () => {
       let value = parseInt(qtdItensTratarTriarPopupInput.value, 10);
       const min = parseInt(qtdItensTratarTriarPopupInput.min, 10);
       const max = parseInt(qtdItensTratarTriarPopupInput.max, 10);
+      // Busca valor padrão do config.json em caso de entrada inválida.
+      const defaultConfigValue = (await fetchDefaultPopupConfig())?.generalSettings?.qtdItensTratarTriar || 15;
 
+      // Validação do valor.
       if (isNaN(value) || value < min || value > max) {
-        value = QTD_ITENS_DEFAULT_POPUP; // Reseta para o padrão se inválido
+        value = defaultConfigValue; // Restaura para o padrão se inválido.
         qtdItensTratarTriarPopupInput.value = value;
-        // Poderia mostrar um pequeno aviso aqui, mas o popup é pequeno
+        console.warn(`Neuron Popup: Valor inválido para qtdItens. Restaurado para ${value}.`);
       }
-      await chrome.storage.local.set({ [QTD_ITENS_STORAGE_KEY_POPUP]: value });
-      console.log(`Neuron: Qtd Itens (Triar/Tratar) salvo como: ${value}`);
+      currentPopupConfig.generalSettings.qtdItensTratarTriar = value;
+      await chrome.storage.local.set({ [CONFIG_STORAGE_KEY_POPUP]: currentPopupConfig });
+      console.log(`Neuron Popup: Qtd Itens (Triar/Tratar) salvo como: ${value}.`);
     });
   }
 
-
-  if (saveAndReloadButton) { //
-    saveAndReloadButton.addEventListener('click', async () => { //
-      // As configurações (checkboxes e qtdItens) já são salvas no evento 'change' deles.
-      // Este botão apenas recarrega a aba.
-      console.log('Configurações aplicadas (salvas no evento change). Recarregando a aba...'); //
-      try { //
-        const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true }); //
-        if (activeTab && activeTab.id) { //
-          if (activeTab.url && activeTab.url.startsWith("https://falabr.cgu.gov.br/")) { //
-            await chrome.tabs.reload(activeTab.id); //
-          } else { //
-            console.log("Aba ativa não é do Fala.br. Não será recarregada pelo botão do popup."); //
+  // Listener para o botão "Aplicar e Recarregar Aba".
+  if (saveAndReloadButton) {
+    saveAndReloadButton.addEventListener('click', async () => {
+      console.log('Neuron Popup: Configurações aplicadas. Tentando recarregar a aba...');
+      try {
+        // Obtém a aba ativa na janela atual.
+        const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (activeTab && activeTab.id) {
+          // Recarrega apenas se a URL for do Fala.br.
+          if (activeTab.url && activeTab.url.startsWith("https://falabr.cgu.gov.br/")) {
+            await chrome.tabs.reload(activeTab.id);
+          } else {
+            console.log("Neuron Popup: Aba ativa não é do Fala.br. Não será recarregada.");
           }
-          window.close(); //
-        } else { //
-          console.error("Não foi possível encontrar a aba ativa."); //
+          window.close(); // Fecha o popup.
+        } else {
+          console.error("Neuron Popup: Não foi possível encontrar a aba ativa.");
         }
-      } catch (error) { //
-        console.error("Erro ao recarregar aba:", error); //
+      } catch (error) {
+        console.error("Neuron Popup: Erro ao recarregar aba:", error);
       }
     });
   }
 
-  loadSettings(); //
+  // Carrega as configurações iniciais ao abrir o popup.
+  loadSettings();
 });

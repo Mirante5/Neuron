@@ -1,13 +1,14 @@
-// Neuron 0.1.5 β/scripts/prorrogar.js - LÓGICA DE INSERÇÃO AJUSTADA
+// Neuron 0.3.1/scripts/prorrogar.js - CENTRALIZED CONFIG
 (async function () {
     'use strict';
 
     const SCRIPT_NOME_PARA_LOG = 'prorrogar';
-    const SCRIPT_ID_STORAGE_KEY = 'scriptEnabled_prorrogar';
+    const SCRIPT_ID = 'prorrogar';
+    const CONFIG_STORAGE_KEY_PRORROGAR = 'neuronUserConfig';
+    const DEFAULT_CONFIG_PATH_PRORROGAR = 'config/config.json';
 
     const DROPDOWN_ID_NEURON = 'neuronDropdownProrrogar';
-    const LABEL_ID_NEURON_CLASS = 'neuronLabelProrrogar'; // Usaremos como classe para o label Neuron
-    // ID do select original da página que NÃO queremos mover
+    const LABEL_ID_NEURON_CLASS = 'neuronLabelProrrogar';
     const ID_SELECT_MOTIVO_ORIGINAL = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_cmbMotivoProrrogacao';
     const ID_INPUT_JUSTIFICATIVA_PAGINA = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_txtJustificativaProrrogacao';
     const URL_ALVO_DO_SCRIPT = 'ProrrogarManifestacao.aspx';
@@ -15,38 +16,44 @@
 
     let currentMasterEnabled = false;
     let currentScriptEnabled = false;
-    let textConfig = { Prorrogacao: {} };
-    
+    let textModelsProrrogar = {}; // Deveria ser Prorrogar ou Prorrogacao conforme config.json
+
     let uiMutationObserver = null;
     let observerConfiguradoGlobal = false;
-
     let neuronDropdownElement = null;
     let neuronLabelElement = null;
 
-    // --- Carregamento de Configuração JSON ---
-    async function carregarTextConfigNeuron() { //
-        try {
-            const storageResult = await chrome.storage.local.get('userTextJson');
-            if (storageResult.userTextJson && typeof storageResult.userTextJson === 'string') {
-                const parsedConfig = JSON.parse(storageResult.userTextJson);
-                textConfig = parsedConfig;
-            } else {
-                const response = await fetch(chrome.runtime.getURL('config/text.json')); //
-                if (!response.ok) throw new Error(`Erro HTTP ao carregar padrão: ${response.status}`);
-                textConfig = await response.json(); //
+    async function carregarConfiguracoesProrrogar() {
+        const result = await chrome.storage.local.get(CONFIG_STORAGE_KEY_PRORROGAR);
+        let fullConfig = {};
+
+        if (result[CONFIG_STORAGE_KEY_PRORROGAR] && typeof result[CONFIG_STORAGE_KEY_PRORROGAR] === 'object') {
+            fullConfig = result[CONFIG_STORAGE_KEY_PRORROGAR];
+        } else {
+            try {
+                const response = await fetch(chrome.runtime.getURL(DEFAULT_CONFIG_PATH_PRORROGAR));
+                if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+                fullConfig = await response.json();
+            } catch (e) {
+                console.error(`Neuron (${SCRIPT_NOME_PARA_LOG}): Erro crítico ao carregar ${DEFAULT_CONFIG_PATH_PRORROGAR}:`, e);
+                fullConfig = { masterEnableNeuron: false, featureSettings: {}, textModels: { Prorrogar: {} } }; // Chave "Prorrogar"
             }
-            if (!textConfig.Prorrogacao) {
-                textConfig.Prorrogacao = {};
-                console.warn(`Neuron (${SCRIPT_NOME_PARA_LOG}): Seção 'Prorrogacao' não encontrada.`);
-            }
-        } catch (e) {
-            console.error(`Neuron (${SCRIPT_NOME_PARA_LOG}): Erro ao carregar text.json:`, e);
-            textConfig = { Prorrogacao: { "Erro": "Erro ao carregar justificativas." } };
+        }
+        
+        currentMasterEnabled = fullConfig.masterEnableNeuron !== false;
+        currentScriptEnabled = fullConfig.featureSettings?.[SCRIPT_ID]?.enabled !== false;
+        // A chave em text.json é "Prorrogacao", mas no config.json centralizado usei "Prorrogar"
+        // Vamos verificar ambas por segurança ou padronizar para "Prorrogar"
+        textModelsProrrogar = fullConfig.textModels?.Prorrogar || fullConfig.textModels?.Prorrogacao || {};
+
+
+        if (Object.keys(textModelsProrrogar).length === 0) {
+            console.warn(`Neuron (${SCRIPT_NOME_PARA_LOG}): Seção 'Prorrogar' (ou 'Prorrogacao') não encontrada ou vazia.`);
+            textModelsProrrogar = { "Erro": "Modelos de prorrogação não carregados." };
         }
     }
 
-    // --- Estilos ---
-    function inserirEstilosNeuron() { //
+    function inserirEstilosNeuron() {
         if (document.querySelector('.' + STYLE_CLASS_NEURON)) return;
         const style = document.createElement('style');
         style.className = STYLE_CLASS_NEURON;
@@ -56,12 +63,12 @@
         `;
         document.head.appendChild(style);
     }
-    function removerEstilosNeuron() { //
+
+    function removerEstilosNeuron() {
         document.querySelector('.' + STYLE_CLASS_NEURON)?.remove();
     }
 
-    // --- Criação e Remoção de UI ---
-    function removerElementosCriadosProrrogar() { //
+    function removerElementosCriadosProrrogar() {
         neuronDropdownElement?.remove();
         neuronLabelElement?.remove();
         neuronDropdownElement = null;
@@ -74,21 +81,16 @@
             return;
         }
 
-        // Elemento de referência: o select original da página.
         const originalSelectMotivo = document.getElementById(ID_SELECT_MOTIVO_ORIGINAL);
         const justificativaInputAlvo = document.getElementById(ID_INPUT_JUSTIFICATIVA_PAGINA);
 
         if (!originalSelectMotivo || !justificativaInputAlvo) {
-            // console.warn(`Neuron (${SCRIPT_NOME_PARA_LOG}): Select de motivo original ou campo de justificativa não encontrado. UI Neuron não será criada.`);
             return; 
         }
         
-        if (neuronDropdownElement) { // Se já existe, remove para recriar (útil se JSON mudou)
+        if (neuronDropdownElement) {
             removerElementosCriadosProrrogar();
         }
-        // console.log(`Neuron (${SCRIPT_NOME_PARA_LOG}): Criando/Atualizando UI de Prorrogação.`);
-
-        const prorrogacoesConfig = textConfig?.Prorrogacao || {};
 
         neuronLabelElement = document.createElement('label');
         neuronLabelElement.setAttribute('for', DROPDOWN_ID_NEURON);
@@ -97,14 +99,13 @@
 
         neuronDropdownElement = document.createElement('select');
         neuronDropdownElement.id = DROPDOWN_ID_NEURON;
-        // neuronDropdownElement.className = 'form-control'; // Descomente se quiser estilo Bootstrap
 
         const optDefault = document.createElement('option');
         optDefault.value = '';
         optDefault.textContent = 'Selecione uma justificativa...';
         neuronDropdownElement.appendChild(optDefault);
 
-        Object.entries(prorrogacoesConfig).forEach(([titulo, texto]) => {
+        Object.entries(textModelsProrrogar).forEach(([titulo, texto]) => {
             const opt = document.createElement('option');
             opt.value = texto; 
             opt.textContent = titulo;
@@ -115,33 +116,21 @@
             if (justificativaInputAlvo) justificativaInputAlvo.value = this.value || '';
         });
 
-        // Lógica de Inserção: Inserir DEPOIS do select original
         const parentOfOriginalSelect = originalSelectMotivo.parentNode;
         if (parentOfOriginalSelect) {
-            // Insere o label do Neuron depois do select original
-            // Se o select original tem um próximo irmão, o label Neuron vai antes desse irmão.
-            // Senão (se o select for o último), o label Neuron é anexado ao final.
+             // Insere o label Neuron depois do select original
             parentOfOriginalSelect.insertBefore(neuronLabelElement, neuronDropdownElement.nextSibling);
-            // Insere o dropdown do Neuron depois do label Neuron que acabamos de inserir
+            // Insere o dropdown Neuron depois do label Neuron que acabamos de inserir
             parentOfOriginalSelect.insertBefore(neuronDropdownElement, neuronLabelElement.nextSibling);
-            
             inserirEstilosNeuron();
         } else {
-            console.warn(`Neuron (${SCRIPT_NOME_PARA_LOG}): ParentNode do select de motivo original não encontrado.`);
-            neuronLabelElement?.remove(); // Limpa se não conseguiu inserir
+            neuronLabelElement?.remove();
             neuronDropdownElement?.remove();
-            neuronLabelElement = null;
-            neuronDropdownElement = null;
         }
     }
 
-    // --- Controle da Extensão e Observer ---
-    async function verificarEstadoAtualEAgirProrrogar() { /* ... (código da função da resposta anterior, sem alterações na lógica interna principal) ... */ //
-        const settings = await chrome.storage.local.get(['masterEnableNeuron', SCRIPT_ID_STORAGE_KEY, 'userTextJson']);
-        currentMasterEnabled = settings.masterEnableNeuron !== false;
-        currentScriptEnabled = settings[SCRIPT_ID_STORAGE_KEY] !== false;
-
-        await carregarTextConfigNeuron(); 
+    async function verificarEstadoAtualEAgirProrrogar() {
+        await carregarConfiguracoesProrrogar();
 
         if (currentMasterEnabled && currentScriptEnabled && window.location.href.includes(URL_ALVO_DO_SCRIPT)) {
             criarOuAtualizarUIProrrogar(); 
@@ -155,9 +144,8 @@
         }
     }
 
-    function configurarObserverPrincipalProrrogar() { /* ... (código da função da resposta anterior, sem alterações) ... */ //
+    function configurarObserverPrincipalProrrogar() {
         if (observerConfiguradoGlobal && uiMutationObserver) return; 
-
         uiMutationObserver = new MutationObserver(() => {
             if (currentMasterEnabled && currentScriptEnabled && window.location.href.includes(URL_ALVO_DO_SCRIPT)) {
                 if (!document.getElementById(DROPDOWN_ID_NEURON)) { 
@@ -167,7 +155,6 @@
                 removerElementosCriadosProrrogar();
             }
         });
-
         const awaitBodyInterval = setInterval(() => { 
             if (document.body) {
                 clearInterval(awaitBodyInterval);
@@ -177,7 +164,7 @@
         }, 100);
     }
 
-    function desconectarObserverPrincipalProrrogar() { /* ... (código da função da resposta anterior, sem alterações) ... */ //
+    function desconectarObserverPrincipalProrrogar() {
         if (uiMutationObserver) {
             uiMutationObserver.disconnect();
             uiMutationObserver = null; 
@@ -185,19 +172,13 @@
         }
     }
 
-    chrome.storage.onChanged.addListener((changes, namespace) => { //
-        if (namespace === 'local') {
-            let precisaReavaliar = false;
-            if (changes.masterEnableNeuron || changes[SCRIPT_ID_STORAGE_KEY] || changes.userTextJson) {
-                precisaReavaliar = true;
-            }
-            if (precisaReavaliar) {
-                verificarEstadoAtualEAgirProrrogar();
-            }
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+        if (namespace === 'local' && changes[CONFIG_STORAGE_KEY_PRORROGAR]) {
+            verificarEstadoAtualEAgirProrrogar();
         }
     });
 
-    async function initProrrogar() { //
+    async function initProrrogar() {
         await new Promise(resolve => { 
             if (document.readyState === 'complete' || document.readyState === 'interactive') return resolve();
             window.addEventListener('load', resolve, { once: true });
@@ -205,7 +186,7 @@
         await verificarEstadoAtualEAgirProrrogar();
     }
 
-    if (window.location.href.includes(URL_ALVO_DO_SCRIPT)) { //
+    if (window.location.href.includes(URL_ALVO_DO_SCRIPT)) {
         initProrrogar();
     }
 })();

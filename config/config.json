@@ -1,0 +1,72 @@
+{
+  "configVersion": "2.0.0",
+  "masterEnableNeuron": true,
+  "featureSettings": {
+    "style": { "enabled": true, "label": "Animação de Loading" },
+    "arquivar": { "enabled": true, "label": "Assistente de Arquivamento" },
+    "encaminhar": { "enabled": true, "label": "Assistente de Encaminhamento" },
+    "prorrogar": { "enabled": true, "label": "Assistente de Prorrogação" },
+    "tramitar": { "enabled": true, "label": "Assistente de Tramitação" },
+    "tratarTriar": { "enabled": true, "label": "Melhoria de Triar/Tratar" },
+    "tratar": { "enabled": true, "label": "Melhoria de Tratar Manifestação" }
+  },
+  "generalSettings": {
+    "qtdItensTratarTriar": 15
+  },
+  "prazosSettings": {
+    "configTramitacaoInternaDias": 0,
+    "configTramitacaoInternaDiasUteis": false,
+    "cobrancaAntesDias": 0,
+    "cobrancaAntesDiasUteis": false,
+    "prorrogarEmDias": 0,
+    "prorrogarEmDiasUteis": false,
+    "improrrogavelAposProrrogacaoDias": 0,
+    "improrrogavelAposProrrogacaoDiasUteis": false,
+    "cobrancaAntesProrrogadoDias": 0,
+    "cobrancaAntesProrrogadoDiasUteis": false,
+    "weekendAdjustmentRule": "next",
+    "holidayAdjustmentRule": "next"
+  },
+  "holidays": [
+    { "date": "01/01/2025", "description": "Exemplo" },
+    { "date": "02/02/2025", "description": "Exemplo" }
+  ],
+  "textModels": {
+    "mensagens": {
+        "prorrogacao": "Exemplo"
+    },
+    "Arquivar": {
+        "Duplicidade": "Exemplo",
+        "Comunicado sem materialidade": "Exemplo",
+        "Falta de urbanidade": "Exemplo",
+        "Cópia para diversos órgãos": "Exemplo",
+        "Perda do objeto": "Exemplo"
+    },
+    "Encaminhar": {
+        "Encaminhamento em geral": {
+        "destinatario": "Exemplo destinatario",
+        "solicitante": "Exemplo solicitante "
+        }
+    },
+    "Prorrogar": {
+        "Prorrogação - Necessidade da Unidade": "Exemplo"
+    },
+    "Tramitar": {
+        "Tramitar - Solicitação": "Exemplo"
+    }
+  },
+  "focalPoints": {
+  "Exemplo 1": [
+    "Exemplo 1",
+    "1"
+  ],
+  "Exemplo 2": [
+    "Exemplo 2",
+    "1"
+  ],
+  "Exemplo 3": [
+    "Exemplo 3",
+    "1"
+  ]
+}
+}

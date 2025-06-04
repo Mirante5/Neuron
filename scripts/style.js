@@ -4,7 +4,6 @@
 
     const SCRIPT_NOME_PARA_LOG = 'style';
     const SCRIPT_ID_STORAGE_KEY = 'scriptEnabled_style';
-
     const LOCK_PANE_ID = 'skm_LockPane';
     const LOCK_PANE_TEXT_ID = 'skm_LockPaneText';
     const NEURON_LOADING_ACTIVE_CLASS = 'neuron-loading-active';
