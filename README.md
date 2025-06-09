@@ -6,7 +6,7 @@
 
 **Otimizador de fluxos de trabalho na plataforma Fala.br**
 
-[![Versão](https://img.shields.io/badge/version-0.3.0-blue.svg)](manifest.json)
+[![Versão](https://img.shields.io/badge/version-0.6.0-red.svg)](manifest.json)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-brightgreen.svg)](manifest.json)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
