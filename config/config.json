@@ -2,7 +2,7 @@
   "configVersion": "2.0.0",
   "masterEnableNeuron": true,
   "featureSettings": {
-    "style": { "enabled": true, "label": "Animação de Loading" },
+    "loading": { "enabled": true, "label": "Animação de Loading" },
     "arquivar": { "enabled": true, "label": "Assistente de Arquivamento" },
     "encaminhar": { "enabled": true, "label": "Assistente de Encaminhamento" },
     "prorrogar": { "enabled": true, "label": "Assistente de Prorrogação" },

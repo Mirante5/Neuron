@@ -1,18 +1,18 @@
 {
   "manifest_version": 3,
   "name": "Neuron",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Otimizador de fluxos de trabalho na plataforma Fala.br",
   "author": "MAPA - DF",
   "icons": {
-    "128": "images/neuron128.png"
+    "128": "images/neuronon128.png"
   },
   "options_ui": {
-    "page": "options.html",
+    "page": "templates/options.html",
     "open_in_tab": true
   },
   "action": {
-    "default_popup": "popup/popup.html",
+    "default_popup": "templates/popup.html",
     "default_icon": {
       "128": "images/neuronoff128.png"
     }
@@ -32,35 +32,43 @@
   "content_scripts": [
     {
       "matches": ["https://falabr.cgu.gov.br/*"],
-      "js": ["scripts/content.js", "scripts/style.js"],
+      "js": ["scripts/content.js", "scripts/loading.js"],
+      "css": ["style/loading.css"],
       "run_at": "document_start"
     },
     {
       "matches": ["https://falabr.cgu.gov.br/Manifestacao/ArquivarManifestacao.aspx?*"],
-      "js": ["scripts/arquivar.js"]
+      "js": ["scripts/arquivar.js"],
+      "css": ["style/arquivar.css"]
     },
     {
       "matches": ["https://falabr.cgu.gov.br/Manifestacao/EncaminharManifestacao.aspx?*"],
-      "js": ["scripts/encaminhar.js"]
+      "js": ["scripts/encaminhar.js"],
+      "css": ["style/encaminhar.css"]
+      
     },
     {
       "matches": ["https://falabr.cgu.gov.br/Manifestacao/ProrrogarManifestacao.aspx?*"],
-      "js": ["scripts/prorrogar.js"]
+      "js": ["scripts/prorrogar.js"],
+      "css": ["style/prorrogar.css"]
     },
     {
       "matches": ["https://falabr.cgu.gov.br/Manifestacao/TramitarManifestacao.aspx?*"],
-      "js": ["scripts/tramitar.js"]
+      "js": ["scripts/tramitar.js"],
+      "css": ["style/tramitar.css"]
     },
     {
       "matches": [
         "https://falabr.cgu.gov.br/Manifestacao/TratarManifestacoes*",
         "https://falabr.cgu.gov.br/Manifestacao/TriarManifestacoes*"
       ],
-      "js": ["scripts/tratar-triar.js"]
+      "js": ["scripts/tratar-triar.js"],
+      "css": ["style/tratar-triar.css"]
     },
     {
       "matches": ["https://falabr.cgu.gov.br/Manifestacao/TratarManifestacao.aspx?*"],
-      "js": ["scripts/tratar.js"]
+      "js": ["scripts/tratar.js"],
+      "css": ["style/tratar.css"]
     }
   ],
   "web_accessible_resources": [
@@ -68,7 +76,8 @@
       "resources": [
         "config/*.json",
         "images/*.gif",
-        "images/*.png"
+        "images/*.png",
+        "templates/*.html"
       ],
       "matches": ["https://falabr.cgu.gov.br/*"]
     }
