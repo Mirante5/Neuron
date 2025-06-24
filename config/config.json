@@ -1,5 +1,5 @@
 {
-  "configVersion": "2.0.0",
+  "configVersion": "3.0.0",
   "masterEnableNeuron": true,
   "featureSettings": {
     "loading": { "enabled": true, "label": "Animação de Loading" },
@@ -8,7 +8,18 @@
     "prorrogar": { "enabled": true, "label": "Assistente de Prorrogação" },
     "tramitar": { "enabled": true, "label": "Assistente de Tramitação" },
     "tratarTriar": { "enabled": true, "label": "Melhoria de Triar/Tratar" },
-    "tratar": { "enabled": true, "label": "Melhoria de Tratar Manifestação" }
+    "tratar": { "enabled": true, "label": "Melhoria de Tratar Manifestação" },
+    "notificacoes": {
+      "enabled": true,
+      "label": "Assistente de Notificações",
+      "config": {
+        "showProrrogada": true,
+        "showComplementada": true,
+        "showRespondida": true,
+        "daysLookahead": 2
+      }
+    },
+    "respostasAutomaticas": {  "enabled": true, "label": "Assistente de Respostas Automáticas" }
   },
   "generalSettings": {
     "qtdItensTratarTriar": 15
@@ -28,45 +39,110 @@
     "holidayAdjustmentRule": "next"
   },
   "holidays": [
-    { "date": "01/01/2025", "description": "Exemplo" },
-    { "date": "02/02/2025", "description": "Exemplo" }
+    { "date": "01/01/2025", "description": "Confraternização Universal (Exemplo)" },
+    { "date": "25/12/2025", "description": "Natal (Exemplo)" }
   ],
   "textModels": {
     "mensagens": {
-        "prorrogacao": "Exemplo"
+        "prorrogacao": "Prezados(as),\n\nInformamos que o prazo para resposta à sua manifestação foi estendido até {datalimite} para melhor análise do assunto. Agradecemos a compreensão.\n\nAtenciosamente,\n[SUA UNIDADE]"
     },
     "Arquivar": {
-        "Duplicidade": "Exemplo",
-        "Comunicado sem materialidade": "Exemplo",
-        "Falta de urbanidade": "Exemplo",
-        "Cópia para diversos órgãos": "Exemplo",
-        "Perda do objeto": "Exemplo"
+        "Duplicidade": "Prezado(a) manifestante,\n\nInformamos que sua manifestação (NUP) foi arquivada por duplicidade com o protocolo [NUP DUPLICADO]. Por favor, acompanhe o protocolo original.\n\nAtenciosamente,\n[SUA UNIDADE]",
+        "Comunicado sem materialidade": "Prezado(a) manifestante,\n\nRecebemos seu comunicado. No entanto, o teor da manifestação não apresenta indícios de irregularidades ou solicitação de serviço que demande atuação da Ouvidoria, sendo assim, a mesma foi arquivada por ausência de materialidade.\n\nAtenciosamente,\n[SUA UNIDADE]",
+        "Falta de urbanidade": "Prezado(a) manifestante,\n\nAlertamos que o uso de linguagem inadequada ou ofensiva contraria as normas de urbanidade e respeito. Sua manifestação foi arquivada.\n\nAtenciosamente,\n[SUA UNIDADE]",
+        "Cópia para diversos órgãos": "Prezado(a) manifestante,\n\nSua manifestação foi direcionada para diversos órgãos. A Ouvidoria do [NOME DO ÓRGÃO] atua em questões relacionadas à nossa competência. A manifestação foi arquivada aqui para evitar duplicidade de tratamento.\n\nAtenciosamente,\n[SUA UNIDADE]",
+        "Perda do objeto": "Prezado(a) manifestante,\n\nIdentificamos que o objeto de sua manifestação perdeu a razão de ser ou foi solucionado por outros meios. Desta forma, sua manifestação foi arquivada.\n\nAtenciosamente,\n[SUA UNIDADE]"
     },
     "Encaminhar": {
-        "Encaminhamento em geral": {
-        "destinatario": "Exemplo destinatario",
-        "solicitante": "Exemplo solicitante "
+        "Encaminhamento Geral": {
+            "destinatario": "Prezados(as) da {OUVIDORIA},\n\nEncaminhamos a Vossa Senhoria a manifestação de protocolo ${numeroManifestacao}, para análise e providências, por se tratar de assunto de competência de sua Pasta.\n\nAtenciosamente,\n[SUA UNIDADE]",
+            "solicitante": "Prezado(a) manifestante,\n\nInformamos que sua manifestação ${numeroManifestacao} foi encaminhada para a Ouvidoria de/do {OUVIDORIA}, uma vez que o assunto é de competência daquele órgão. Para acompanhamento, por favor, utilize o protocolo original em nossos canais de consulta ou entre em contato diretamente com a Ouvidoria de destino.\n\nAtenciosamente,\n[SUA UNIDADE]"
         }
     },
     "Prorrogar": {
-        "Prorrogação - Necessidade da Unidade": "Exemplo"
+        "Prorrogação - Análise Complexa": "Prezados(as),\n\nInformamos que o prazo para resposta à sua manifestação foi estendido devido à complexidade da análise que exige mais tempo para apuração dos fatos.\n\nAtenciosamente,\n[SUA UNIDADE]",
+        "Prorrogação - Necessidade da Unidade": "Prezados(as),\n\nInformamos que o prazo para resposta à sua manifestação foi estendido devido a necessidade de informações adicionais ou análise mais aprofundada da unidade responsável.\n\nAtenciosamente,\n[SUA UNIDADE]"
     },
     "Tramitar": {
-        "Tramitar - Solicitação": "Exemplo"
+        "Tramitar - Solicitação de Resposta": "À {SECRETARIA},\n\nSolicitamos análise e proposta de resposta à manifestação de protocolo [NUP] até {PRAZO}. Favor, observar as informações adicionais contidas no sistema.\n\nAtenciosamente,\n[SUA UNIDADE]"
     }
   },
   "focalPoints": {
-  "Exemplo 1": [
-    "Exemplo 1",
-    "1"
-  ],
-  "Exemplo 2": [
-    "Exemplo 2",
-    "1"
-  ],
-  "Exemplo 3": [
-    "Exemplo 3",
-    "1"
-  ]
-}
+    "GABINETE": [
+      "Gabinete do Ministro",
+      "Fulano de Tal (GM)",
+      "Ciclana de Souza (GM)"
+    ],
+    "SECEX": [
+      "Secretaria Executiva",
+      "Beltrano dos Santos (SECEX)"
+    ],
+    "AUDITORIA": [
+      "Auditoria Geral",
+      "Auditor A",
+      "Auditor B"
+    ]
+  },
+  "defaultResponses": {
+    "Pedido de Complementação": {
+      "novoDropdownOptions": [
+        {
+          "value": "info_adicionais",
+          "text": "Informações Adicionais",
+          "conteudoTextarea": "Prezado(a) manifestante,\n\nPara prosseguirmos com a análise de sua solicitação, necessitamos das seguintes informações adicionais:\n\n1. Qual o período exato dos fatos?\n2. Há algum protocolo anterior relacionado a este assunto?\n3. [Outra informação específica]\n\nPor favor, forneça esses dados para que possamos dar continuidade ao seu atendimento. Agradecemos a colaboração.\n\nAtenciosamente,\n[SUA UNIDADE]",
+          "responsavel": null
+        },
+        {
+          "value": "documentos",
+          "text": "Documentos Necessários",
+          "conteudoTextarea": "Prezado(a) manifestante,\n\nSolicitamos que anexe os seguintes documentos para a continuidade da análise de sua manifestação:\n\n1. Cópia do documento de identificação (RG ou CPF)\n2. Comprovante de endereço atualizado\n3. [Outro documento específico]\n\nSem esses documentos, não poderemos prosseguir. Por favor, anexe-os ao sistema ou envie para [e-mail de contato].\n\nAtenciosamente,\n[SUA UNIDADE]",
+          "responsavel": null
+        }
+      ]
+    },
+    "Resposta Conclusiva": {
+      "novoDropdownOptions": [
+        {
+          "value": "deferida",
+          "text": "Deferida",
+          "conteudoTextarea": "Prezado(a) manifestante,\n\nSua solicitação foi **DEFERIDA**.\n\nInformamos que as providências cabíveis foram tomadas e o assunto foi [resultado/ação realizada].\n\nAtenciosamente,\n[SUA UNIDADE]",
+          "responsavel": "Responsável Pela Conclusão Deferida"
+        },
+        {
+          "value": "indeferida",
+          "text": "Indeferida",
+          "conteudoTextarea": "Prezado(a) manifestante,\n\nSua solicitação foi **INDEFERIDA**.\n\nA decisão foi tomada devido a [motivo específico do indeferimento: ex: falta de previsão legal, ausência de elementos mínimos, etc.]. Para mais informações sobre a base legal do indeferimento, consulte [referência legal ou normativa, se aplicável].\n\nAtenciosamente,\n[SUA UNIDADE]",
+          "responsavel": "Responsável Pela Conclusão Indeferida"
+        },
+        {
+          "value": "parcialmente_atendida",
+          "text": "Parcialmente Atendida",
+          "conteudoTextarea": "Prezado(a) manifestante,\n\nSua solicitação foi **PARCIALMENTE ATENDIDA**.\n\nForam realizadas as seguintes ações: [ações realizadas com detalhes].\n\nNo entanto, a parte referente a [parte não atendida] não pôde ser atendida devido a [motivo: ex: não ser de nossa competência, inviabilidade técnica, etc.].\n\nAtenciosamente,\n[SUA UNIDADE]",
+          "responsavel": "Responsável Pela Conclusão Parcial"
+        }
+      ]
+    },
+    "Resposta Intermediária": {
+      "novoDropdownOptions": [
+        {
+          "value": "andamento",
+          "text": "Em Andamento",
+          "conteudoTextarea": "Prezado(a) manifestante,\n\nInformamos que sua solicitação está em análise e aguarda parecer de [setor responsável ou status de análise]. Maiores informações serão disponibilizadas em breve.\n\nAtenciosamente,\n[SUA UNIDADE]",
+          "responsavel": null
+        },
+        {
+          "value": "prazo_prorrogado",
+          "text": "Prazo Prorrogado",
+          "conteudoTextarea": "Prezado(a) manifestante,\n\nO prazo para resposta à sua solicitação foi prorrogado por mais [X] dias devido a [motivo da prorrogação: ex: complexidade da análise, necessidade de informações adicionais, etc.]. O novo prazo para conclusão é [nova data, se souber].\n\nAtenciosamente,\n[SUA UNIDADE]",
+          "responsavel": null
+        },
+        {
+          "value": "encaminhado_externo",
+          "text": "Encaminhado para Órgão Externo",
+          "conteudoTextarea": "Prezado(a) manifestante,\n\nSua solicitação foi encaminhada para [Nome do Órgão/Entidade Externa], pois o assunto é de competência exclusiva daquela instituição. Para acompanhamento, sugerimos que entre em contato diretamente com eles, se desejar.\n\nAtenciosamente,\n[SUA UNIDADE]",
+          "responsavel": "Responsável Pelo Encaminhamento Externo"
+        }
+      ]
+    }
+  }
 }

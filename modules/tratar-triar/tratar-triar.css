@@ -1,0 +1,77 @@
+/* Neuron/style/tratar-triar.css */
+
+/* Estilo para a primeira coluna da lista em Triar/Tratar Manifestações */
+.col-md-3.coluna1dalista {
+    font-size: 12px !important;
+}
+
+/* Estilos para as cores de situação da manifestação */
+.neuron-situacao {
+    padding: 3px 6px; /* Aumentado um pouco o padding */
+    border-radius: 5px;
+    display: inline-block;
+    font-weight: 500; /* Leve destaque */
+    font-size: 0.85em; /* Um pouco menor para caber melhor */
+    line-height: 1.4;
+    text-align: center;
+    min-width: 100px; /* Para dar um tamanho mínimo */
+}
+
+.neuron-situacao-complementacao-solicitada {
+    background-color: #fff3cd; /* Amarelo Bootstrap 'warning' mais claro */
+    color: #856404; /* Texto escuro para contraste */
+    border: 1px solid #ffeeba;
+}
+
+.neuron-situacao-complementada {
+    background-color: #d4edda; /* Verde Bootstrap 'success' mais claro */
+    color: #155724; /* Texto escuro para contraste */
+    border: 1px solid #c3e6cb;
+}
+
+.neuron-situacao-prorrogada {
+    background-color: #f8d7da; /* Vermelho Bootstrap 'danger' mais claro */
+    color: #721c24; /* Texto escuro para contraste */
+    border: 1px solid #f5c6cb;
+}
+
+/* Estilos para as informações de prazo */
+.neuron-prazo-info .prazo-original { /* Novo container */
+    font-size: 0.85em; /* Reduzido para menos destaque */
+    color: #6c757d; /* Cinza Bootstrap 'secondary' */
+    display: block; /* Para ocupar a linha toda */
+    margin-bottom: 1px;
+}
+
+.neuron-prazo-info .prazo-linha {
+    font-size: 1em;
+    display: block; /* Cada linha de prazo em uma nova linha */
+    margin-bottom: 1px; /* Pequeno espaço entre as linhas */
+    line-height: 1.4;
+}
+
+.neuron-prazo-info .prazo-atrasado b { /* Para datas de prazo atrasadas/passadas */
+    color: #dc3545; /* Vermelho Bootstrap 'danger' */
+    font-weight: bold;
+}
+
+.neuron-prazo-info b { /* Destaque padrão para datas e dias */
+    font-weight: bold; /* Semi-bold */
+    color: #333;
+}
+
+/* Estilo para a mensagem "Copiado!" ao clicar no NUP */
+.neuron-copiado-msg-style {
+    margin-left: 8px;
+    color: #28a745; /* Verde Bootstrap 'success' */
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 2px 5px;
+    background-color: #e9f7ef;
+    border-radius: 3px;
+}
+
+.neuron-prazo-info .prazo-linha {
+    color: black;
+}
+

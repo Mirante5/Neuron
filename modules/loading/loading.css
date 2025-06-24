@@ -1,0 +1,99 @@
+/* Neuron/css/loading.css */
+/* Estilos para o painel de loading do Neuron */
+
+/* Oculta o painel de loading por padrão */
+#skm_LockPane:not(.neuron-loading-active) {
+    display: none !important;
+}
+
+#skm_LockPane.neuron-loading-active {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 2147483647 !important; /* Máximo z-index */
+    transform: none !important; /* Reseta qualquer transform existente */
+    background-color: rgba(10, 25, 40, 0.92) !important; /* Um azul escuro translúcido */
+    background-image: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 20px !important; /* Aumenta um pouco o padding */
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    opacity: 0; /* Começa invisível para transição */
+    animation: neuronFadeIn 0.3s ease-out forwards; /* Animação de fade-in */
+}
+
+@keyframes neuronFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#skm_LockPane.neuron-loading-active #skm_LockPaneText {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    max-width: 100%; /* Permite um pouco mais de largura */
+    width: auto !important; /* Deixa o conteúdo definir a largura até o max-width */
+   /* min-width: 512px !important; */
+    padding: 20px !important; /* Espaçamento interno */
+    position: relative !important;
+    background-color: transparent !important; /* Garante que não haja fundo no container de texto */
+    border-radius: 0 !important; /* Sem bordas arredondadas */
+    box-shadow: none !important; /* Sem sombras */
+    overflow: hidden !important; /* Permite que elementos como tooltips (se houver) apareçam */
+}
+
+/* Estilos para o conteúdo dinâmico injetado pelo style.js */
+#skm_LockPane.neuron-loading-active #skm_LockPaneText .neuron-loading-gif {
+    width: 100%;
+    width: 960px; /* Levemente menor para estética */
+    height: 540px;
+    margin: 0; /* Mais espaço abaixo do GIF */
+}
+
+#skm_LockPane.neuron-loading-active #skm_LockPaneText .neuron-loading-text-main {
+    font-family: 'Inter', sans-serif; /* Fonte mais moderna */
+    font-size: 24px; /* Tamanho ajustado */
+    color: #EAEAEA; /* Cor de texto clara */
+    margin-top: 0; /* Removido margin-top, GIF já dá espaço */
+    line-height: 1.4;
+}
+
+#skm_LockPane.neuron-loading-active #neuronRotatingCharLoading {
+    display: inline-block;
+    color: #17A2B8; /* Um tom de ciano mais suave */
+    font-weight: bold;
+    width: 48px; /* Ajustado para a nova animação */
+    text-align: left;
+    margin-left: 3px;
+}
+
+#skm_LockPane.neuron-loading-active .neuron-loading-text-version {
+    font-family: 'Inter', sans-serif; 
+    font-size: 16px; /* Menor para ser mais sutil */
+    font-weight: 500; /* Peso normal */
+    color: #FFF; /* Cinza mais claro */
+    margin-top: 5px;
+    text-shadow: none; /* Removido text-shadow */
+}
+
+#skm_LockPane.neuron-loading-active .neuron-loading-text-version .neuron-version-number {
+    color: #00BFFF; /* Ciano suave */
+    font-weight: 600; /* Semi-bold */
+}
+
+#skm_LockPane.neuron-loading-active .neuron-credit-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #C0C0C0; /* Cinza um pouco mais escuro */
+    margin-top: 30px; /* Mais espaço acima */
+    position: absolute;
+    bottom: 5px; /* Mais próximo da base */
+    left: 50%;
+    transform: translateX(-50%);
+}

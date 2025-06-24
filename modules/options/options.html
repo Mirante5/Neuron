@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Neuron - Opções de Configuração</title>
+  <link rel="stylesheet" href="/modules/options/options.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="options-header">
+      <img src="/images/neuronon128.png" alt="Neuron Logo" id="headerLogo" />
+      <div class="header-text">
+        <h1>Neuron - Configurações Avançadas</h1>
+        <p>Personalize o comportamento detalhado da extensão Neuron.</p>
+      </div>
+    </header>
+    <nav class="tabs">
+      <button class="tab-link active" data-tab="tab-general">Geral</button>
+      <button class="tab-link" data-tab="tab-notificacoes">Notificações</button>
+      <button class="tab-link" data-tab="tab-prazos">Prazos & Feriados</button>
+      <button class="tab-link" data-tab="tab-textos">Modelos de Texto</button>
+      <button class="tab-link" data-tab="tab-pontosfocais">Pontos Focais</button>
+      <button class="tab-link" data-tab="tab-config-raw">Configuração JSON</button>
+    </nav>
+
+    <main class="options-content">
+      <section id="tab-general" class="tab-content active">
+        <h2>Configurações Gerais</h2>
+        <div class="setting-item master-switch">
+          <label for="masterEnableOptions">Habilitar Neuron Globalmente
+            <span class="info-icon" tabindex="0">?
+                <span class="tooltip-text">Chave geral da extensão. Desabilitar aqui desativa TODAS as funcionalidades do Neuron, ignorando as configurações individuais abaixo.</span>
+            </span>
+          </label>
+          <input type="checkbox" id="masterEnableOptions" name="masterEnableOptions" />
+        </div>
+        <hr>
+        <h3>Habilitar/Desabilitar Funcionalidades Específicas:
+            <span class="info-icon" tabindex="0">?
+                <span class="tooltip-text">Ative ou desative módulos específicos do Neuron. As funcionalidades são listadas em ordem alfabética para facilitar a localização.</span>
+            </span>
+        </h3>
+        <div id="scriptsListOptions">
+          </div>
+        <hr>
+        <h3>Configurações de Funcionalidades:</h3>
+        <div class="setting-item">
+          <label for="qtdItensTratarTriar">Itens por Página (Telas Triar/Tratar):
+            <span class="info-icon" tabindex="0">?
+                <span class="tooltip-text">Define quantos itens são exibidos por página nas telas "Triar Manifestações" e "Tratar Manifestações" do Fala.BR. Requer que a funcionalidade "Melhoria de Triar/Tratar" esteja ativa. Valor padrão: 15.</span>
+            </span>
+          </label>
+          <input type="number" id="qtdItensTratarTriar" name="qtdItensTratarTriar" min="5" max="100" step="5"/>
+        </div>
+      </section>
+
+      <section id="tab-notificacoes" class="tab-content">
+        <h2>Configurações do Assistente de Notificações</h2>
+        <h3>Grupos de Notificação</h3>
+        <div class="setting-item">
+            <label for="showRespondidaNotifications">Exibir grupo "Possíveis Respondidas"</label>
+            <input type="checkbox" id="showRespondidaNotifications" name="showRespondidaNotifications">
+        </div>
+        <div class="setting-item">
+            <label for="showProrrogadaNotifications">Exibir grupo "Status: Prorrogada"</label>
+            <input type="checkbox" id="showProrrogadaNotifications" name="showProrrogadaNotifications">
+        </div>
+        <div class="setting-item">
+            <label for="showComplementadaNotifications">Exibir grupo "Status: Em Complementação"</label>
+            <input type="checkbox" id="showComplementadaNotifications" name="showComplementadaNotifications">
+        </div>
+        <hr>
+        <h3>Prazos para Alertas</h3>
+        <div class="setting-item">
+            <label for="daysLookaheadNotifications">Notificar prazos com antecedência de (dias):
+                 <span class="info-icon" tabindex="0">?
+                    <span class="tooltip-text">Define a janela de dias para os alertas de prazo. Ex: "2" notificará sobre prazos que vencem hoje, amanhã e depois de amanhã.</span>
+                </span>
+            </label>
+            <input type="number" id="daysLookaheadNotifications" name="daysLookaheadNotifications" min="0" max="10">
+        </div>
+      </section>
+
+      <section id="tab-prazos" class="tab-content">
+        <h2>Configurações de Prazos e Feriados</h2>
+        <h3>Prazos para Telas Triar/Tratar e Tramitação
+            <span class="info-icon" tabindex="0">?
+                <span class="tooltip-text">Ajuste os cálculos de datas. Valores negativos = dias ANTES do prazo final; positivos = dias DEPOIS. Placeholders como {PRAZO} usam estas configurações.</span>
+            </span>
+        </h3>
+
+        <div class="prazo-group">
+            <div class="setting-item">
+                <label for="configTramitacaoInternaDias">Offset para "Tramitar em" e data para {PRAZO}:</label>
+                <input type="number" id="configTramitacaoInternaDias" name="configTramitacaoInternaDias">
+            </div>
+            <div class="setting-item sub-setting">
+                <label for="configTramitacaoInternaDiasUteis">Usar dias úteis:</label>
+                <input type="checkbox" id="configTramitacaoInternaDiasUteis" name="configTramitacaoInternaDiasUteis">
+            </div>
+        </div>
+        <div class="prazo-group">
+            <div class="setting-item">
+                <label for="cobrancaAntesDias">Offset para "Cobrança em":</label>
+                <input type="number" id="cobrancaAntesDias" name="cobrancaAntesDias">
+            </div>
+            <div class="setting-item sub-setting">
+                <label for="cobrancaAntesDiasUteis">Usar dias úteis:</label>
+                <input type="checkbox" id="cobrancaAntesDiasUteis" name="cobrancaAntesDiasUteis">
+            </div>
+        </div>
+        <div class="prazo-group">
+            <div class="setting-item">
+                <label for="prorrogarEmDias">Offset para "Prorrogar em":</label>
+                <input type="number" id="prorrogarEmDias" name="prorrogarEmDias">
+            </div>
+            <div class="setting-item sub-setting">
+                <label for="prorrogarEmDiasUteis">Usar dias úteis:</label>
+                <input type="checkbox" id="prorrogarEmDiasUteis" name="prorrogarEmDiasUteis">
+            </div>
+        </div>
+        <div class="prazo-group">
+            <div class="setting-item">
+                <label for="improrrogavelAposProrrogacaoDias">Offset para "Improrrogável após prorr.":</label>
+                <input type="number" id="improrrogavelAposProrrogacaoDias" name="improrrogavelAposProrrogacaoDias">
+            </div>
+            <div class="setting-item sub-setting">
+                <label for="improrrogavelAposProrrogacaoDiasUteis">Usar dias úteis:</label>
+                <input type="checkbox" id="improrrogavelAposProrrogacaoDiasUteis" name="improrrogavelAposProrrogacaoDiasUteis">
+            </div>
+        </div>
+         <div class="prazo-group">
+            <div class="setting-item">
+                <label for="cobrancaAntesProrrogadoDias">Offset para "Cobrança em" (Prorrogado):</label>
+                <input type="number" id="cobrancaAntesProrrogadoDias" name="cobrancaAntesProrrogadoDias">
+            </div>
+            <div class="setting-item sub-setting">
+                <label for="cobrancaAntesProrrogadoDiasUteis">Usar dias úteis:</label>
+                <input type="checkbox" id="cobrancaAntesProrrogadoDiasUteis" name="cobrancaAntesProrrogadoDiasUteis">
+            </div>
+        </div>
+        <hr>
+
+        <h3>Ajuste de Data (Fim de Semana e Feriados)</h3>
+        <div class="setting-item">
+          <label for="weekendAdjustmentRule">Ajuste para Fim de Semana:</label>
+          <select id="weekendAdjustmentRule" name="weekendAdjustmentRule">
+            <option value="next">Mover para Próximo Dia Útil (Sáb/Dom -> Seg)</option>
+            <option value="previous">Mover para Dia Útil Anterior (Sáb/Dom -> Sex)</option>
+            <option value="split">Dividir (Sáb -> Sex, Dom -> Seg)</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <label for="holidayAdjustmentRule">Ajuste para Feriados:</label>
+          <select id="holidayAdjustmentRule" name="holidayAdjustmentRule">
+            <option value="next">Mover para Próximo Dia Útil</option>
+            <option value="previous">Mover para Dia Útil Anterior</option>
+            <option value="none">Não ajustar, manter no feriado</option>
+          </select>
+        </div>
+        <hr>
+
+        <h3>Configuração de Feriados</h3>
+        <div class="holiday-manager">
+          <div class="holiday-input-group">
+            <input type="text" id="holidayInput" placeholder="DD/MM/AAAA">
+            <input type="text" id="holidayDescriptionInput" placeholder="Descrição do Feriado">
+            <button id="addHolidayButton" class="add-button">Adicionar</button>
+          </div>
+          <ul id="holidaysList"></ul>
+        </div>
+        <div id="holidaysStatus" class="status-message"></div>
+         <div class="action-buttons">
+            <button id="saveHolidays" class="save-button">Salvar Feriados</button>
+            <button id="resetHolidays" class="reset-button">Restaurar Padrão</button>
+        </div>
+      </section>
+
+      <section id="tab-textos" class="tab-content">
+         <h2>Editar Modelos de Texto</h2>
+        <div class="tab-description">
+            Personalize os textos para os assistentes. As "chaves" principais (ex: "Arquivar") são os assistentes.
+            <span class="info-icon" tabindex="0">?
+                <span class="tooltip-text">Dentro de cada assistente, defina opções de texto. Use os placeholders listados abaixo para inserir dados dinâmicos.</span>
+            </span>
+        </div>
+        
+        <details class="example-collapsible placeholder-guide">
+            <summary>Ver Guia de Placeholders Disponíveis</summary>
+            <div class="placeholder-list">
+                <p>Os placeholders são códigos especiais que a extensão substitui por informações reais da manifestação ou configurações. Use-os nos seus modelos de texto:</p>
+                <ul>
+                    <li><code>{datalimite}</code> - Data limite original de atendimento da manifestação (ex: "dd/mm/aaaa"). Usado na funcionalidade "Melhoria de Tratar Manifestação" (botão de texto para prorrogação).</li>
+                    <li><code>(NUP)</code> - Número Único de Protocolo da manifestação (ex: "00123.000456/2024-01"). Usado pelo Assistente de Arquivamento.</li>
+                    <li><code>{OUVIDORIA}</code> - Nome da ouvidoria de destino selecionada. Usado pelo Assistente de Encaminhamento no texto para o solicitante.</li>
+                    <li><code>${numeroManifestacao}</code> - Número da manifestação (NUP). Usado pelo Assistente de Encaminhamento no texto para o solicitante.</li>
+                    <li><code>{PRAZO}</code> - Data calculada para tramitação interna (ex: "dd/mm/aaaa"). Configurada na aba "Prazos e Feriados". Usado pelo Assistente de Tramitação.</li>
+                    <li><code>{SECRETARIA}</code> - Tag da unidade/secretaria de destino da manifestação. Usado pelo Assistente de Tramitação.</li>
+                </ul>
+            </div>
+        </details>
+        
+        <details class="example-collapsible">
+            <summary>Ver Exemplo da Estrutura JSON para Modelos</summary>
+            <pre class="json-example">
+{
+  "mensagens": {
+    "prorrogacao": "Prezados, informamos que o prazo para resposta à sua manifestação foi estendido até {datalimite} para melhor análise."
+  },
+  "Arquivar": {
+    "Duplicidade": "Manifestação (NUP) arquivada por duplicidade com o protocolo X."
+  },
+  "Encaminhar": {
+    "Encaminhamento Geral": {
+      "destinatario": "Encaminhamos para análise e providências.",
+      "solicitante": "Sua manifestação ${numeroManifestacao} foi encaminhada para {OUVIDORIA}."
+    }
+  },
+  "Prorrogar": {
+    "Análise Complexa": "Prorrogação solicitada devido à complexidade da análise."
+  },
+  "Tramitar": {
+    "Solicitação de Resposta": "À {SECRETARIA}, solicitamos análise e proposta de resposta até {PRAZO}."
+  }
+}
+            </pre>
+        </details>
+        <p class="warning"><strong>Atenção:</strong> JSON inválido pode quebrar os assistentes. Valide a estrutura antes de salvar.</p>
+        <textarea id="textJsonEditor" rows="25" spellcheck="false"></textarea>
+        <div class="action-buttons">
+          <button id="saveTextJson" class="save-button">Salvar Modelos</button>
+          <button id="resetTextJson" class="reset-button">Restaurar Padrão</button>
+        </div>
+        <div id="textJsonStatus" class="status-message"></div>
+      </section>
+
+      <section id="tab-pontosfocais" class="tab-content">
+        <h2>Editar Pontos Focais</h2>
+        <div class="tab-description">
+            Configure os Pontos Focais para o "Assistente de Tramitação". A "chave" é a sigla da Unidade (ex: "GABINETE"), e o valor é uma lista de nomes, onde o primeiro nome é o que aparece no dropdown de seleção.
+        </div>
+        <details class="example-collapsible">
+            <summary>Ver Exemplo da Estrutura JSON</summary>
+            <pre class="json-example">
+{
+  "GABINETE": [
+    "Gabinete do Ministro",
+    "Fulano de Tal (GM)",
+    "Ciclana de Souza (GM)"
+  ],
+  "SECEX": [
+    "Secretaria Executiva",
+    "Beltrano dos Santos (SECEX)"
+  ]
+}
+            </pre>
+        </details>
+        <p class="warning"><strong>Atenção:</strong> JSON inválido pode impedir o funcionamento do Assistente de Tramitação.</p>
+        <textarea id="pontosFocaisJsonEditor" rows="25" spellcheck="false"></textarea>
+        <div class="action-buttons">
+          <button id="savePontosFocaisJson" class="save-button">Salvar Pontos Focais</button>
+          <button id="resetPontosFocaisJson" class="reset-button">Restaurar Padrão</button>
+        </div>
+        <div id="pontosFocaisJsonStatus" class="status-message"></div>
+      </section>
+      
+      <section id="tab-config-raw" class="tab-content">
+        <h2>Configuração JSON Completa (Avançado)</h2>
+        <p class="warning"><strong>Atenção:</strong> Erros na estrutura deste JSON podem causar falhas na extensão. Use com cautela e faça backup!</p>
+        <textarea id="rawConfigJsonEditor" rows="30" spellcheck="false"></textarea>
+        <div class="action-buttons">
+            <button id="saveRawConfigJson" class="save-button">Salvar Configuração</button>
+            <button id="resetRawConfigJson" class="reset-button">Restaurar Padrão Global</button>
+        </div>
+        <div id="rawConfigJsonStatus" class="status-message"></div>
+        <hr>
+        <h3>Importar/Exportar Configurações</h3>
+        <div class="config-management-section">
+            <h4>Exportar Configurações</h4>
+            <button id="exportConfigButton" class="action-button export-button">Exportar Backup</button>
+        </div>
+        <div class="config-management-section">
+            <h4>Importar Configurações</h4>
+            <input type="file" id="importConfigFileInput" accept=".json">
+            <button id="importConfigButton" class="action-button import-button">Importar Backup</button>
+            <div id="importConfigStatus" class="status-message"></div>
+        </div>
+    </section>
+    </main>
+    
+    <footer class="save-all-footer">
+        <button id="saveAllOptionsButton" class="save-button global-save">Salvar Todas as Alterações</button>
+        <div id="globalStatus" class="status-message"></div>
+    </footer>
+  </div>
+  <script src="/modules/options/options.js"></script>
+</body>
+</html>
