@@ -1,0 +1,28 @@
+/**
+ * @file encaminhar.css
+ * @description Estilos para os elementos injetados na página "Encaminhar Manifestação".
+ */
+
+/*
+ * O contêiner principal da nossa UI. Usamos 'form-group' para aproveitar os estilos
+ * da página e adicionamos a nossa própria classe para garantir espaçamento.
+ */
+.neuron-encaminhar-container {
+    margin-bottom: 15px; /* Adiciona um espaço abaixo do nosso menu, separando-o do resto. */
+}
+
+/*
+ * Estiliza o rótulo do nosso menu suspenso.
+ */
+.neuron-encaminhar-container label {
+    display: block;      /* Garante que o rótulo ocupe sua própria linha. */
+    margin-bottom: 5px;  /* Adiciona um pequeno espaço entre o rótulo e o menu. */
+    font-weight: bold;   /* Deixa o texto do rótulo em negrito para consistência. */
+}
+
+/*
+ * Estiliza o próprio menu suspenso para que ele se estenda corretamente.
+ */
+#neuronDropdownEncaminhar {
+    width: 100%; /* Faz o menu suspenso ocupar toda a largura disponível. */
+}

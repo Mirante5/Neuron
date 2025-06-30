@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Neuron",
-  "version": "0.7.5",
+  "version": "1.0",
   "description": "Otimizador de fluxos de trabalho na plataforma Fala.br",
   "author": "MAPA - DF",
   "icons": {
@@ -17,59 +17,66 @@
       "128": "images/neuronoff128.png"
     }
   },
-  "permissions": [
-    "storage",
-    "scripting",
-    "activeTab",
-    "tabs"
-  ],
-  "host_permissions": [
-    "https://falabr.cgu.gov.br/*"
-  ],
+  "permissions": ["storage", "scripting", "activeTab", "tabs"],
+  "host_permissions": ["https://falabr.cgu.gov.br/*"],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
       "matches": ["https://falabr.cgu.gov.br/*"],
-      "js": [
-        "modules/content/content.js",
-        "modules/loading/loading.js"
-      ],
+      "js": ["modules/loading/loading.js"],
       "css": ["modules/loading/loading.css"],
       "run_at": "document_start"
     },
     {
-      "matches": ["https://falabr.cgu.gov.br/Manifestacao/ArquivarManifestacao.aspx?*"],
+      "matches": ["https://falabr.cgu.gov.br/*"],
+      "js": ["modules/notificacoes/notificacoes.js"],
+      "css": ["modules/notificacoes/notificacoes.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://falabr.cgu.gov.br/Manifestacao/TratarManifestacoes"],
+      "js": [
+        "lib/date_utils.js",
+        "modules/tratar-novo/tratar_novo_pagesize.js",
+        "modules/tratar-novo/tratar_novo_extract.js",
+        "modules/tratar-novo/tratar_novo_copy.js",
+        "modules/tratar-novo/tratar_novo_insert.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://falabr.cgu.gov.br/Manifestacao/ArquivarManifestacao.aspx?*"
+      ],
       "js": ["modules/arquivar/arquivar.js"],
       "css": ["modules/arquivar/arquivar.css"]
     },
     {
-      "matches": ["https://falabr.cgu.gov.br/Manifestacao/EncaminharManifestacao.aspx?*"],
+      "matches": [
+        "https://falabr.cgu.gov.br/Manifestacao/EncaminharManifestacao.aspx?*"
+      ],
       "js": ["modules/encaminhar/encaminhar.js"],
       "css": ["modules/encaminhar/encaminhar.css"]
     },
     {
-      "matches": ["https://falabr.cgu.gov.br/Manifestacao/ProrrogarManifestacao.aspx?*"],
+      "matches": [
+        "https://falabr.cgu.gov.br/Manifestacao/ProrrogarManifestacao.aspx?*"
+      ],
       "js": ["modules/prorrogar/prorrogar.js"],
       "css": ["modules/prorrogar/prorrogar.css"]
     },
     {
-      "matches": ["https://falabr.cgu.gov.br/Manifestacao/TramitarManifestacao.aspx?*"],
-      "js": ["modules/tramitar/tramitar.js"],
+      "matches": [
+        "https://falabr.cgu.gov.br/Manifestacao/TramitarManifestacao.aspx?*"
+      ],
+      "js": ["modules/tramitar/tramitar.js", "modules/tramitar/tramitar_pontos_focais.js","lib/date_utils.js"],
       "css": ["modules/tramitar/tramitar.css"]
     },
     {
       "matches": [
-        "https://falabr.cgu.gov.br/Manifestacao/TratarManifestacoes*",
-        "https://falabr.cgu.gov.br/Manifestacao/TriarManifestacoes*",
-        "https://falabr.cgu.gov.br/Manifestacao/GerenciarManifestacaoServidor.aspx?*"
+        "https://falabr.cgu.gov.br/Manifestacao/TratarManifestacao.aspx?*"
       ],
-      "js": ["modules/notificacoes/notificacoes.js", "modules/tratar-triar/tratar-triar.js"],
-      "css": ["modules/tratar-triar/tratar-triar.css", "modules/notificacoes/notificacoes.css"]
-    },
-    {
-      "matches": ["https://falabr.cgu.gov.br/Manifestacao/TratarManifestacao.aspx?*"],
       "js": ["modules/tratar/tratar.js"],
       "css": ["modules/tratar/tratar.css"]
     },
@@ -80,12 +87,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": [
-        "config/*",
-        "images/*",
-        "modules/*",
-        "modules/*/*"
-      ],
+      "resources": ["config/*", "images/*", "modules/*", "modules/*/*","lib/*"],
       "matches": ["https://falabr.cgu.gov.br/*"]
     }
   ]

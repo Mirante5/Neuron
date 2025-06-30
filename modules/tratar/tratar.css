@@ -1,0 +1,16 @@
+/**
+ * @file tratar.css
+ * @description Estilos para os elementos injetados na página "Tratar Manifestação".
+ */
+
+#neuronBtnImportarCidadao {
+    margin-right: 5px;
+}
+
+/* Efeito de hover personalizado para os botões do Neuron */
+/* Se a cor de fundo padrão do .btn-primary for #337ab7, o mouseout não precisará resetá-la explicitamente. */
+.neuron-btn-cidadao:hover,
+.neuron-btn-prorrogacao-texto:hover {
+    background-color: #015298 !important; /* Cor do mouseover. Usar !important para garantir que sobrescreva o hover do Bootstrap, se necessário. */
+    /* border-color: #014a8c !important; /* Opcional: ajustar a cor da borda no hover */
+}
