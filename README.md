@@ -63,11 +63,11 @@ A extensão oferece um conjunto de módulos que podem ser habilitados ou desabil
 
 ## Instalação
 
-1.  Faça o download ou clone este repositório.
+1.  Faça o download
 2.  Abra o Google Chrome e navegue até `chrome://extensions`.
 3.  Habilite o "Modo do Desenvolvedor" (Developer mode) no canto superior direito.
-4.  Clique em "Carregar sem compactação" (Load unpacked).
-5.  Selecione o diretório `Neuron 0.1.5 β` (ou o nome da pasta onde os arquivos da extensão estão localizados).
+4.  Clique em 
+5.  Selecione o diretório `` 
 6.  A extensão Neuron deverá aparecer na sua lista de extensões e estará pronta para uso.
 
 ## Uso
@@ -81,9 +81,9 @@ A extensão oferece um conjunto de módulos que podem ser habilitados ou desabil
 Contribuições são bem-vindas! Se você tem ideias para novas funcionalidades, melhorias ou correções de bugs:
 
 1.  Faça um Fork do projeto.
-2.  Crie uma branch para sua Feature (`git checkout -b feature/AmazingFeature`).
-3.  Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`).
-4.  Push para a Branch (`git push origin feature/AmazingFeature`).
+2.  Crie uma branch para sua Feature.
+3.  Commit suas mudanças.
+4.  Push para a Branch.
 5.  Abra um Pull Request.
 
 ## Licença
