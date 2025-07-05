@@ -103,7 +103,7 @@
         document.getElementById(DESTINATARIO_TEXTAREA_ID)?.addEventListener('input', () => destinatarioManualmenteEditado = true, { once: true });
         document.getElementById(SOLICITANTE_TEXTAREA_ID)?.addEventListener('input', () => solicitanteManualmenteEditado = true, { once: true });
 
-        if (ouvidoriaAncora && !ouvidoriaDestinoSelectObserver) {
+        if (!ouvidoriaDestinoSelectObserver) {
             ouvidoriaDestinoSelectObserver = new MutationObserver(() => preencherTextosComBaseNoDropdown(dropdown));
             ouvidoriaDestinoSelectObserver.observe(ouvidoriaAncora, { childList: true, subtree: true });
         }
