@@ -69,28 +69,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function populateAllTabs() {
         ui.masterEnable.checked = fullConfig.masterEnableNeuron !== false;
-        document.getElementById('qtdItensTratarTriar').value = fullConfig.generalSettings.qtdItensTratarTriar;
+        
+        const qtdElement = document.getElementById('qtdItensTratarTriar');
+        if (qtdElement) qtdElement.value = fullConfig.generalSettings?.qtdItensTratarTriar || 50;
 
         const prazosSettings = fullConfig.prazosSettings || {};
-        document.getElementById('tratarNovoPrazoInternoDias').value = prazosSettings.tratarNovoPrazoInternoDias;
-        document.getElementById('tratarNovoCobrancaInternaDias').value = prazosSettings.tratarNovoCobrancaInternaDias;
-        document.getElementById('tratarNovoModoCalculo').value = prazosSettings.tratarNovoModoCalculo;
-        document.getElementById('tratarNovoAjusteFds').value = prazosSettings.tratarNovoAjusteFds;
-        document.getElementById('tratarNovoAjusteFeriado').value = prazosSettings.tratarNovoAjusteFeriado;
+        const prazoDiasEl = document.getElementById('tratarNovoPrazoInternoDias');
+        if (prazoDiasEl) prazoDiasEl.value = prazosSettings.tratarNovoPrazoInternoDias || -5;
+        
+        const cobrancaDiasEl = document.getElementById('tratarNovoCobrancaInternaDias');
+        if (cobrancaDiasEl) cobrancaDiasEl.value = prazosSettings.tratarNovoCobrancaInternaDias || -3;
+        
+        const modoCalculoEl = document.getElementById('tratarNovoModoCalculo');
+        if (modoCalculoEl) modoCalculoEl.value = prazosSettings.tratarNovoModoCalculo || 'corridos';
+        
+        const ajusteFdsEl = document.getElementById('tratarNovoAjusteFds');
+        if (ajusteFdsEl) ajusteFdsEl.value = prazosSettings.tratarNovoAjusteFds || 'modo1';
+        
+        const ajusteFeriadoEl = document.getElementById('tratarNovoAjusteFeriado');
+        if (ajusteFeriadoEl) ajusteFeriadoEl.value = prazosSettings.tratarNovoAjusteFeriado || 'proximo_dia';
 
         updateGlobalUIEnableState();
     }
 
     function collectSettingsFromUI() {
         fullConfig.masterEnableNeuron = ui.masterEnable.checked;
-        fullConfig.generalSettings.qtdItensTratarTriar = parseInt(document.getElementById('qtdItensTratarTriar').value, 10);
+        
+        if (!fullConfig.generalSettings) fullConfig.generalSettings = {};
+        const qtdElement = document.getElementById('qtdItensTratarTriar');
+        fullConfig.generalSettings.qtdItensTratarTriar = qtdElement ? parseInt(qtdElement.value, 10) || 50 : 50;
 
         const prazosSettings = fullConfig.prazosSettings || {};
-        prazosSettings.tratarNovoPrazoInternoDias = parseInt(document.getElementById('tratarNovoPrazoInternoDias').value, 10);
-        prazosSettings.tratarNovoCobrancaInternaDias = parseInt(document.getElementById('tratarNovoCobrancaInternaDias').value, 10);
-        prazosSettings.tratarNovoModoCalculo = document.getElementById('tratarNovoModoCalculo').value;
-        prazosSettings.tratarNovoAjusteFds = document.getElementById('tratarNovoAjusteFds').value;
-        prazosSettings.tratarNovoAjusteFeriado = document.getElementById('tratarNovoAjusteFeriado').value;
+        
+        const prazoDiasEl = document.getElementById('tratarNovoPrazoInternoDias');
+        prazosSettings.tratarNovoPrazoInternoDias = prazoDiasEl ? parseInt(prazoDiasEl.value, 10) || -5 : -5;
+        
+        const cobrancaDiasEl = document.getElementById('tratarNovoCobrancaInternaDias');
+        prazosSettings.tratarNovoCobrancaInternaDias = cobrancaDiasEl ? parseInt(cobrancaDiasEl.value, 10) || -3 : -3;
+        
+        const modoCalculoEl = document.getElementById('tratarNovoModoCalculo');
+        prazosSettings.tratarNovoModoCalculo = modoCalculoEl ? modoCalculoEl.value || 'corridos' : 'corridos';
+        
+        const ajusteFdsEl = document.getElementById('tratarNovoAjusteFds');
+        prazosSettings.tratarNovoAjusteFds = ajusteFdsEl ? ajusteFdsEl.value || 'modo1' : 'modo1';
+        
+        const ajusteFeriadoEl = document.getElementById('tratarNovoAjusteFeriado');
+        prazosSettings.tratarNovoAjusteFeriado = ajusteFeriadoEl ? ajusteFeriadoEl.value || 'proximo_dia' : 'proximo_dia';
+        
         fullConfig.prazosSettings = prazosSettings;
     }
 

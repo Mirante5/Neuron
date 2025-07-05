@@ -24,7 +24,7 @@
   "prazosSettings": {
     "tratarNovoModoCalculo": "corridos",
     "tratarNovoAjusteFds": "modo1",
-    "tratarNovoAjusteFeriado": "anterior_dia",
+    "tratarNovoAjusteFeriado": "dia_anterior",
     "tratarNovoPrazoInternoDias": -5,
     "tratarNovoCobrancaInternaDias": -3
   },
