@@ -1,8 +1,3 @@
-/**
- * @file tratar_novo_copy.js
- * @version 2.1 (Robusto contra contexto invalidado)
- * @description Modifica o clique para copiar, mas somente quando a funcionalidade está ativa.
- */
 (function() {
     'use strict';
 
@@ -22,7 +17,6 @@
     }
 
     function showCopyNotification(text) {
-        // ... (função de notificação permanece a mesma) ...
         const notification = document.createElement('div');
         notification.innerText = text;
         Object.assign(notification.style, {
@@ -50,7 +44,7 @@
         const links = document.querySelectorAll('a[id*="lvwTriagem_lnkNumero_"]');
         
         links.forEach(link => {
-            link.removeEventListener('click', handleLinkClick); // Limpa listeners antigos
+            link.removeEventListener('click', handleLinkClick);
             if (deveAtivar) {
                 link.addEventListener('click', handleLinkClick);
                 link.style.cursor = 'copy';
@@ -74,11 +68,10 @@
                 observer.disconnect();
                 observer = null;
             }
-            gerenciarComportamentoDosLinks(true); // Força a remoção do comportamento
+            gerenciarComportamentoDosLinks(true);
         }
     }
 
-    // --- Ponto de Entrada ---
     chrome.storage.onChanged.addListener((changes, namespace) => {
         if (!chrome.runtime?.id) return;
         if (namespace === 'local' && changes[CONFIG_KEY]) {

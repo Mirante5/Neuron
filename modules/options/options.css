@@ -1,6 +1,3 @@
-/* /modules/options/options.css (Versão Completa e Final) */
-
-/* Reset básico e box-sizing global */
 body {
   font-family: 'Inter', sans-serif;
   background-color: #f4f8fa; 
@@ -19,14 +16,13 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Cabeçalho da Página de Opções */
 .options-header {
   display: flex;
   align-items: center;
   padding-bottom: 20px;
   border-bottom: 1px solid #e0e0e0;
   margin-bottom: 20px;
-  color: #0278bc; /* Azul Primário */
+  color: #0278bc;
 }
 
 #headerLogo {
@@ -47,11 +43,10 @@ body {
   margin: 0;
 }
 
-/* Abas de Navegação */
 .tabs {
   display: flex;
   margin-bottom: 0;
-  border-bottom: 2px solid #0278bc; /* Azul Primário */
+  border-bottom: 2px solid #0278bc;
 }
 
 .tab-link {
@@ -73,11 +68,10 @@ body {
 
 .tab-link.active {
   color: #0278bc; 
-  border-bottom-color: #ffd401; /* Amarelo Destaque */
+  border-bottom-color: #ffd401;
   font-weight: 700;
 }
 
-/* Conteúdo das Abas */
 .tab-content {
   display: none;
   padding: 20px;
@@ -118,7 +112,6 @@ body {
   align-items: center;
 }
 
-/* Itens de Configuração (label + input) */
 .setting-item {
   display: flex;
   justify-content: space-between;
@@ -172,7 +165,6 @@ hr {
   margin: 25px 0;
 }
 
-/* Textareas */
 textarea {
   width: 100%;
   padding: 12px;
@@ -190,7 +182,6 @@ textarea {
   min-height: 350px;
 }
 
-/* Botões de Ação (Geral e de Remoção) */
 .action-buttons {
   display: flex;
   gap: 10px; 
@@ -213,7 +204,7 @@ textarea {
 }
 
 .save-button {
-  background-color: #0278bc; /* Azul Primário */
+  background-color: #0278bc;
   color: #ffffff; 
 }
 .save-button:hover {
@@ -229,7 +220,7 @@ textarea {
 }
 
 .add-button {
-  background-color: #ffd401; /* Amarelo Destaque */
+  background-color: #ffd401;
   color: #333;
   padding: 8px 15px; 
 }
@@ -238,7 +229,7 @@ textarea {
 }
 
 .remove-btn {
-  background-color: #dc3545; /* Vermelho Perigo */
+  background-color: #dc3545;
   color: #ffffff;
 }
 .remove-btn:hover {
@@ -266,8 +257,6 @@ textarea {
   background-color: #138496;
 }
 
-
-/* Mensagens de Status */
 .status-message {
   margin-top: 10px;
   font-size: 0.9rem;
@@ -288,7 +277,6 @@ textarea {
   display: block;
 }
 
-/* Gerenciador de Feriados */
 .holiday-manager {
   margin-top: 10px;
 }
@@ -342,7 +330,6 @@ textarea {
   flex-grow: 1; 
 }
 
-/* Rodapé com Botão Salvar Tudo */
 .save-all-footer {
     margin-top: 30px;
     padding-top: 20px;
@@ -355,7 +342,6 @@ textarea {
     font-weight: bold;
 }
 
-/* Estilos para Aba Prazos e Feriados */
 .prazo-group {
   background-color: #f9f9f9;
   padding: 15px;
@@ -367,8 +353,6 @@ textarea {
   width: 75px; 
 }
 
-
-/* Estilos para Selects de Categoria */
 #selectTipoRespostaConfig,
 #selectTextModelCategory {
     width: 100%; 
@@ -381,7 +365,6 @@ textarea {
     box-sizing: border-box;
 }
 
-/* Estilos Reutilizáveis para Itens de Opção (Respostas, Modelos, etc.) */
 .option-item {
     border: 1px solid #d1e0ea; 
     border-radius: 5px;
@@ -412,8 +395,6 @@ textarea {
     margin-top: 10px;
 }
 
-
-/* Seção de Import/Export na aba Config JSON */
 .config-management-section {
   padding: 15px;
   border: 1px solid #e9ecef;
@@ -437,24 +418,23 @@ textarea {
     width: calc(100% - 20px); 
 }
 
-/* ESTILOS MELHORADOS PARA PONTOS FOCAIS */
 #tab-pontosfocais h2 {
     margin-bottom: 10px;
 }
 .focal-point-group {
-    border: 1px solid #b8d4e8; /* Borda azul mais forte */
+    border: 1px solid #b8d4e8;
     border-radius: 6px;
     margin-bottom: 20px;
-    background-color: #f7fbff; /* Fundo azul muito claro */
+    background-color: #f7fbff;
     padding: 0;
-    overflow: hidden; /* Garante que os cantos arredondados sejam aplicados corretamente */
+    overflow: hidden;
 }
 
 .focal-group-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #e9f5fd; /* Azul claro para o cabeçalho */
+    background-color: #e9f5fd;
     padding: 10px 15px;
     border-bottom: 1px solid #b8d4e8;
 }
@@ -466,7 +446,7 @@ textarea {
     padding: 8px 12px;
     font-size: 1.1rem;
     font-weight: 500;
-    color: #025a8e; /* Azul mais escuro */
+    color: #025a8e;
     background-color: #fff;
 }
 .focal-point-group-name:focus {
@@ -476,7 +456,7 @@ textarea {
 }
 
 .focal-group-header .remove-btn {
-    margin-left: 15px; /* Espaço entre o nome e o botão */
+    margin-left: 15px;
     flex-shrink: 0;
 }
 

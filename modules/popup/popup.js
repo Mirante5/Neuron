@@ -1,11 +1,6 @@
-/**
- * @file popup.js
- * @description Lógica e animação para o popup do Neuron. As folhas caem imediatamente.
- */
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
-    // --- Seletores e Configurações ---
     const CONFIG_KEY = 'neuronUserConfig';
     const masterSwitch = document.getElementById('masterEnableNeuron');
     const itemsInput = document.getElementById('qtdItensTratarTriar');
@@ -18,8 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let leaves = [];
     const numberOfLeaves = 50;
     const LEAF_COLOR = '#ffd401';
-
-    // --- LÓGICA DE CONTROLO ---
 
     async function carregarConfiguracoes() {
         if (!chrome?.storage?.local) return {};
@@ -75,8 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
         masterSwitch.addEventListener('change', handleMasterSwitchChange);
         itemsInput.addEventListener('input', handleItemsInputChange);
     }
-
-    // --- LÓGICA DA ANIMAÇÃO DAS FOLHAS ---
 
     function redimensionarCanvas() {
         canvas.width = window.innerWidth;
@@ -144,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(animarCena);
     }
 
-    // --- PONTO DE ENTRADA ---
     inicializarControlos();
-    inicializarAnimacao(); // A ANIMAÇÃO COMEÇA AQUI, IMEDIATAMENTE
+    inicializarAnimacao();
 });

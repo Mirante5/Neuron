@@ -1,53 +1,31 @@
-/**
- * @file loading.js
- * @version 2.0 (Lógica Padronizada com Config Central)
- * @description Modifica a tela de "Carregando..." do sistema com uma animação do Neuron,
- * respeitando a configuração global da extensão.
- */
-
 (async function () {
     'use strict';
 
-    // --- Constantes de Configuração e Metadados (PADRONIZADO) ---
     const SCRIPT_ID = 'loading';
     const CONFIG_KEY = 'neuronUserConfig';
 
-    // --- Constantes do DOM e de Estilo ---
     const LOCK_PANE_ID = 'skm_LockPane';
     const LOCK_PANE_TEXT_ID = 'skm_LockPaneText';
     const NEURON_LOADING_CSS_CLASS = 'neuron-loading-active';
     const TEMPLATE_URL = chrome.runtime.getURL('modules/loading/loading.html');
 
-    // --- Variáveis de Estado ---
-    let config = {}; // Armazena a configuração completa.
+    let config = {};
     let paneObserver = null;
     let manifestVersion = 'v?.?.?';
     let activeAnimationFrameId = null;
     let isNeuronStyleApplied = false;
     let originalPaneTextInnerHTML = null;
 
-    // --- Funções de Inicialização e Configuração (PADRONIZADO) ---
-
-    /**
-     * Carrega a configuração unificada do storage.
-     */
     async function carregarConfiguracoes() {
         const result = await chrome.storage.local.get(CONFIG_KEY);
         config = result[CONFIG_KEY] || {};
-        console.log(`%cNeuron (${SCRIPT_ID}): Configurações carregadas.`, "color: blue; font-weight: bold;");
+        console.log(`[Neuron|${SCRIPT_ID}] Configurações carregadas.`);
     }
 
-    /**
-     * Verifica se o script deve estar ativo.
-     */
     function isScriptAtivo() {
-        // Verifica a chave mestra e a configuração específica desta funcionalidade.
         return config.masterEnableNeuron !== false && config.featureSettings?.[SCRIPT_ID]?.enabled !== false;
     }
 
-    /**
-     * Carrega a versão do manifest para exibição na tela de loading.
-     */
     function carregarVersaoManifest() {
         try {
             const manifest = chrome.runtime.getManifest();
@@ -55,11 +33,9 @@
                 manifestVersion = "v" + manifest.version;
             }
         } catch (e) {
-            console.warn(`Neuron (${SCRIPT_ID}): Não foi possível obter a versão do manifest.`, e);
+            console.warn(`[Neuron|${SCRIPT_ID}] Não foi possível obter a versão do manifest.`, e);
         }
     }
-
-    // --- Lógica Principal da Tela de Loading ---
 
     function pararAnimacao() {
         if (activeAnimationFrameId) {
@@ -76,10 +52,10 @@
         const frames = [".", "..", "...", "...."];
         let frameIndex = 0;
         let lastTime = 0;
-        const intervalo = 350; // ms
+        const intervalo = 350;
 
         function animar(timestamp) {
-            if (!isNeuronStyleApplied) { // Para a animação se o estilo for revertido
+            if (!isNeuronStyleApplied) {
                 pararAnimacao();
                 return;
             }
@@ -101,7 +77,6 @@
             return;
         }
 
-        // Guarda o conteúdo original apenas se não for o nosso
         if (originalPaneTextInnerHTML === null && !lockPaneText.querySelector('.neuron-loading-container')) {
             originalPaneTextInnerHTML = lockPaneText.innerHTML;
         }
@@ -119,8 +94,8 @@
             isNeuronStyleApplied = true;
             iniciarAnimacao();
         } catch (error) {
-            console.error(`Neuron (${SCRIPT_ID}): Falha ao aplicar estilo de loading.`, error);
-            reverterEstiloNeuron(); // Reverte para o estado original em caso de erro.
+            console.error(`[Neuron|${SCRIPT_ID}] Falha ao aplicar estilo de loading.`, error);
+            reverterEstiloNeuron();
         }
     }
 
@@ -137,14 +112,17 @@
         }
         isNeuronStyleApplied = false;
     }
-
-    // --- Observadores e Gerenciamento de Estado (PADRONIZADO) ---
     
     function observarMudancasNoPainel() {
-        const lockPane = document.getElementById(LOCK_PANE_ID);
+        let lockPane = document.getElementById(LOCK_PANE_ID);
         if (!lockPane || paneObserver) return;
 
-        paneObserver = new MutationObserver(async (mutationsList) => {
+        paneObserver = new MutationObserver(async () => {
+            lockPane = document.getElementById(LOCK_PANE_ID);
+            if (!lockPane) {
+                reverterEstiloNeuron();
+                return;
+            }
             const isVisible = lockPane.style.display !== 'none' && !lockPane.classList.contains('LockOff');
             if (isVisible) {
                 await aplicarEstiloNeuron();
@@ -153,9 +131,8 @@
             }
         });
         
-        paneObserver.observe(lockPane, { attributes: ['style', 'class'] });
+        paneObserver.observe(lockPane, { attributes: ['style', 'class'], childList: true, subtree: false });
 
-        // Aplica o estilo imediatamente se o painel já estiver visível quando o observer for criado
         if (lockPane.style.display !== 'none' && !lockPane.classList.contains('LockOff')) {
             aplicarEstiloNeuron();
         }
@@ -166,7 +143,7 @@
             paneObserver.disconnect();
             paneObserver = null;
         }
-        reverterEstiloNeuron(); // Garante que a UI do Neuron seja removida ao desconectar
+        reverterEstiloNeuron();
     }
 
     async function verificarEstadoAtualEAgir() {
@@ -181,13 +158,12 @@
     
     chrome.storage.onChanged.addListener((changes, namespace) => {
         if (namespace === 'local' && changes[CONFIG_KEY]) {
-            console.log(`%cNeuron (${SCRIPT_ID}): Configuração alterada. Reavaliando...`, "color: orange; font-weight: bold;");
+            console.warn(`[Neuron|${SCRIPT_ID}] Configuração alterada. Reavaliando...`);
             verificarEstadoAtualEAgir();
         }
     });
 
     async function init() {
-        // Espera o painel de loading existir no DOM
         await new Promise(resolve => {
             const checkElement = () => {
                 if (document.getElementById(LOCK_PANE_ID)) resolve();

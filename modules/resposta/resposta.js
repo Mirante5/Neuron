@@ -1,33 +1,21 @@
-/**
- * @file resposta.js
- * @version 2.0 (Lógica Padronizada com Config Central)
- * @description Módulo para inserir opções de resposta rápida na tela de Resposta,
- * agora integrado ao sistema de configuração central.
- */
-
 (async function () {
     'use strict';
 
-    // --- Constantes ---
     const SCRIPT_ID = 'resposta';
     const CONFIG_KEY = 'neuronUserConfig';
     
-    // IDs dos elementos da página original
     const ID_TIPO_RESPOSTA_SELECT = 'slTipoResposta';
     const ID_TIPO_RESPOSTA_LIST = 'slTipoResposta-list';
     const ID_TEXTAREA_RESPOSTA = 'txtResposta-textarea';
     const ID_INPUT_RESPONSAVEL = 'responsavelResposta-input';
     
-    // IDs dos elementos criados pelo Neuron
     const ID_NEURON_DROPDOWN_CONTAINER = 'neuron-novoDropdown';
     const ID_NEURON_DROPDOWN_INPUT = 'neuron-novoDropdown-input';
     const ID_NEURON_DROPDOWN_LIST = 'neuron-novoDropdown-list';
 
-    // --- Variáveis de Estado ---
     let config = {};
     let isFeatureActive = false;
 
-    // --- Lógica de Configuração e Inicialização ---
     async function carregarConfiguracoes() {
         const result = await chrome.storage.local.get(CONFIG_KEY);
         config = result[CONFIG_KEY] || {};
@@ -39,7 +27,6 @@
         return config.masterEnableNeuron !== false && config.featureSettings?.[SCRIPT_ID]?.enabled !== false;
     }
 
-    // --- Lógica da UI ---
     function criarUI() {
         if (document.getElementById(ID_NEURON_DROPDOWN_CONTAINER)) return;
 
@@ -74,7 +61,6 @@
         
         if (!dropdownList || !dropdownInput || !txtResposta || !inputResponsavel) return;
 
-        // Limpa e desabilita o campo por padrão
         dropdownInput.value = '';
         txtResposta.value = '';
         inputResponsavel.value = '';
@@ -105,7 +91,6 @@
         }
     }
     
-    // --- Gerenciamento de Eventos ---
     const handleUiInteraction = (event) => {
         const dropdownList = document.getElementById(ID_NEURON_DROPDOWN_LIST);
         const dropdownInput = document.getElementById(ID_NEURON_DROPDOWN_INPUT);
@@ -113,17 +98,14 @@
 
         if (!dropdownList || !dropdownInput || !dropdownContainer) return;
 
-        // Se clicar no input de resposta do Neuron
         if (event.target === dropdownInput && !dropdownInput.hasAttribute('disabled')) {
             const isHidden = dropdownList.style.display !== 'block';
             dropdownList.style.display = isHidden ? 'block' : 'none';
         } 
-        // Se clicar fora do container do dropdown do Neuron, fecha a lista
         else if (!dropdownContainer.contains(event.target)) {
             dropdownList.style.display = 'none';
         }
         
-        // Se clicar no dropdown de TIPO de resposta original
         const tipoRespostaItem = event.target.closest(`#${ID_TIPO_RESPOSTA_LIST} .br-item`);
         if (tipoRespostaItem) {
             const selectedText = tipoRespostaItem.querySelector('label')?.textContent.trim();
@@ -133,7 +115,6 @@
         }
     };
 
-    // --- Controle Principal ---
     function ativarFuncionalidade() {
         if (isFeatureActive) return;
         criarUI();
@@ -166,23 +147,21 @@
         }
     });
 
-    // Observador para garantir que os elementos originais da página existam antes de iniciar
     const observer = new MutationObserver(() => {
         const tipoRespostaElement = document.getElementById(ID_TIPO_RESPOSTA_SELECT);
         const textAreaElement = document.getElementById(ID_TEXTAREA_RESPOSTA);
         
         if (tipoRespostaElement && textAreaElement) {
             init();
-            observer.disconnect(); // Para de observar uma vez que o script foi inicializado
+            observer.disconnect();
         }
     });
 
     async function init() {
-        observer.disconnect(); // Garante que não haja observadores duplicados
+        observer.disconnect();
         await verificarEstadoAtualEAgir();
     }
 
-    // Inicia a observação do DOM
     observer.observe(document.body, { childList: true, subtree: true });
 
 })();

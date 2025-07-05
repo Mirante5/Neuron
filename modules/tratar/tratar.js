@@ -1,17 +1,9 @@
-/**
- * @file tratar.js
- * @version 2.1 (Seletores no Topo)
- * @description Injeta a UI na página "Tratar Manifestação" e utiliza a estrutura de configuração centralizada.
- */
-
 (async function () {
     'use strict';
 
-    // --- Constantes de Configuração e Metadados ---
     const SCRIPT_ID = 'tratar';
     const CONFIG_KEY = 'neuronUserConfig';
 
-    // --- Constantes de Seletores do DOM ---
     const TARGET_DIV_SELECTOR = '#ConteudoForm_ConteudoGeral_ConteudoFormComAjax_UpdatePanel3';
     const INPUT_CONTRIBUICAO_ID = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_txtContribuicao';
     const NOME_CIDADAO_ID = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_infoManifestacoes_infoManifestacao_txtNomePF';
@@ -20,13 +12,9 @@
     const EMAIL_CIDADAO_ID = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_infoManifestacoes_infoManifestacao_txtEmailPF';
     const PRAZO_ATENDIMENTO_ID = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_infoManifestacoes_infoManifestacao_txtPrazoAtendimento';
 
-    // --- Variáveis de Estado ---
-    let config = {}; // Armazena a configuração completa.
+    let config = {};
     let uiMutationObserver = null;
 
-    /**
-     * Carrega a configuração unificada diretamente do storage.
-     */
     async function carregarConfiguracoesTratar() {
         const result = await chrome.storage.local.get(CONFIG_KEY);
         config = result[CONFIG_KEY];
@@ -75,7 +63,7 @@
         if (!panel || !contribInput) return;
 
         if (document.getElementById('neuronBtnImportarCidadao')) return;
-        
+
         removerElementosCriados();
 
         const btnImportar = criarBotaoAuxiliar({
@@ -125,7 +113,7 @@
                 removerElementosCriados();
             }
         });
-        
+
         uiMutationObserver.observe(painelAlvo, { childList: true, subtree: true });
         console.log(`%cNeuron (${SCRIPT_ID}): Observer da página configurado.`, "color: green;");
     }
@@ -137,7 +125,7 @@
             console.log(`%cNeuron (${SCRIPT_ID}): Observer da página DESCONECTADO.`, "color: red;");
         }
     }
-    
+
     chrome.storage.onChanged.addListener((changes, namespace) => {
         if (namespace === 'local' && changes[CONFIG_KEY]) {
             console.log(`%cNeuron (${SCRIPT_ID}): Configuração alterada. Reavaliando...`, "color: orange; font-weight: bold;");

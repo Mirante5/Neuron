@@ -1,9 +1,3 @@
-/**
- * @file tratar_novo_pagesize.js
- * @version 6.1 (Robusto contra contexto invalidado)
- * @description Altera o tamanho da página, verificando o contexto e a configuração em tempo real.
- */
-
 (function() {
     'use strict';
 
@@ -15,12 +9,8 @@
     let observer = null;
     let debounceTimer;
 
-    /**
-     * @description Carrega as configurações e verifica se o script está ativo.
-     * @returns {Promise<boolean>} True se o script deve ser executado.
-     */
     async function isScriptAtivo() {
-        if (!chrome.runtime?.id) return false; // VERIFICAÇÃO DE CONTEXTO
+        if (!chrome.runtime?.id) return false;
         try {
             const result = await chrome.storage.local.get(CONFIG_KEY);
             const config = result[CONFIG_KEY] || {};
@@ -31,9 +21,6 @@
         }
     }
 
-    /**
-     * @description Ação principal: busca a configuração mais recente e atualiza a página se necessário.
-     */
     async function verificarEAtualizarTamanho() {
         if (!await isScriptAtivo()) return;
 
@@ -53,12 +40,9 @@
         botaoConfirmar.click();
     }
 
-    /**
-     * @description Inicia ou para a observação de mudanças na página com base no estado da funcionalidade.
-     */
     async function gerenciarEstado() {
         if (await isScriptAtivo()) {
-            if (observer) return; // Já está ativo
+            if (observer) return;
             
             const onPageChange = () => {
                 clearTimeout(debounceTimer);
@@ -78,9 +62,8 @@
         }
     }
 
-    // --- Ponto de Entrada ---
     chrome.storage.onChanged.addListener((changes, namespace) => {
-        if (!chrome.runtime?.id) return; // VERIFICAÇÃO DE CONTEXTO
+        if (!chrome.runtime?.id) return;
         if (namespace === 'local' && changes[CONFIG_KEY]) {
             gerenciarEstado();
         }

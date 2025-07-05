@@ -1,38 +1,25 @@
-/**
- * @file encaminhar.js
- * @version 3.0 (Adaptado para Configuração Unificada)
- * @description Injeta a UI na página "Encaminhar Manifestação", utilizando a configuração centralizada
- * e mantendo a lógica de negócio do script original.
- */
-
 (async function () {
     'use strict';
 
-    // --- Constantes de Configuração e Metadados ---
     const SCRIPT_ID = 'encaminhar';
     const CONFIG_KEY = 'neuronUserConfig';
 
-    // --- Constantes de Seletores do DOM ---
     const DROPDOWN_ID_NEURON = 'neuronDropdownEncaminhar';
     const OUVIDORIA_DESTINO_ID = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_cmbOuvidoriaDestino';
     const DESTINATARIO_TEXTAREA_ID = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_txtNotificacaoDestinatario';
     const SOLICITANTE_TEXTAREA_ID = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_txtNotificacaoSolicitante';
     const NUMERO_MANIFESTACAO_ID = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_infoManifestacoes_infoManifestacao_txtNumero';
     
-    // --- Variáveis de Estado ---
     let config = {};
     let uiMutationObserver = null;
     let ouvidoriaDestinoSelectObserver = null;
     let destinatarioManualmenteEditado = false;
     let solicitanteManualmenteEditado = false;
 
-    /**
-     * Carrega a configuração unificada diretamente do storage.
-     */
     async function carregarConfiguracoes() {
         const result = await chrome.storage.local.get(CONFIG_KEY);
         config = result[CONFIG_KEY];
-        console.log(`%cNeuron (${SCRIPT_ID}): Configurações carregadas.`, "color: blue; font-weight: bold;");
+        console.log(`[Neuron|${SCRIPT_ID}] Configurações carregadas.`);
     }
 
     function isScriptAtivo() {
@@ -55,7 +42,7 @@
 
         const modelo = config.textModels?.Encaminhar?.[modeloKey];
         if (!modelo) {
-            console.warn(`Modelo "${modeloKey}" não encontrado.`);
+            console.warn(`[Neuron|${SCRIPT_ID}] Modelo "${modeloKey}" não encontrado.`);
             return;
         }
         
@@ -113,11 +100,9 @@
 
         ouvidoriaAncora.parentElement.appendChild(container);
 
-        // Adiciona listeners para detetar edição manual
         document.getElementById(DESTINATARIO_TEXTAREA_ID)?.addEventListener('input', () => destinatarioManualmenteEditado = true, { once: true });
         document.getElementById(SOLICITANTE_TEXTAREA_ID)?.addEventListener('input', () => solicitanteManualmenteEditado = true, { once: true });
 
-        // Observador para quando a ouvidoria de destino muda
         if (ouvidoriaAncora && !ouvidoriaDestinoSelectObserver) {
             ouvidoriaDestinoSelectObserver = new MutationObserver(() => preencherTextosComBaseNoDropdown(dropdown));
             ouvidoriaDestinoSelectObserver.observe(ouvidoriaAncora, { childList: true, subtree: true });

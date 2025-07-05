@@ -1,4 +1,3 @@
-// Neuron/modules/options/options.js (Completo e Corrigido)
 document.addEventListener('DOMContentLoaded', () => {
     const CONFIG_STORAGE_KEY = 'neuronUserConfig';
     const DEFAULT_CONFIG_PATH = '/config/config.json';
@@ -22,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let fullConfig = {};
     let defaultConfig = {};
 
-    // --- Funções Utilitárias ---
     const displayStatus = (el, msg, isError = false, duration = 4000) => {
         if (!el) return;
         el.textContent = msg;
@@ -48,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return deepMerge(target, ...sources);
     };
 
-    // --- Funções de Configuração (Load/Save) ---
     async function loadConfig() {
         try {
             const response = await fetch(chrome.runtime.getURL(DEFAULT_CONFIG_PATH));
@@ -70,13 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Lógica de Preenchimento da UI ---
     function populateAllTabs() {
-        // Aba Geral
         ui.masterEnable.checked = fullConfig.masterEnableNeuron !== false;
         document.getElementById('qtdItensTratarTriar').value = fullConfig.generalSettings.qtdItensTratarTriar;
 
-        // Aba Prazos & Feriados
         const prazosSettings = fullConfig.prazosSettings || {};
         document.getElementById('tratarNovoPrazoInternoDias').value = prazosSettings.tratarNovoPrazoInternoDias;
         document.getElementById('tratarNovoCobrancaInternaDias').value = prazosSettings.tratarNovoCobrancaInternaDias;
@@ -88,11 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function collectSettingsFromUI() {
-        // Aba Geral
         fullConfig.masterEnableNeuron = ui.masterEnable.checked;
         fullConfig.generalSettings.qtdItensTratarTriar = parseInt(document.getElementById('qtdItensTratarTriar').value, 10);
 
-        // Aba Prazos & Feriados
         const prazosSettings = fullConfig.prazosSettings || {};
         prazosSettings.tratarNovoPrazoInternoDias = parseInt(document.getElementById('tratarNovoPrazoInternoDias').value, 10);
         prazosSettings.tratarNovoCobrancaInternaDias = parseInt(document.getElementById('tratarNovoCobrancaInternaDias').value, 10);
@@ -111,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- LÓGICA DA ABA DE PRAZOS E FERIADOS (NOVO) ---
     function setupHolidaysTab() {
         renderHolidays();
 
@@ -201,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- LÓGICA DA ABA DE RESPOSTAS AUTOMÁTICAS ---
     function setupResponsesTab() {
         const select = document.getElementById('selectTipoRespostaConfig');
         const container = document.getElementById('optionsContainer');
@@ -285,14 +275,13 @@ document.addEventListener('DOMContentLoaded', () => {
             input.addEventListener('input', (e) => {
                 const index = parseInt(e.target.dataset.index, 10);
                 const property = e.target.classList.contains('response-text') ? 'text'
-                             : e.target.classList.contains('response-textarea') ? 'conteudoTextarea'
-                             : 'responsavel';
+                    : e.target.classList.contains('response-textarea') ? 'conteudoTextarea'
+                        : 'responsavel';
                 fullConfig.defaultResponses[tipoResposta].novoDropdownOptions[index][property] = e.target.value;
             });
         });
     }
 
-    // --- LÓGICA DAS OUTRAS ABAS (Modelos de Texto, Pontos Focais, etc.) ---
     function setupTextModelsTab() {
         const categorySelect = document.getElementById('selectTextModelCategory');
         const container = document.getElementById('textModelsContainer');
@@ -316,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('addTextModelBtn').addEventListener('click', () => {
             const category = categorySelect.value;
-            if(!category) return;
+            if (!category) return;
             const newKey = `Novo Modelo ${Date.now()}`;
             fullConfig.textModels[category][newKey] = "Novo conteúdo...";
             renderTextModels(category);
@@ -345,7 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const value = models[key];
             const itemDiv = document.createElement('div');
             itemDiv.className = 'option-item';
-            // AQUI: Padronizando o botão de remoção
             const removeBtnHTML = `<button class="remove-btn" data-key="${key}">Remover Modelo</button>`;
             if (typeof value === 'string') {
                 itemDiv.innerHTML = `
@@ -383,7 +371,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addTextModelListeners(category) {
-        // AQUI: Usando a classe .remove-btn
         document.querySelectorAll('.remove-btn').forEach(btn => {
             const newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
@@ -437,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
             displayStatus(statusEl, 'Pontos Focais salvos com sucesso!', false);
         });
         document.getElementById('resetFocalPointsBtn').addEventListener('click', () => {
-             if (confirm(`Isso restaurará TODOS os Pontos Focais para o padrão. Deseja continuar?`)) {
+            if (confirm(`Isso restaurará TODOS os Pontos Focais para o padrão. Deseja continuar?`)) {
                 fullConfig.focalPoints = JSON.parse(JSON.stringify(defaultConfig.focalPoints));
                 renderFocalPoints();
                 displayStatus(statusEl, 'Pontos Focais restaurados para o padrão.', false);
@@ -475,54 +462,71 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addFocalPointListeners() {
-        document.querySelectorAll('.focal-group-header .remove-btn').forEach(btn => {
-            btn.addEventListener('click', e => {
-                const groupName = e.target.dataset.group;
+        const listEl = document.getElementById('focalPointsList');
+
+        listEl.addEventListener('click', e => {
+            const target = e.target;
+
+            if (target.matches('.focal-group-header .remove-btn')) {
+                const groupName = target.dataset.group;
                 if (confirm(`Tem certeza que deseja remover o grupo "${groupName}"?`)) {
                     delete fullConfig.focalPoints[groupName];
                     renderFocalPoints();
                 }
-            });
-        });
-        document.querySelectorAll('.add-point-btn').forEach(btn => {
-            btn.addEventListener('click', e => {
-                const groupName = e.target.dataset.group;
+            }
+
+            if (target.matches('.add-point-btn')) {
+                const groupName = target.dataset.group;
                 fullConfig.focalPoints[groupName].push("Novo Ponto Focal");
                 renderFocalPoints();
-            });
-        });
-        document.querySelectorAll('.focal-point-item .remove-btn').forEach(btn => {
-            btn.addEventListener('click', e => {
-                const groupName = e.target.dataset.group;
-                const index = parseInt(e.target.dataset.index, 10);
+            }
+
+            if (target.matches('.focal-point-item .remove-btn')) {
+                const groupName = target.dataset.group;
+                const index = parseInt(target.dataset.index, 10);
                 fullConfig.focalPoints[groupName].splice(index, 1);
                 renderFocalPoints();
-            });
+            }
         });
-        document.querySelectorAll('.focal-point-group-name').forEach(input => {
-            input.addEventListener('change', e => {
-                const originalName = e.target.dataset.originalName;
-                const newName = e.target.value;
-                if(originalName !== newName && newName) {
+
+        listEl.addEventListener('change', e => {
+            const target = e.target;
+
+            if (target.matches('.focal-point-group-name')) {
+                const originalName = target.dataset.originalName;
+                const newName = target.value.trim();
+
+                if (originalName !== newName && newName) {
+                    if (fullConfig.focalPoints[newName]) {
+                        alert(`O nome de grupo "${newName}" já existe. Por favor, escolha outro nome.`);
+                        target.value = originalName;
+                        return;
+                    }
+
                     const value = fullConfig.focalPoints[originalName];
                     delete fullConfig.focalPoints[originalName];
                     fullConfig.focalPoints[newName] = value;
+
                     renderFocalPoints();
                 } else if (!newName) {
-                     e.target.value = originalName;
+                    target.value = originalName;
                 }
-            });
+            }
         });
-        document.querySelectorAll('.focal-point-value').forEach(input => {
-            input.addEventListener('input', e => {
-                const groupName = e.target.dataset.group;
-                const index = parseInt(e.target.dataset.index, 10);
-                fullConfig.focalPoints[groupName][index] = e.target.value;
-            });
+
+        listEl.addEventListener('input', e => {
+            const target = e.target;
+
+            if (target.matches('.focal-point-value')) {
+                const groupName = target.dataset.group;
+                const index = parseInt(target.dataset.index, 10);
+                if (fullConfig.focalPoints[groupName]) {
+                    fullConfig.focalPoints[groupName][index] = target.value;
+                }
+            }
         });
     }
 
-    // --- SETUP INICIAL ---
     async function initializePage() {
         await loadConfig();
         populateAllTabs();
@@ -545,7 +549,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // --- Listeners Gerais ---
         ui.masterEnable.addEventListener('change', updateGlobalUIEnableState);
         ui.saveAllButton.addEventListener('click', () => {
             collectSettingsFromUI();
@@ -570,13 +573,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         ui.exportConfig.addEventListener('click', () => {
-             const blob = new Blob([JSON.stringify(fullConfig, null, 2)], { type: 'application/json' });
-             const url = URL.createObjectURL(blob);
-             const a = document.createElement('a');
-             a.href = url;
-             a.download = `neuron_config_${new Date().toISOString().slice(0,10)}.json`;
-             a.click();
-             URL.revokeObjectURL(url);
+            const blob = new Blob([JSON.stringify(fullConfig, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `neuron_config_${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
         });
         ui.importConfig.addEventListener('click', () => {
             const file = ui.importFileInput.files[0];
@@ -593,14 +596,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     saveConfig();
                     populateAllTabs();
                     displayStatus(ui.importStatus, "Configuração importada com sucesso!", false);
-                } catch(e) {
+                } catch (e) {
                     displayStatus(ui.importStatus, `Erro ao importar: ${e.message}`, true);
                 }
             };
             reader.readAsText(file);
         });
 
-        document.querySelector('.tab-link[data-tab="tab-geral"]').click();
+        document.querySelector('.tab-link[data-tab="tab-general"]').click();
     }
 
     initializePage();

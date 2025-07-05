@@ -1,8 +1,3 @@
-/**
- * @file tratar_novo_insert.js
- * @version 7.1 (Robusto contra contexto invalidado)
- * @description Insere blocos de data calculada, verificando o contexto antes de cada execução.
- */
 (function () {
     'use strict';
 
@@ -22,7 +17,6 @@
     }
 
     async function processarDemandas(event) {
-        // Recarrega config e verifica ativação a cada evento recebido
         if (!await isScriptAtivo()) {
             removerBlocosInseridos();
             return;
@@ -35,8 +29,7 @@
         const DU = window.DateUtils;
         const prazosSettings = config.prazosSettings || {};
 
-        // ... (o restante da lógica de processamento e inserção permanece o mesmo) ...
-         demandas.forEach(demanda => {
+        demandas.forEach(demanda => {
             try {
                 if (!demanda.prazo || !demanda.idPrazoOriginal) return;
                 const elemPrazo = document.getElementById(demanda.idPrazoOriginal);
@@ -90,7 +83,6 @@
 
     function removerBlocosInseridos() {
         document.querySelectorAll('div[data-calculado="true"]').forEach(container => {
-            // Implementar lógica de limpeza, se necessário
         });
     }
 

@@ -1,13 +1,6 @@
-/**
- * @file tramitar.js
- * @version 5.0 (Refatoração Final para Usar DateUtils)
- * @description Versão final que depende exclusivamente do date_utils.js para todos os cálculos de data.
- */
-
 (async function () {
     'use strict';
 
-    // --- Constantes ---
     const SCRIPT_ID = 'tramitar';
     const CONFIG_KEY = 'neuronUserConfig';
     
@@ -16,10 +9,8 @@
     const ID_CAMPO_TAGS_INFO = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_infoManifestacoes_infoManifestacao_txtTags';
     const ID_SPAN_PRAZO_ATENDIMENTO = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_infoManifestacoes_infoManifestacao_txtPrazoAtendimento';
 
-    // --- Variáveis de Estado ---
     let config = {};
 
-    // --- Lógica de Configuração e Inicialização ---
     async function carregarConfiguracoes() {
         const result = await chrome.storage.local.get(CONFIG_KEY);
         config = result[CONFIG_KEY] || {};
@@ -31,9 +22,7 @@
         return config.masterEnableNeuron !== false && config.featureSettings?.[SCRIPT_ID]?.enabled !== false;
     }
 
-    // --- LÓGICA DE DATAS (AGORA 100% DEPENDENTE DE DATEUTILS) ---
     function calcularData(tipoPrazo) {
-        // Garante que o DateUtils está pronto
         if (!window.DateUtils) return '';
 
         const spanPrazo = document.getElementById(ID_SPAN_PRAZO_ATENDIMENTO);
@@ -42,14 +31,12 @@
         const prazoStr = spanPrazo.innerText.trim();
         const prazosSettings = config.prazosSettings || {};
         
-        // Determina o offset e o modo de cálculo com base no tipo de prazo solicitado
         const offsetDays = parseInt(prazosSettings[tipoPrazo], 10);
         const useWorkingDays = prazosSettings.tratarNovoModoCalculo === 'diasUteis';
         
         const dataBase = window.DateUtils.parsearData(prazoStr);
         if (!dataBase) return '';
 
-        // Chama as funções corretas do DateUtils
         const dataCalculada = useWorkingDays 
             ? window.DateUtils.adicionarDiasUteis(dataBase, offsetDays)
             : window.DateUtils.adicionarDiasCorridos(dataBase, offsetDays);
@@ -60,27 +47,18 @@
     }
     
     function preencherCamposDeData() {
-        // Calcula e preenche o Prazo Interno
         const prazoInternoCalculado = calcularData('tratarNovoPrazoInternoDias');
         const campoDataTratamento = document.getElementById(ID_CAMPO_DATA_TRATAMENTO);
         if (campoDataTratamento) {
             campoDataTratamento.value = prazoInternoCalculado;
         }
-
-        // Você poderia facilmente preencher outros campos de data aqui, se necessário.
-        // Ex: const prazoCobranca = calcularData('tratarNovoCobrancaInternaDias');
-        //    document.getElementById('outro_campo_data').value = prazoCobranca;
     }
 
-
-    // --- Lógica da UI ---
     function criarOuAtualizarUI() {
         const mensagemField = document.getElementById(ID_CAMPO_MENSAGEM);
         if (!mensagemField) return;
 
         removerElementosCriados();
-        
-        // Preenche as datas ANTES de criar os modelos de texto
         preencherCamposDeData();
 
         const modelos = config.textModels?.Tramitar;
@@ -110,7 +88,6 @@
                 mensagemField.value = '';
                 return;
             }
-            // Pega a data já calculada do campo
             const dataLimite = document.getElementById(ID_CAMPO_DATA_TRATAMENTO)?.value || ''; 
             const secretariaTag = document.getElementById(ID_CAMPO_TAGS_INFO)?.value || '{SECRETARIA}';
             
@@ -128,11 +105,9 @@
         document.getElementById('neuronSelectMensagensTramitarContainer')?.remove();
     }
 
-    // --- Controle Principal ---
     async function verificarEstadoAtualEAgir() {
         await carregarConfiguracoes();
 
-        // Espera o DateUtils estar pronto antes de continuar
         if (window.DateUtils && typeof window.DateUtils.ready.then === 'function') {
             await window.DateUtils.ready;
         }

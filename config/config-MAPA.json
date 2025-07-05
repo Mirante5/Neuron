@@ -17,59 +17,60 @@
       "enabled": true,
       "label": "Assistente de Prorrogação"
     },
+    "respostasAutomaticas": {
+      "enabled": true,
+      "label": "Assistente de Respostas Automáticas"
+    },
     "tramitar": {
       "enabled": true,
       "label": "Assistente de Tramitação"
-    },
-    "tratarTriar": {
-      "enabled": true,
-      "label": "Melhoria de Triar/Tratar"
     },
     "tratar": {
       "enabled": true,
       "label": "Melhoria de Tratar Manifestação"
     },
-    "respostasAutomaticas": {
+    "tratarTriar": {
       "enabled": true,
-      "label": "Assistente de Respostas Automáticas"
+      "label": "Melhoria de Triar/Tratar"
     }
   },
   "generalSettings": {
     "qtdItensTratarTriar": 100
   },
   "prazosSettings": {
-    "tratarNovoModoCalculo": "diasUteis",
+    "tratarNovoModoCalculo": "diasCorridos",
     "tratarNovoAjusteFds": "modo3",
     "tratarNovoAjusteFeriado": "proximo_dia",
     "tratarNovoPrazoInternoDias": -10,
-    "tratarNovoCobrancaInternaDias": -10
+    "tratarNovoCobrancaInternaDias": -12
   },
   "holidays": [
     {
-      "date": "01/01/2025",
-      "description": "Confraternização Universal (Exemplo)"
+      "date": "28/10/2025",
+      "description": "Dia do Servidor Público"
+    },
+    {
+      "date": "20/11/2025",
+      "description": "Consciência Negra"
     },
     {
       "date": "25/12/2025",
-      "description": "Natal (Exemplo)"
+      "description": "Natal"
     }
   ],
   "textModels": {
     "Arquivar": {
       "Duplicidade": "Prezado(a) manifestante,\n\nSua manifestação (NUP) foi arquivada por duplicidade.",
       "Arquivar - Ausência de elementos (Comunicação)": "Considerando que os fatos apresentados não configuram elementos mínimos descritivos de irregularidade ou não contêm indícios suficientes para que a administração pública possa chegar a tais elementos, e ainda, que na modalidade de comunicação de irregularidade, não é possível a complementação das informações conforme previsto no art. 31 da Portaria CGU 116/2024, procedemos com o arquivamento deste protocolo.",
+      "Arquivar - Perda de Objeto": "Prezado(a) Sr(a). [NOME DO CIDADÃO],\n\nApós análise da manifestação, verificamos que houve perda de objeto, uma vez que a situação relatada já foi solucionada ou deixou de existir, não sendo mais possível ou necessária a adoção de providências por este órgão.\n\nDessa forma, informamos que a manifestação será arquivada, nos termos do Art. 31, inciso VI, da Portaria CGU nº 116/2024.\n\nAgradecemos seu contato. Sua participação é essencial para o aperfeiçoamento dos serviços públicos e o fortalecimento da cidadania.\n\nCaso tenha outras demandas ou precise de esclarecimentos, permanecemos à disposição.\n\nAtenciosamente,\n\nOuvidoria do MAPA\n\n",
       "Arquivar - Duplicidade (Comunicação)": "Considerando que a comunicação está em duplicidade ou semelhante àquela tratada por esta Ouvidoria, por meio do NUP XXXXX.XXXXXX/202X-XX, arquivamos o presente protocolo.",
       "Arquivar - Duplicidade (Solicitação/Reclamação)": "Prezado(a) Sr(a). (NOME DO CIDADÃO),\n\nApós análise, verificamos que foram enviadas duas manifestações idênticas. Por esse motivo, esta manifestação será arquivada por duplicidade, e o tratamento seguirá sob o NUP XXXXXXXX. \n\nAgradecemos seu contato. Sua participação é fundamental para aprimorar nossos serviços e fortalecer a cidadania. \n\nCaso necessite de mais informações ou tenha alguma dúvida, estamos à disposição. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n",
       "Arquivar - Falta de urbanidade (Comunicação)": "Considerando o disposto no art. 31 da Portaria CGU nº 116/2024, que estabelece a responsabilização do usuário pelo uso adequado dos serviços públicos, arquivamos o presente protocolo, pois o usuário não atendeu às exigências de urbanidade, boa-fé e conduta compatível com a utilização dos serviços públicos.",
-      "Arquivar - Falta de urbanidade (Solicitação/Reclamação)": "Prezado(a) Sr(a). (NOME DO CIDADÃO),\n\nRecebemos sua manifestação e, após análise constatamos que seu conteúdo não atende aos padrões de respeito esperados. Por isso, vamos arquivar a manifestação por falta de urbanidade. \n\nAgradecemos seu contato. Sua participação é essencial para aprimorar nossos serviços e fortalecer a cidadania. \n\nCaso tenha dúvidas ou necessite de mais informações, estamos à disposição. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n",
-      "Arquivar - Perda de Objeto": "Prezado(a) Sr(a). [NOME DO CIDADÃO],\n\nApós análise da manifestação, verificamos que houve perda de objeto, uma vez que a situação relatada já foi solucionada ou deixou de existir, não sendo mais possível ou necessária a adoção de providências por este órgão.\n\nDessa forma, informamos que a manifestação será arquivada, nos termos do Art. 31, inciso VI, da Portaria CGU nº 116/2024.\n\nAgradecemos seu contato. Sua participação é essencial para o aperfeiçoamento dos serviços públicos e o fortalecimento da cidadania.\n\nCaso tenha outras demandas ou precise de esclarecimentos, permanecemos à disposição.\n\nAtenciosamente,\n\nOuvidoria do MAPA\n\n"
+      "Arquivar - Falta de urbanidade (Solicitação/Reclamação)": "Prezado(a) Sr(a). (NOME DO CIDADÃO),\n\nRecebemos sua manifestação e, após análise constatamos que seu conteúdo não atende aos padrões de respeito esperados. Por isso, vamos arquivar a manifestação por falta de urbanidade. \n\nAgradecemos seu contato. Sua participação é essencial para aprimorar nossos serviços e fortalecer a cidadania. \n\nCaso tenha dúvidas ou necessite de mais informações, estamos à disposição. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n"
     },
     "Prorrogar": {
       "Análise Complexa": "O prazo foi estendido devido à complexidade da análise.",
       "Prorrogação - Texto Padrão": "Prezado(a),\n\nInformamos que a área responsável pela sua solicitação solicitou um prazo adicional para fornecer a resposta. Até o momento, a resposta da área técnica é a seguinte: \n\n[Inserir aqui a resposta da área técnica responsável] \n\nAssim que recebermos a resposta final, encaminharemos todas as informações para mantê-lo(a) atualizado(a) sobre as providências que estamos tomando. \n\nAgradecemos sua manifestação e o uso deste canal de atendimento. Caso tenha mais dúvidas ou precise de informações adicionais, estamos à disposição. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n"
-    },
-    "Tratar": {
-      "Texto Padrão Prorrogação": "Prezados, informamos que o prazo para resposta à sua manifestação foi estendido até {datalimite} para uma análise mais detalhada."
     },
     "Encaminhar": {
       "Encaminhamento em geral": {
@@ -85,6 +86,9 @@
       "Tramitar - Reclamação": "À (Área técnica responsável), \n\nEncaminhamos a reclamação para análise e providências.\n\n O prazo para a resposta conclusiva é até {PRAZO}.\n\nA resposta deve ser clara e objetiva, abordando o fato mencionado e apresentando uma solução ou informando sobre a impossibilidade de atendimento\n\n Caso existam documentos, inclua um resumo claro e objetivo no chat, sem a necessidade de encaminhar o documento completo ao cidadão.\n\nApós a conclusão, tramitem a manifestação para a caixa Retorno-OUV, para que possamos acompanhar o andamento e o fechamento do caso.\n\nSe for necessário mais tempo, o prazo poderá ser prorrogado uma única vez, desde que devidamente justificado.\n\nAtenciosamente,\n\nOuvidoria do MAPA\n\n",
       "Tramitar - Solicitação": "À (Área técnica responsável),\n\nEncaminhamos a solicitação para análise e providências.\n\nO prazo para a resposta conclusiva é até {PRAZO}. \n\nA resposta deve ser clara e objetiva, abordando o fato mencionado e propondo uma solução ou informando a impossibilidade de atendimento. \n\nCaso existam documentos relevantes, inclua um resumo claro e objetivo no chat, sem a necessidade de enviar o documento completo ao cidadão. \n\nApós a conclusão, tramitem o processo para a caixa Retorno-OUV, para que possamos acompanhar o andamento e o fechamento do caso. \n\nSe for necessário mais tempo, o prazo pode ser prorrogado uma única vez, desde que devidamente justificado. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n",
       "Tramitar - Sugestão": "À (NOME DO SERVIÇO RESPONSÁVEL PELA APURAÇÃO),\n\nEncaminhamos a sugestão para análise e providências. O prazo para retorno com a resposta conclusiva é até {PRAZO}. \n\nA resposta deve abordar a viabilidade de adoção da medida sugerida ou, caso contrário, justificar a impossibilidade. Após a conclusão, tramitem o processo para a caixa Retorno-OUV, mantendo os nomes dos responsáveis, para que possamos acompanhar o andamento e o fechamento do caso. \n\nSe for necessário mais tempo, o prazo pode ser prorrogado uma única vez, desde que devidamente justificado. \n\nPermanecemos à disposição para quaisquer dúvidas.\n\n Atenciosamente, \n\nOuvidoria/MAPA \n\n"
+    },
+    "Tratar": {
+      "Texto Padrão Prorrogação": "Prezados, informamos que o prazo para resposta à sua manifestação foi estendido até {datalimite} para uma análise mais detalhada."
     },
     "mensagens": {
       "prorrogacao": "tESTE 2"

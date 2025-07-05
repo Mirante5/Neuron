@@ -1,29 +1,13 @@
-/**
- * @file prorrogar.css
- * @description Estilos para os elementos injetados na página "Prorrogar Prazo".
- */
-
-/*
- * Define o estilo para o contêiner que agrupa nosso rótulo e menu suspenso,
- * garantindo um bom espaçamento.
- */
 .neuron-prorrogar-container {
-    /* Aproveita a classe 'form-group' para manter a consistência com a página */
-    margin-bottom: 15px; /* Adiciona um espaço abaixo, separando-o do campo de justificativa. */
+    margin-bottom: 15px;
 }
 
-/*
- * Estiliza o rótulo do nosso menu suspenso para clareza e consistência.
- */
 .neuron-prorrogar-container label {
-    display: block;      /* Faz o rótulo ocupar sua própria linha. */
-    margin-bottom: 5px;  /* Adiciona um pequeno espaço entre o rótulo e o menu. */
-    font-weight: bold;   /* Deixa o texto em negrito, como os outros rótulos da página. */
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
-/*
- * Estiliza o menu suspenso para que ele ocupe o espaço corretamente.
- */
 #neuronDropdownProrrogar {
-    width: 100%; /* Faz o menu suspenso ocupar toda a largura disponível. */
+    width: 100%;
 }

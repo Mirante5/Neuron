@@ -1,13 +1,6 @@
-/**
- * @file notificacoes.js
- * @version 3.1 (Efeito de Pulsação)
- * @description Versão final com efeito de pulsação no ícone quando há notificações.
- */
-
 (async function () {
     'use strict';
 
-    // --- Constantes e Estado ---
     const SCRIPT_ID = 'notificacoes';
     const CONFIG_KEY = 'neuronUserConfig';
     const STORAGE_KEY_DEMANDAS = 'neuronDemandasMestra';
@@ -18,7 +11,6 @@
     let memoriaDeDemandas = {};
     let isFeatureActive = false;
 
-    // --- Funções de Inicialização e Configuração ---
     async function carregarConfiguracoes() {
         const result = await chrome.storage.local.get(CONFIG_KEY);
         config = result[CONFIG_KEY] || {};
@@ -29,7 +21,6 @@
         return config.masterEnableNeuron !== false && config.featureSettings?.[SCRIPT_ID]?.enabled !== false;
     }
 
-    // --- Lógica de Criação e Remoção da UI ---
     function criarUI() {
         if (document.getElementById('neuron-notificacao-trigger')) return;
 
@@ -83,7 +74,6 @@
         setTimeout(() => toast.remove(), 5000);
     }
     
-    // --- Lógica de Ações ---
     function limparLista() {
         memoriaDeDemandas = {};
         demandasConcluidas = new Set();
@@ -97,7 +87,6 @@
         if (modal) modal.style.display = 'none';
     }
 
-    // --- Lógica Principal ---
     function inicializarDadosNotificacoes() {
         chrome.storage.local.get([STORAGE_KEY_CONCLUIDAS, STORAGE_KEY_DEMANDAS], (result) => {
             demandasConcluidas = new Set(result[STORAGE_KEY_CONCLUIDAS] || []);
@@ -230,15 +219,12 @@
         const naoConcluidas = Object.values(memoriaDeDemandas).filter(d => isNotificacaoRelevante(d) && !demandasConcluidas.has(d.numero));
         const total = naoConcluidas.length;
 
-        // Limpa todas as classes de status e pulsação antes de reavaliar
-        trigger.className = ''; 
+        trigger.className = '';
 
         if (total > 0) {
             contador.innerText = total > 99 ? '99+' : total;
             contador.style.display = 'block';
-            // Adiciona a classe de pulsação
             trigger.classList.add('pulsating');
-            // Define a cor
             if (total > 5) {
                 trigger.classList.add('status-danger');
             } else {
@@ -246,7 +232,6 @@
             }
         } else {
             contador.style.display = 'none';
-            // Garante que o ícone fique verde e pare de pulsar
             trigger.classList.add('status-ok');
         }
     }
@@ -269,7 +254,6 @@
         return Math.ceil((dataAlvo.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24));
     }
 
-    // --- Gerenciamento de Estado da Funcionalidade ---
     function ativarFuncionalidade() {
         if (isFeatureActive) return;
         criarUI();

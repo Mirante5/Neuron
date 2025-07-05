@@ -1,13 +1,10 @@
-/* /Neuron/modules/notificacoes/notificacoes.css (Versão Final com Pulsação) */
-
-/* Contêiner principal do gatilho da notificação */
 #neuron-notificacao-trigger {
     position: fixed;
     bottom: 25px;
     right: 25px;
     width: 60px;
     height: 60px;
-    background-color: #007bff; /* Azul padrão */
+    background-color: #007bff;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -23,29 +20,25 @@
     transform: scale(1.1);
 }
 
-/* NOVO: Classe para o efeito de pulsação */
 #neuron-notificacao-trigger.pulsating {
     animation: neuron-pulse 2s infinite;
 }
 
-/* Sistema de cores para o gatilho */
 #neuron-notificacao-trigger.status-ok {
-    background-color: #28a745; /* Verde */
+    background-color: #28a745;
 }
 #neuron-notificacao-trigger.status-warning {
-    background-color: #ffc107; /* Amarelo */
+    background-color: #ffc107;
 }
 #neuron-notificacao-trigger.status-danger {
-    background-color: #dc3545; /* Vermelho */
+    background-color: #dc3545;
 }
 
-
-/* Contador de notificações no ícone */
 .neuron-contador {
     position: absolute;
     top: 0px;
     right: 0px;
-    background-color: #dc3545; /* Vermelho forte para destaque */
+    background-color: #dc3545;
     color: white;
     border-radius: 50%;
     padding: 2px 6px;
@@ -57,7 +50,6 @@
     box-sizing: border-box;
 }
 
-/* Painel de Notificações */
 #neuron-notificacao-painel {
     position: fixed;
     bottom: 100px;
@@ -68,13 +60,12 @@
     border-radius: 8px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.25);
     z-index: 9999;
-    display: none; /* Inicia oculto */
+    display: none;
     flex-direction: column;
     overflow: hidden;
     border: 1px solid #ddd;
 }
 
-/* Cabeçalho do Painel */
 .neuron-painel-header {
     display: flex;
     justify-content: space-between;
@@ -102,8 +93,6 @@
     color: #343a40;
 }
 
-
-/* Corpo do Painel (onde as notificações ficam) */
 .neuron-painel-body {
     flex-grow: 1;
     overflow-y: auto;
@@ -111,7 +100,6 @@
     background-color: #fdfdfd;
 }
 
-/* Estilo para os GRUPOS de notificação */
 .neuron-grupo-header {
     background-color: #e9ecef;
     padding: 8px 12px;
@@ -136,7 +124,6 @@
     font-weight: 600;
 }
 
-/* Ícone de abrir/fechar */
 .neuron-grupo-header::after {
     content: '▲'; 
     font-size: 12px;
@@ -146,7 +133,6 @@
     transform: rotate(180deg);
 }
 
-/* Lista de itens dentro do grupo */
 .neuron-grupo-lista {
     padding-left: 10px;
     border-left: 2px solid #e9ecef;
@@ -161,8 +147,6 @@
     padding-left: 10px;
 }
 
-
-/* Itens individuais de notificação */
 .neuron-item-notificacao {
     display: flex;
     align-items: center;
@@ -192,21 +176,18 @@
     text-decoration: underline;
 }
 
-/* Detalhe do prazo */
 .neuron-link-detalhe {
     font-size: 12px;
     color: #e85d04;
     font-weight: bold;
 }
 
-/* Checkbox de concluído */
 .neuron-done-check {
     margin-left: 10px;
     cursor: pointer;
     transform: scale(1.2);
 }
 
-/* Efeito de riscado quando concluído */
 .neuron-item-notificacao.done .neuron-link-numero,
 .neuron-item-notificacao.done .neuron-link-detalhe {
     text-decoration: line-through;
@@ -214,8 +195,6 @@
     font-weight: normal;
 }
 
-
-/* Rodapé do Painel com Estilo Melhorado */
 .neuron-painel-footer {
     padding: 10px;
     border-top: 1px solid #dee2e6;
@@ -241,13 +220,11 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* Botão Atualizar */
 .neuron-btn-atualizar:hover {
     background-color: #e9ecef;
     border-color: #adb5bd;
 }
 
-/* Botão Limpar (Estado Padrão) */
 .neuron-btn-limpar {
     background-color: #f8d7da;
     color: #721c24;
@@ -258,7 +235,6 @@
     border-color: #f5c6cb;
 }
 
-/* Estilos para o Toast de Aviso */
 .neuron-toast-aviso {
     position: fixed;
     top: 20px;
@@ -284,8 +260,6 @@
     margin-right: 12px;
 }
 
-
-/* Caixa de Confirmação Personalizada */
 .neuron-confirm-modal {
     position: absolute;
     top: 0;
@@ -293,7 +267,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.95);
-    z-index: 10001; /* Acima do conteúdo do painel */
+    z-index: 10001;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -345,7 +319,6 @@
     border-color: #bd2130;
 }
 
-/* NOVO: Animações de Pulsação e Toast */
 @keyframes neuron-pulse {
     0% {
         box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);

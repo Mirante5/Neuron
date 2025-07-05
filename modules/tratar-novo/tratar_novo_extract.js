@@ -1,9 +1,3 @@
-/**
- * @file tratar_novo_extract.js
- * @version 2.1 (Robusto contra contexto invalidado)
- * @description Extrai dados da tabela de manifestações somente se a funcionalidade estiver ativa.
- */
-
 (function() {
     'use strict';
 
@@ -13,12 +7,8 @@
     let observer = null;
     let debounceTimer;
 
-    /**
-     * @description Carrega as configurações e verifica se o script está ativo.
-     * @returns {Promise<boolean>}
-     */
     async function isScriptAtivo() {
-        if (!chrome.runtime?.id) return false; // VERIFICAÇÃO DE CONTEXTO
+        if (!chrome.runtime?.id) return false;
         try {
             const result = await chrome.storage.local.get(CONFIG_KEY);
             const config = result[CONFIG_KEY] || {};
@@ -28,9 +18,6 @@
         }
     }
 
-    /**
-     * @description Função principal que extrai os dados e dispara o evento.
-     */
     const executarExtracao = async () => {
         if (!await isScriptAtivo()) return;
 
@@ -38,7 +25,6 @@
         if (todosOsLinksDeNumero.length === 0) return;
 
         const manifestacoesParaProcessar = [];
-        // ... (o restante da lógica de extração permanece o mesmo) ...
         todosOsLinksDeNumero.forEach(linkNumero => {
             try {
                 const idCompleto = linkNumero.id;
@@ -79,16 +65,12 @@
             }
         });
 
-
         if (manifestacoesParaProcessar.length > 0) {
             const evento = new CustomEvent('dadosExtraidosNeuron', { detail: manifestacoesParaProcessar });
             document.dispatchEvent(evento);
         }
     };
 
-    /**
-     * @description Inicia ou para a observação de mudanças na página.
-     */
     async function gerenciarEstado() {
         if (await isScriptAtivo()) {
             if (observer) return;
@@ -114,9 +96,8 @@
         }
     }
 
-    // --- Ponto de Entrada ---
     chrome.storage.onChanged.addListener((changes, namespace) => {
-        if (!chrome.runtime?.id) return; // VERIFICAÇÃO DE CONTEXTO
+        if (!chrome.runtime?.id) return;
         if (namespace === 'local' && changes[CONFIG_KEY]) {
             gerenciarEstado();
         }

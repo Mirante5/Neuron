@@ -1,21 +1,12 @@
-/**
- * @file tramitar_pontos_focais.js
- * @version 1.0 (Módulo Separado)
- * @description Injeta e controla o painel de Pontos Focais na página de Tramitação.
- */
-
 (async function () {
     'use strict';
 
-    // --- Constantes ---
-    const SCRIPT_ID = 'tramitar_pontos_focais'; // Novo ID para este script
+    const SCRIPT_ID = 'tramitar_pontos_focais';
     const CONFIG_KEY = 'neuronUserConfig';
     const CONTAINER_PAINEL_SELECTOR = '.col-md-6.col-md-push-6.hidden-print';
 
-    // --- Variáveis de Estado ---
     let config = {};
 
-    // --- Lógica de Configuração e Inicialização ---
     async function carregarConfiguracoes() {
         const result = await chrome.storage.local.get(CONFIG_KEY);
         config = result[CONFIG_KEY] || {};
@@ -24,11 +15,9 @@
 
     function isScriptAtivo() {
         if (!config || typeof config !== 'object') return false;
-        // Este script depende da feature 'tramitar' principal estar ativa.
         return config.masterEnableNeuron !== false && config.featureSettings?.['tramitar']?.enabled !== false;
     }
 
-    // --- Lógica da UI ---
     function exibirNomesParaSecretaria(selectElement, ulElement) {
         if (!selectElement || !ulElement) return;
         
@@ -37,7 +26,7 @@
         const pontosFocais = config.focalPoints || {};
         
         if (sigla && pontosFocais[sigla]) {
-            const nomes = pontosFocais[sigla]; // O array completo de nomes
+            const nomes = pontosFocais[sigla];
             nomes.forEach(nome => {
                 const li = document.createElement('li');
                 li.textContent = nome;
@@ -91,7 +80,6 @@
                 inputNome.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
                 setTimeout(() => { 
                     botaoAdd.click();
-                    // Aguarda o postback e tenta adicionar o próximo nome
                     setTimeout(() => adicionarProximoNome(index + 1), 3000); 
                 }, 1000);
             }, 500);
@@ -136,7 +124,6 @@
         for (const sigla of sortedSiglas) {
             const option = document.createElement('option');
             option.value = sigla;
-            // Usa o próprio nome do grupo como texto da opção
             option.textContent = sigla; 
             selectElement.appendChild(option);
         }
@@ -162,7 +149,6 @@
         document.getElementById('neuronPainelPontosFocais')?.remove();
     }
 
-    // --- Controle Principal ---
     async function verificarEstadoAtualEAgir() {
         await carregarConfiguracoes();
 

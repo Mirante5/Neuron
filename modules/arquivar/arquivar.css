@@ -1,24 +1,10 @@
-/**
- * @file arquivar.css
- * @description Estilos para os elementos injetados na página "Arquivar Manifestação".
- */
-
-/*
- * O elemento .form-group é o contêiner que o nosso script arquivar.js cria.
- * Vamos garantir que ele tenha um bom espaçamento inferior para separá-lo
- * dos outros elementos do formulário.
- */
 .form-group .neuronLabelArquivar {
-    display: block;      /* Garante que o rótulo ocupe sua própria linha */
-    margin-bottom: 5px;  /* Adiciona um pequeno espaço entre o rótulo e o menu suspenso */
-    font-weight: bold;   /* Deixa o texto do rótulo em negrito, como os outros da página */
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
-/*
- * Estiliza o próprio menu suspenso para garantir que ele tenha uma aparência
- * consistente e se estenda corretamente.
- */
 #neuronDropdownArquivar {
-    width: 100%; /* Faz o menu suspenso ocupar toda a largura disponível */
-    margin-top: 5px; /* Adiciona um espaço acima, caso o estilo da página não o faça */
+    width: 100%;
+    margin-top: 5px;
 }

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Neuron",
-  "version": "1.0",
+  "version": "1.1.0",
   "description": "Otimizador de fluxos de trabalho na plataforma Fala.br",
   "author": "MAPA - DF",
   "icons": {
@@ -14,10 +14,10 @@
   "action": {
     "default_popup": "modules/popup/popup.html",
     "default_icon": {
-      "128": "images/neuronoff128.png"
+      "128": "images/neuronon128.png"
     }
   },
-  "permissions": ["storage", "scripting", "activeTab", "tabs"],
+  "permissions": ["storage"],
   "host_permissions": ["https://falabr.cgu.gov.br/*"],
   "background": {
     "service_worker": "background.js"
