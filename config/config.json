@@ -1,63 +1,230 @@
 {
-  "masterEnableNeuron": false,
+  "masterEnableNeuron": true,
   "featureSettings": {
     "loading": {
-      "enabled": false,
-      "label": "Animação de Loading (Exemplo)"
+      "enabled": true,
+      "label": "Animação de Loading"
     },
     "arquivar": {
       "enabled": true,
       "label": "Assistente de Arquivamento"
     },
     "encaminhar": {
-      "enabled": false,
+      "enabled": true,
       "label": "Assistente de Encaminhamento"
     },
     "prorrogar": {
       "enabled": true,
       "label": "Assistente de Prorrogação"
+    },
+    "respostasAutomaticas": {
+      "enabled": true,
+      "label": "Assistente de Respostas Automáticas"
+    },
+    "tramitar": {
+      "enabled": true,
+      "label": "Assistente de Tramitação"
+    },
+    "tratar": {
+      "enabled": true,
+      "label": "Melhoria de Tratar Manifestação"
+    },
+    "tratarTriar": {
+      "enabled": true,
+      "label": "Melhoria de Triar/Tratar"
     }
   },
   "generalSettings": {
-    "qtdItensTratarTriar": 50
+    "qtdItensTratarTriar": 100
   },
   "prazosSettings": {
-    "tratarNovoModoCalculo": "corridos",
-    "tratarNovoAjusteFds": "modo1",
-    "tratarNovoAjusteFeriado": "dia_anterior",
-    "tratarNovoPrazoInternoDias": -5,
-    "tratarNovoCobrancaInternaDias": -3
+    "tratarNovoModoCalculo": "diasCorridos",
+    "tratarNovoAjusteFds": "modo3",
+    "tratarNovoAjusteFeriado": "proximo_dia",
+    "tratarNovoPrazoInternoDias": -10,
+    "tratarNovoCobrancaInternaDias": -12
   },
   "holidays": [
     {
-      "date": "07/09/2025",
-      "description": "Independência do Brasil (Exemplo)"
+      "date": "28/10/2025",
+      "description": "Dia do Servidor Público"
+    },
+    {
+      "date": "20/11/2025",
+      "description": "Consciência Negra"
+    },
+    {
+      "date": "25/12/2025",
+      "description": "Natal"
     }
   ],
   "textModels": {
     "Arquivar": {
-      "Duplicidade": "Exemplo de texto para arquivamento por duplicidade.",
-      "Arquivar - Ausência de elementos (Comunicação)": "Exemplo de texto para ausência de elementos.",
-      "Arquivar - Perda de Objeto": "Exemplo de texto para perda de objeto."
+      "Duplicidade": "Prezado(a) manifestante,\n\nSua manifestação (NUP) foi arquivada por duplicidade.",
+      "Arquivar - Ausência de elementos (Comunicação)": "Considerando que os fatos apresentados não configuram elementos mínimos descritivos de irregularidade ou não contêm indícios suficientes para que a administração pública possa chegar a tais elementos, e ainda, que na modalidade de comunicação de irregularidade, não é possível a complementação das informações conforme previsto no art. 31 da Portaria CGU 116/2024, procedemos com o arquivamento deste protocolo.",
+      "Arquivar - Perda de Objeto": "Prezado(a) Sr(a). [NOME DO CIDADÃO],\n\nApós análise da manifestação, verificamos que houve perda de objeto, uma vez que a situação relatada já foi solucionada ou deixou de existir, não sendo mais possível ou necessária a adoção de providências por este órgão.\n\nDessa forma, informamos que a manifestação será arquivada, nos termos do Art. 31, inciso VI, da Portaria CGU nº 116/2024.\n\nAgradecemos seu contato. Sua participação é essencial para o aperfeiçoamento dos serviços públicos e o fortalecimento da cidadania.\n\nCaso tenha outras demandas ou precise de esclarecimentos, permanecemos à disposição.\n\nAtenciosamente,\n\nOuvidoria do MAPA\n\n",
+      "Arquivar - Duplicidade (Comunicação)": "Considerando que a comunicação está em duplicidade ou semelhante àquela tratada por esta Ouvidoria, por meio do NUP XXXXX.XXXXXX/202X-XX, arquivamos o presente protocolo.",
+      "Arquivar - Duplicidade (Solicitação/Reclamação)": "Prezado(a) Sr(a). (NOME DO CIDADÃO),\n\nApós análise, verificamos que foram enviadas duas manifestações idênticas. Por esse motivo, esta manifestação será arquivada por duplicidade, e o tratamento seguirá sob o NUP XXXXXXXX. \n\nAgradecemos seu contato. Sua participação é fundamental para aprimorar nossos serviços e fortalecer a cidadania. \n\nCaso necessite de mais informações ou tenha alguma dúvida, estamos à disposição. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n",
+      "Arquivar - Falta de urbanidade (Comunicação)": "Considerando o disposto no art. 31 da Portaria CGU nº 116/2024, que estabelece a responsabilização do usuário pelo uso adequado dos serviços públicos, arquivamos o presente protocolo, pois o usuário não atendeu às exigências de urbanidade, boa-fé e conduta compatível com a utilização dos serviços públicos.",
+      "Arquivar - Falta de urbanidade (Solicitação/Reclamação)": "Prezado(a) Sr(a). (NOME DO CIDADÃO),\n\nRecebemos sua manifestação e, após análise constatamos que seu conteúdo não atende aos padrões de respeito esperados. Por isso, vamos arquivar a manifestação por falta de urbanidade. \n\nAgradecemos seu contato. Sua participação é essencial para aprimorar nossos serviços e fortalecer a cidadania. \n\nCaso tenha dúvidas ou necessite de mais informações, estamos à disposição. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n"
     },
     "Prorrogar": {
-      "Análise Complexa": "Exemplo: O prazo foi estendido devido à complexidade."
+      "Análise Complexa": "O prazo foi estendido devido à complexidade da análise.",
+      "Prorrogação - Texto Padrão": "Prezado(a),\n\nInformamos que a área responsável pela sua solicitação solicitou um prazo adicional para fornecer a resposta. Até o momento, a resposta da área técnica é a seguinte: \n\n[Inserir aqui a resposta da área técnica responsável] \n\nAssim que recebermos a resposta final, encaminharemos todas as informações para mantê-lo(a) atualizado(a) sobre as providências que estamos tomando. \n\nAgradecemos sua manifestação e o uso deste canal de atendimento. Caso tenha mais dúvidas ou precise de informações adicionais, estamos à disposição. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n"
+    },
+    "Encaminhar": {
+      "Encaminhamento em geral": {
+        "destinatario": "Prezado(a) Ouvidor(a),\n\nEncaminhamos a esta Ouvidoria a manifestação referente a detalhar o assunto.\n\n Com isso, consideramos concluído o tratamento da manifestação no âmbito da Ouvidoria do Ministério da Agricultura e Pecuária (MAPA).\n\n Caso haja dúvidas ou se o encaminhamento não for adequado, solicitamos que entre em contato pelo e-mail ouvidoria@agro.gov.br.\n\n Estamos à disposição para quaisquer esclarecimentos.\n\n Atenciosamente,\n\n Ouvidoria do MAPA\n\n",
+        "solicitante": "Prezado(a) Senhor(a),\n\nInformamos que sua demanda não se enquadra nas competências deste Ministério. Portanto, ela será encaminhada à Ouvidoria do órgão responsável, {OUVIDORIA}. \n\nCaso deseje acompanhar o andamento de sua manifestação, você pode fazê-lo utilizando o Número Único de Protocolo gerado na Plataforma Fala.BR, o qual foi enviado para o seu e-mail. \n\nEstamos à disposição para fornecer quaisquer esclarecimentos adicionais. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n"
+      }
+    },
+    "Tramitar": {
+      "Prorrogação - Despacho de devolução": "À (NOME DO SERVIÇO RESPONSÁVEL PELA APURAÇÃO),\n\nConforme solicitado, o prazo foi prorrogado na plataforma Fala.BR. \n\nO processo prossegue com a continuidade da análise, e o novo prazo para a resposta final é até o dia {PRAZO}. A resposta deve ser objetiva, detalhando o que foi apurado e apresentando a solução ou a justificativa da impossibilidade de atendimento.\n\n Estamos à disposição para quaisquer dúvidas e aguardamos o retorno dentro do prazo estabelecido. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n",
+      "Tramitar - Comunicação": "Resposta\n\nÀ (NOME DO SERVIÇO RESPONSÁVEL PELA APURAÇÃO),\n\nEm atenção à comunicação de irregularidade registrada na Plataforma Fala.BR, informamos que será tratada conforme o procedimento de apuração.\n\n Solicita-se à esta unidade:\n\n Competência: Caso o conteúdo NÃO SEJA de competência dessa unidade, encaminhar à Ouvidoria para o devido direcionamento. \n\nRequisitos Mínimos: Verificar se a manifestação contém informações suficientes para iniciar a apuração. Caso contrário, devolver os autos à Ouvidoria, informando os motivos para o não andamento.\n\n Ao concluir a apuração, a resposta deve conter as seguintes informações, conforme indicado no Ofício-Circular 1 (39743534): \n\nNome do(a) servidor(a) responsável pela apuração. \n\nResultado da apuração: Informar se a apuração foi PROCEDENTE ou IMPROCEDENTE. \n\nAutuação: Caso haja autuação, detalhar sua natureza e informações pertinentes. \n\nUnidade responsável pela resposta: Indicar a unidade responsável pela elaboração da resposta. \n\nDocumentação anexada: Caso haja documentos, incluir um resumo claro e objetivo no chat, sem a necessidade de enviar o documento completo ao cidadão. \n\nLembre-se de que a resposta deve ser apresentada de forma simples, clara e acessível, promovendo a compreensão do cidadão, em conformidade com a Lei nº 13.460/2017, que estabelece os direitos dos usuários dos serviços públicos.\n\n A resposta final deve ser tramitada à Ouvidoria, por meio da caixa “Retorno-OUV”. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n",
+      "Tramitar - Denuncia": "À (Nome da área técnica responsável),\n\n Em atenção à denúncia registrada na Plataforma Fala.BR, informamos que será tratada conforme o procedimento de apuração. \n\n Solicita-se à esta unidade: Competência: Caso o conteúdo NÃO SEJA de competência dessa unidade, encaminhar à Ouvidoria para o devido direcionamento. \n\n Requisitos Mínimos: Verificar se a manifestação contém informações suficientes para iniciar a apuração. Caso contrário, devolver os autos à Ouvidoria, informando os motivos para o não andamento. \n\n Ao concluir a apuração, a resposta deve conter as seguintes informações, conforme indicado no Ofício-Circular 1 (39743534): \n\n Nome do(a) servidor(a) responsável pela apuração. \n\n Resultado da apuração: Informar se a apuração foi PROCEDENTE ou IMPROCEDENTE. \n\n Autuação: Caso haja autuação, detalhar sua natureza e informações pertinentes. \n\n Unidade responsável pela resposta: Indicar a unidade responsável pela elaboração da resposta. \n\n Documentação anexada: Caso haja documentos, incluir um resumo claro e objetivo no chat, sem a necessidade de enviar o documento completo ao cidadão. \n\n Lembre-se de que a resposta deve ser apresentada de forma simples, clara e acessível, promovendo a compreensão do cidadão, em conformidade com a Lei nº 13.460/2017, que estabelece os direitos dos usuários dos serviços públicos.\n\n  A resposta final deve ser tramitada à Ouvidoria, por meio da caixa “Retorno-OUV”. \n\n Atenciosamente, \n\n Ouvidoria do MAPA \n\n ",
+      "Tramitar - Elogio": "À (Area Técnica Responsável),\n\nEncaminhamos o elogio para conhecimento do agente público ou responsável pelo serviço, bem como de sua chefia imediata. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n",
+      "Tramitar - Reclamação": "À (Área técnica responsável), \n\nEncaminhamos a reclamação para análise e providências.\n\n O prazo para a resposta conclusiva é até {PRAZO}.\n\nA resposta deve ser clara e objetiva, abordando o fato mencionado e apresentando uma solução ou informando sobre a impossibilidade de atendimento\n\n Caso existam documentos, inclua um resumo claro e objetivo no chat, sem a necessidade de encaminhar o documento completo ao cidadão.\n\nApós a conclusão, tramitem a manifestação para a caixa Retorno-OUV, para que possamos acompanhar o andamento e o fechamento do caso.\n\nSe for necessário mais tempo, o prazo poderá ser prorrogado uma única vez, desde que devidamente justificado.\n\nAtenciosamente,\n\nOuvidoria do MAPA\n\n",
+      "Tramitar - Solicitação": "À (Área técnica responsável),\n\nEncaminhamos a solicitação para análise e providências.\n\nO prazo para a resposta conclusiva é até {PRAZO}. \n\nA resposta deve ser clara e objetiva, abordando o fato mencionado e propondo uma solução ou informando a impossibilidade de atendimento. \n\nCaso existam documentos relevantes, inclua um resumo claro e objetivo no chat, sem a necessidade de enviar o documento completo ao cidadão. \n\nApós a conclusão, tramitem o processo para a caixa Retorno-OUV, para que possamos acompanhar o andamento e o fechamento do caso. \n\nSe for necessário mais tempo, o prazo pode ser prorrogado uma única vez, desde que devidamente justificado. \n\nAtenciosamente, \n\nOuvidoria do MAPA \n\n",
+      "Tramitar - Sugestão": "À (NOME DO SERVIÇO RESPONSÁVEL PELA APURAÇÃO),\n\nEncaminhamos a sugestão para análise e providências. O prazo para retorno com a resposta conclusiva é até {PRAZO}. \n\nA resposta deve abordar a viabilidade de adoção da medida sugerida ou, caso contrário, justificar a impossibilidade. Após a conclusão, tramitem o processo para a caixa Retorno-OUV, mantendo os nomes dos responsáveis, para que possamos acompanhar o andamento e o fechamento do caso. \n\nSe for necessário mais tempo, o prazo pode ser prorrogado uma única vez, desde que devidamente justificado. \n\nPermanecemos à disposição para quaisquer dúvidas.\n\n Atenciosamente, \n\nOuvidoria/MAPA \n\n"
+    },
+    "Tratar": {
+      "Texto Padrão Prorrogação": "Prezados, informamos que o prazo para resposta à sua manifestação foi estendido até {datalimite} para uma análise mais detalhada."
+    },
+    "mensagens": {
+      "prorrogacao": "tESTE 2"
     }
   },
   "defaultResponses": {
     "Pedido de Complementação": {
       "novoDropdownOptions": [
         {
-          "conteudoTextarea": "Exemplo: Faltam Documentos.",
-          "responsavel": "Departamento Exemplo",
-          "text": "Faltam Documentos"
+          "conteudoTextarea": "Prezado(a),\n\nAnalisámos o seu pedido e verificámos que faltam documentos essenciais para podermos continuar. Por favor, anexe os seguintes itens:\n\n- [Nome do Documento 1]\n- [Nome do Documento 2]\n\nAgradecemos a sua cooperação.",
+          "responsavel": "Departamento de Análise",
+          "text": "Faltam Documentos Essenciais"
+        },
+        {
+          "conteudoTextarea": "Olá,\n\nRecebemos o seu formulário, mas algumas informações importantes não foram preenchidas. Por favor, reveja e complete os campos destacados abaixo:\n\n- Campo X\n- Campo Y\n\nEstamos à disposição para ajudar.",
+          "responsavel": "Equipa de Suporte",
+          "text": "Informações Incompletas no Formulário"
+        }
+      ]
+    },
+    "Resposta Conclusiva": {
+      "novoDropdownOptions": [
+        {
+          "conteudoTextarea": "Para acompanhar o estado do seu pedido, pode aceder ao nosso portal online através do link [Link do Portal] e inserir o seu número de protocolo.",
+          "responsavel": "Atendimento ao Cliente",
+          "text": "Como acompanhar o meu pedido?"
+        },
+        {
+          "conteudoTextarea": "O prazo padrão para a sua solicitação é de 10 dias úteis. Receberá uma notificação por e-mail assim que houver uma atualização.",
+          "responsavel": "Atendimento ao Cliente",
+          "text": "Quais são os prazos?"
+        }
+      ]
+    },
+    "Resposta Intermediária": {
+      "novoDropdownOptions": [
+        {
+          "conteudoTextarea": "Prezado(a),\n\nAnalisámos o seu pedido e verificámos que faltam documentos essenciais para podermos continuar. Por favor, anexe os seguintes itens:\n\n- [Nome do Documento 1]\n- [Nome do Documento 2]\n\nAgradecemos a sua cooperação.",
+          "responsavel": "Departamento de Análise",
+          "text": "Faltam Documentos Essenciais"
+        },
+        {
+          "conteudoTextarea": "Olá,\n\nRecebemos o seu formulário, mas algumas informações importantes não foram preenchidas. Por favor, reveja e complete os campos destacados abaixo:\n\n- Campo X\n- Campo Y\n\nEstamos à disposição para ajudar.",
+          "responsavel": "Equipa de Suporte",
+          "text": "Informações Incompletas no Formulário"
         }
       ]
     }
   },
   "focalPoints": {
-    "EXEMPLO": [
-      "EXEMPLO - Departamento de Exemplo"
+    "AECI": [
+      "AECI - Assessoria Especial de Controle Interno"
+    ],
+    "AECS": [
+      "AECS - Assessoria Especial de Comunicação Social"
+    ],
+    "COR": [
+      "CORREG - Corregedoria"
+    ],
+    "SDA": [
+      "SDA - Secretaria de Defesa Agropecuária"
+    ],
+    "SDA/DIPOA": [
+      "SDA/DIPOA - Departamento de Inspeção de Produtos de Origem Animal",
+      "SDA/DIPOA/1º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+      "SDA/DIPOA/2º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+      "SDA/DIPOA/3º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+      "SDA/DIPOA/4º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+      "SDA/DIPOA/5º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+      "SDA/DIPOA/6º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+      "SDA/DIPOA/7º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+      "SDA/DIPOA/8º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+      "SDA/DIPOA/9º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+      "SDA/DIPOA/10º SIPOA - Serviço de Inspeção de Produtos de Origem Animal",
+      "SDA/DIPOA/11º SIPOA - Serviço de Inspeção de Produtos de Origem Animal"
+    ],
+    "SDA/DSA": [
+      "SDA/DSA - Departamento de Saúde Animal"
+    ],
+    "SDA/DSN": [
+      "SDA/DSN - Departamento de Suporte e Normas"
+    ],
+    "SDA/DTEC": [
+      "SDA/DTEC - Departamento de Serviços Técnicos"
+    ],
+    "SDI": [
+      "SDI - Secretaria de Inovação, Desenvolvimento Sustentável, Irrigação e Cooperativismo"
+    ],
+    "SE": [
+      "SE - Secretaria-Executiva",
+      "SE/CGAS - Coordenação-Geral de Apoio às Superintendências"
+    ],
+    "SE/SGP": [
+      "SE/SGP - Subsecretaria de Gestão de Pessoas e Gestão do Conhecimento"
+    ],
+    "SE/SPOA": [
+      "SE/SPOA - Subsecretaria de Orçamento, Planejamento e Administração"
+    ],
+    "SE/STI": [
+      "SE/STI - Gabinete do Subsecretário"
+    ],
+    "SFA/XX": [
+      "SFA - Superintendências de Agricultura e Pecuária",
+      "SFA/AC - Superintendência de Agricultura e Pecuária do Estado do Acre",
+      "SFA/AL - Superintendência de Agricultura e Pecuária do Estado de Alagoas",
+      "SFA/AM - Superintendência de Agricultura e Pecuária do Estado de Amazonas",
+      "SFA/AP - Superintendência de Agricultura e Pecuária do Estado de Amapá",
+      "SFA/BA - Superintendência de Agricultura e Pecuária do Estado da Bahia",
+      "SFA/CE - Superintendência de Agricultura e Pecuária no Estado do Ceará",
+      "SFA/DF - Superintendência de Agricultura e Pecuária do Distrito Federal",
+      "SFA/ES - Superintendência de Agricultura e Pecuária do Espírito Santo",
+      "SFA/GO - Superintendência de Agricultura e Pecuária do Estado de Goiás",
+      "SFA/MA - Superintendência de Agricultura e Pecuária do Estado do Maranhão",
+      "SFA/MG - Superintendência de Agricultura e Pecuária de Minas Gerais",
+      "SFA/MS - Superintendência de Agricultura e Pecuária do Estado do Mato Grosso do Sul",
+      "SFA/MT - Superintendência de Agricultura e Pecuária do Estado do Mato Grosso",
+      "SFA/PA - Superintendência de Agricultura e Pecuária do Estado do Pará",
+      "SFA/PB - Superintendência de Agricultura e Pecuária do Estado da Paraíba",
+      "SFA/PE - Superintendência de Agricultura e Pecuária no Estado do Pernambuco",
+      "SFA/PI - Superintendência de Agricultura e Pecuária no Estado do Piauí",
+      "SFA/PR - Superintendência de Agricultura e Pecuária do Estado do Paraná",
+      "SFA/RJ - Superintendência de Agricultura e Pecuária do Rio de Janeiro",
+      "SFA/RN - Superintendência de Agricultura e Pecuária no Estado do Rio Grande do Norte",
+      "SFA/RO - Superintendência de Agricultura e Pecuária no Estado de Rondônia",
+      "SFA/RR - Superintendência de Agricultura e Pecuária no Estado de Roraima",
+      "SFA/RS - Superintendência de Agricultura e Pecuária no Estado do Rio Grande do Sul",
+      "SFA/SC - Superintendência de Agricultura e Pecuária no Estado de Santa Catarina",
+      "SFA/SE - Superintendência de Agricultura e Pecuária do Estado de Sergipe",
+      "SFA/SP - Superintendência de Agricultura e Pecuária do Estado de São Paulo",
+      "SFA/TO - Superintendência de Agricultura e Pecuária do Estado do Tocantins"
+    ],
+    "SPA": [
+      "SPA - Secretaria de Política Agrícola"
+    ],
+    "SSDA/DIPOV": [
+      "SDA/DIPOV - Departamento de Inspeção de Produtos de Origem Vegetal"
     ]
   },
   "configVersion": "3.1.0"

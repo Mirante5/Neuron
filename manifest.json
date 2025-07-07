@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Neuron",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Otimizador de fluxos de trabalho na plataforma Fala.br",
   "author": "MAPA - DF",
   "icons": {
