@@ -83,6 +83,14 @@
 
     function removerBlocosInseridos() {
         document.querySelectorAll('div[data-calculado="true"]').forEach(container => {
+            // Remove the inserted block that comes after the original container
+            const nextSibling = container.nextElementSibling;
+            if (nextSibling && nextSibling.style.cssText.includes('border: 1px solid #e0e0e0')) {
+                nextSibling.remove();
+            }
+            // Reset the container visibility and remove the calculated flag
+            container.style.display = '';
+            delete container.dataset.calculado;
         });
     }
 

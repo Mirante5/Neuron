@@ -13,13 +13,16 @@
     let uiMutationObserver = null;
 
     async function carregarConfiguracoes() {
-        const result = await chrome.storage.local.get(CONFIG_KEY);
-        config = result[CONFIG_KEY] || {};
-        console.log(`[Neuron|${SCRIPT_ID}] Configurações carregadas.`);
+        try {
+            config = await window.NeuronUtils.loadConfiguration(SCRIPT_ID);
+        } catch (error) {
+            window.NeuronUtils.logError(SCRIPT_ID, 'Falha ao carregar configurações', error);
+            config = {};
+        }
     }
 
     function isScriptAtivo() {
-        return config.masterEnableNeuron && config.featureSettings?.[SCRIPT_ID]?.enabled;
+        return window.NeuronUtils.isScriptActive(config, SCRIPT_ID);
     }
 
     function criarOuAtualizarUI() {
@@ -48,7 +51,7 @@
 
         dropdown.innerHTML = '<option value="">Selecione um modelo...</option>';
         
-        const modelosArquivar = config.textModels?.Arquivar || { "Erro": "Modelos de arquivamento não carregados." };
+        const modelosArquivar = window.NeuronUtils.safeGet(config, 'textModels.Arquivar', { "Erro": "Modelos de arquivamento não carregados." });
         const numeroManifestacao = document.getElementById(NUMERO_MANIFESTACAO_ID)?.innerText.trim() || '{NUP_NAO_ENCONTRADO}';
 
         for (const [key, textoTemplate] of Object.entries(modelosArquivar)) {
@@ -67,14 +70,14 @@
         });
         
         motivoAncora.parentElement.insertAdjacentElement('afterend', container);
-        console.log(`[Neuron|${SCRIPT_ID}] UI de arquivamento criada.`);
+        window.NeuronUtils.logInfo(SCRIPT_ID, 'UI de arquivamento criada.');
     }
 
     function removerElementosCriados() {
         const elemento = document.getElementById(DROPDOWN_ID_NEURON);
         if (elemento) {
             elemento.parentElement.remove();
-            console.log(`[Neuron|${SCRIPT_ID}] UI removida da página.`);
+            window.NeuronUtils.logInfo(SCRIPT_ID, 'UI removida da página.');
         }
     }
     
@@ -104,20 +107,20 @@
         });
         
         uiMutationObserver.observe(observerAlvo, { childList: true, subtree: true });
-        console.log(`[Neuron|${SCRIPT_ID}] Observer da página configurado.`);
+        window.NeuronUtils.logInfo(SCRIPT_ID, 'Observer da página configurado.');
     }
 
     function desconectarObserverDaPagina() {
         if (uiMutationObserver) {
             uiMutationObserver.disconnect();
             uiMutationObserver = null;
-            console.log(`[Neuron|${SCRIPT_ID}] Observer DESCONECTADO.`);
+            window.NeuronUtils.logInfo(SCRIPT_ID, 'Observer DESCONECTADO.');
         }
     }
 
     chrome.storage.onChanged.addListener((changes, namespace) => {
-        if (namespace === 'local' && changes[CONFIG_KEY]) {
-            console.warn(`[Neuron|${SCRIPT_ID}] Configuração alterada. Reavaliando...`);
+        if (namespace === 'local' && changes[window.NeuronUtils.CONFIG_KEY]) {
+            window.NeuronUtils.logWarning(SCRIPT_ID, 'Configuração alterada. Reavaliando...');
             verificarEstadoAtualEAgir();
         }
     });

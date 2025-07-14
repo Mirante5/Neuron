@@ -38,6 +38,7 @@
     {
       "matches": ["https://falabr.cgu.gov.br/Manifestacao/TratarManifestacoes"],
       "js": [
+        "lib/neuron_utils.js",
         "lib/date_utils.js",
         "modules/tratar-novo/tratar_novo_pagesize.js",
         "modules/tratar-novo/tratar_novo_extract.js",
@@ -49,35 +50,35 @@
       "matches": [
         "https://falabr.cgu.gov.br/Manifestacao/ArquivarManifestacao.aspx?*"
       ],
-      "js": ["modules/arquivar/arquivar.js"],
+      "js": ["lib/neuron_utils.js", "modules/arquivar/arquivar.js"],
       "css": ["modules/arquivar/arquivar.css"]
     },
     {
       "matches": [
         "https://falabr.cgu.gov.br/Manifestacao/EncaminharManifestacao.aspx?*"
       ],
-      "js": ["modules/encaminhar/encaminhar.js"],
+      "js": ["lib/neuron_utils.js", "modules/encaminhar/encaminhar.js"],
       "css": ["modules/encaminhar/encaminhar.css"]
     },
     {
       "matches": [
         "https://falabr.cgu.gov.br/Manifestacao/ProrrogarManifestacao.aspx?*"
       ],
-      "js": ["modules/prorrogar/prorrogar.js"],
+      "js": ["lib/neuron_utils.js", "modules/prorrogar/prorrogar.js"],
       "css": ["modules/prorrogar/prorrogar.css"]
     },
     {
       "matches": [
         "https://falabr.cgu.gov.br/Manifestacao/TramitarManifestacao.aspx?*"
       ],
-      "js": ["modules/tramitar/tramitar.js", "modules/tramitar/tramitar_pontos_focais.js","lib/date_utils.js"],
+      "js": ["lib/neuron_utils.js", "modules/tramitar/tramitar.js", "modules/tramitar/tramitar_pontos_focais.js","lib/date_utils.js"],
       "css": ["modules/tramitar/tramitar.css"]
     },
     {
       "matches": [
         "https://falabr.cgu.gov.br/Manifestacao/TratarManifestacao.aspx?*"
       ],
-      "js": ["modules/tratar/tratar.js"],
+      "js": ["lib/neuron_utils.js", "modules/tratar/tratar.js"],
       "css": ["modules/tratar/tratar.css"]
     },
     {

@@ -2,11 +2,11 @@
   <img src="https://github.com/Mirante5/Neuron/blob/main/images/Intro-Neuron.gif" alt="Neuron Loading Animation" width="500"/>
 </p>
 
-# Neuron Extension v1.1.0
+# Neuron Extension v1.2.0
 
 **Otimizador de fluxos de trabalho na plataforma Fala.br**
 
-[![Versão](https://img.shields.io/badge/version-1.1.0-red.svg)](manifest.json)
+[![Versão](https://img.shields.io/badge/version-1.2.0-red.svg)](manifest.json)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-brightgreen.svg)](manifest.json)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![DeepScan grade](https://deepscan.io/api/teams/27437/projects/29889/branches/958626/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=27437&pid=29889&bid=958626)

@@ -2,7 +2,6 @@
     'use strict';
 
     const SCRIPT_ID = 'tratar';
-    const CONFIG_KEY = 'neuronUserConfig';
 
     const TARGET_DIV_SELECTOR = '#ConteudoForm_ConteudoGeral_ConteudoFormComAjax_UpdatePanel3';
     const INPUT_CONTRIBUICAO_ID = 'ConteudoForm_ConteudoGeral_ConteudoFormComAjax_txtContribuicao';
@@ -16,13 +15,16 @@
     let uiMutationObserver = null;
 
     async function carregarConfiguracoesTratar() {
-        const result = await chrome.storage.local.get(CONFIG_KEY);
-        config = result[CONFIG_KEY];
-        console.log(`%cNeuron (${SCRIPT_ID}): Configurações carregadas.`, "color: blue; font-weight: bold;");
+        try {
+            config = await window.NeuronUtils.loadConfiguration(SCRIPT_ID);
+        } catch (error) {
+            window.NeuronUtils.logError(SCRIPT_ID, 'Falha ao carregar configurações', error);
+            config = {};
+        }
     }
 
     function isScriptAtivo() {
-        return config.masterEnableNeuron && config.featureSettings?.[SCRIPT_ID]?.enabled;
+        return window.NeuronUtils.isScriptActive(config, SCRIPT_ID);
     }
 
     function criarBotaoAuxiliar({ id, label, onClick }) {
@@ -51,7 +53,8 @@
 
     function inserirTextoProrrogacaoAction() {
         const prazo = document.getElementById(PRAZO_ATENDIMENTO_ID)?.textContent.trim() || '{PRAZO_NAO_ENCONTRADO}';
-        const textoBase = config.textModels?.mensagens?.prorrogacao || "Modelo de prorrogação não encontrado.";
+        // Fix: Use correct configuration path - mensagens is at root level, not under textModels
+        const textoBase = window.NeuronUtils.safeGet(config, 'mensagens.prorrogacao', "Modelo de prorrogação não encontrado.");
         const textoFinal = textoBase.replace('{datalimite}', prazo);
         const field = document.getElementById(INPUT_CONTRIBUICAO_ID);
         if (field) field.value = textoFinal;
@@ -80,7 +83,7 @@
 
         panel.appendChild(btnImportar);
         panel.appendChild(btnTextoProrrogacao);
-        console.log(`%cNeuron (${SCRIPT_ID}): Botões auxiliares adicionados.`, "color: green;");
+        window.NeuronUtils.logInfo(SCRIPT_ID, 'Botões auxiliares adicionados.');
     }
 
     function removerElementosCriados() {
@@ -115,20 +118,20 @@
         });
 
         uiMutationObserver.observe(painelAlvo, { childList: true, subtree: true });
-        console.log(`%cNeuron (${SCRIPT_ID}): Observer da página configurado.`, "color: green;");
+        window.NeuronUtils.logInfo(SCRIPT_ID, 'Observer da página configurado.');
     }
 
     function desconectarObserverDaPagina() {
         if (uiMutationObserver) {
             uiMutationObserver.disconnect();
             uiMutationObserver = null;
-            console.log(`%cNeuron (${SCRIPT_ID}): Observer da página DESCONECTADO.`, "color: red;");
+            window.NeuronUtils.logInfo(SCRIPT_ID, 'Observer da página DESCONECTADO.');
         }
     }
 
     chrome.storage.onChanged.addListener((changes, namespace) => {
-        if (namespace === 'local' && changes[CONFIG_KEY]) {
-            console.log(`%cNeuron (${SCRIPT_ID}): Configuração alterada. Reavaliando...`, "color: orange; font-weight: bold;");
+        if (namespace === 'local' && changes[window.NeuronUtils.CONFIG_KEY]) {
+            window.NeuronUtils.logWarning(SCRIPT_ID, 'Configuração alterada. Reavaliando...');
             verificarEstadoAtualEAgir();
         }
     });
