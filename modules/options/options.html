@@ -29,13 +29,16 @@
         <h2>Configurações Gerais</h2>
         <div class="setting-item master-switch">
           <label for="masterEnableOptions">Habilitar Neuron Globalmente</label>
-          <input type="checkbox" id="masterEnableOptions" name="masterEnableOptions" />
+          <input type="checkbox" id="masterEnableOptions" name="masterEnableOptions" aria-describedby="master-enable-help" />
+          <span id="master-enable-help" class="sr-only">Ativa ou desativa todas as funcionalidades do Neuron</span>
         </div>
         <hr>
         <h3>Configurações de Funcionalidades:</h3>
         <div class="setting-item">
           <label for="qtdItensTratarTriar">Itens por Página (Telas Triar/Tratar):</label>
-          <input type="number" id="qtdItensTratarTriar" name="qtdItensTratarTriar" min="5" max="100" step="5"/>
+          <input type="number" id="qtdItensTratarTriar" name="qtdItensTratarTriar" min="5" max="100" step="5" 
+                 aria-describedby="qtd-help" required />
+          <span id="qtd-help" class="sr-only">Número de itens exibidos por página nas telas de triagem e tratamento</span>
         </div>
       </section>
 
@@ -46,11 +49,15 @@
          <div class="prazo-group">
             <div class="setting-item">
                 <label for="tratarNovoPrazoInternoDias">Offset para Prazo Interno (dias):</label>
-                <input type="number" id="tratarNovoPrazoInternoDias" name="tratarNovoPrazoInternoDias">
+                <input type="number" id="tratarNovoPrazoInternoDias" name="tratarNovoPrazoInternoDias" 
+                       min="-30" max="0" aria-describedby="prazo-help" required>
+                <span id="prazo-help" class="sr-only">Número de dias antes do prazo original para definir prazo interno (-30 a 0)</span>
             </div>
             <div class="setting-item">
                 <label for="tratarNovoCobrancaInternaDias">Offset para Cobrança Interna (dias):</label>
-                <input type="number" id="tratarNovoCobrancaInternaDias" name="tratarNovoCobrancaInternaDias">
+                <input type="number" id="tratarNovoCobrancaInternaDias" name="tratarNovoCobrancaInternaDias" 
+                       min="-30" max="0" aria-describedby="cobranca-help" required>
+                <span id="cobranca-help" class="sr-only">Número de dias antes do prazo original para cobrança interna (-30 a 0)</span>
             </div>
             <div class="setting-item">
               <label for="tratarNovoModoCalculo">Modo de Cálculo de Offset:</label>
@@ -82,11 +89,16 @@
          <h3>Configuração de Feriados</h3>
          <div class="holiday-manager">
           <div class="holiday-input-group">
-            <input type="text" id="holidayInput" placeholder="DD/MM/AAAA">
-            <input type="text" id="holidayDescriptionInput" placeholder="Descrição do Feriado">
-            <button id="addHolidayButton" class="add-button">Adicionar</button>
+            <input type="text" id="holidayInput" placeholder="DD/MM/AAAA" 
+                   pattern="\d{2}/\d{2}/\d{4}" title="Formato: DD/MM/AAAA" 
+                   aria-describedby="holiday-date-help" required>
+            <span id="holiday-date-help" class="sr-only">Data do feriado no formato DD/MM/AAAA</span>
+            <input type="text" id="holidayDescriptionInput" placeholder="Descrição do Feriado" 
+                   aria-describedby="holiday-desc-help" required>
+            <span id="holiday-desc-help" class="sr-only">Descrição ou nome do feriado</span>
+            <button id="addHolidayButton" class="add-button" type="button">Adicionar</button>
           </div>
-          <ul id="holidaysList"></ul>
+          <ul id="holidaysList" role="list" aria-label="Lista de feriados configurados"></ul>
         </div>
         <div id="holidaysStatus" class="status-message"></div>
          <div class="action-buttons">

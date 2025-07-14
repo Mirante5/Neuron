@@ -53,8 +53,8 @@
 
     function inserirTextoProrrogacaoAction() {
         const prazo = document.getElementById(PRAZO_ATENDIMENTO_ID)?.textContent.trim() || '{PRAZO_NAO_ENCONTRADO}';
-        // Fix: Use correct configuration path - mensagens is at root level, not under textModels
-        const textoBase = window.NeuronUtils.safeGet(config, 'mensagens.prorrogacao', "Modelo de prorrogação não encontrado.");
+        // Fix: Use correct configuration path based on actual config structure
+        const textoBase = window.NeuronUtils.safeGet(config, 'textModels.Prorrogar.Prorrogação - Texto Padrão', "Modelo de prorrogação não encontrado.");
         const textoFinal = textoBase.replace('{datalimite}', prazo);
         const field = document.getElementById(INPUT_CONTRIBUICAO_ID);
         if (field) field.value = textoFinal;

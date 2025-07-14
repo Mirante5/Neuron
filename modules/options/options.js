@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const CONFIG_STORAGE_KEY = 'neuronUserConfig';
     const DEFAULT_CONFIG_PATH = '/config/config.json';
 
+    // Enhanced UI element collection with null checks
     const ui = {
         masterEnable: document.getElementById('masterEnableOptions'),
         saveAllButton: document.getElementById('saveAllOptionsButton'),
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let fullConfig = {};
     let defaultConfig = {};
+    let eventListeners = []; // Track event listeners for cleanup
 
     const displayStatus = (el, msg, isError = false, duration = 4000) => {
         if (!el) return;
@@ -93,30 +95,96 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function collectSettingsFromUI() {
-        fullConfig.masterEnableNeuron = ui.masterEnable.checked;
-        
-        if (!fullConfig.generalSettings) fullConfig.generalSettings = {};
-        const qtdElement = document.getElementById('qtdItensTratarTriar');
-        fullConfig.generalSettings.qtdItensTratarTriar = qtdElement ? parseInt(qtdElement.value, 10) || 50 : 50;
+        try {
+            fullConfig.masterEnableNeuron = ui.masterEnable?.checked ?? true;
+            
+            if (!fullConfig.generalSettings) fullConfig.generalSettings = {};
+            
+            const qtdElement = document.getElementById('qtdItensTratarTriar');
+            if (qtdElement) {
+                const qtdValue = parseInt(qtdElement.value, 10);
+                if (validateNumericInput(qtdValue, 5, 100)) {
+                    fullConfig.generalSettings.qtdItensTratarTriar = qtdValue;
+                } else {
+                    displayStatus(ui.globalStatus, 'Valor inválido para itens por página (5-100)', true);
+                    qtdElement.value = fullConfig.generalSettings.qtdItensTratarTriar || 50;
+                    return false;
+                }
+            } else {
+                fullConfig.generalSettings.qtdItensTratarTriar = 50;
+            }
 
-        const prazosSettings = fullConfig.prazosSettings || {};
-        
-        const prazoDiasEl = document.getElementById('tratarNovoPrazoInternoDias');
-        prazosSettings.tratarNovoPrazoInternoDias = prazoDiasEl ? parseInt(prazoDiasEl.value, 10) || -5 : -5;
-        
-        const cobrancaDiasEl = document.getElementById('tratarNovoCobrancaInternaDias');
-        prazosSettings.tratarNovoCobrancaInternaDias = cobrancaDiasEl ? parseInt(cobrancaDiasEl.value, 10) || -3 : -3;
-        
-        const modoCalculoEl = document.getElementById('tratarNovoModoCalculo');
-        prazosSettings.tratarNovoModoCalculo = modoCalculoEl ? modoCalculoEl.value || 'corridos' : 'corridos';
-        
-        const ajusteFdsEl = document.getElementById('tratarNovoAjusteFds');
-        prazosSettings.tratarNovoAjusteFds = ajusteFdsEl ? ajusteFdsEl.value || 'modo1' : 'modo1';
-        
-        const ajusteFeriadoEl = document.getElementById('tratarNovoAjusteFeriado');
-        prazosSettings.tratarNovoAjusteFeriado = ajusteFeriadoEl ? ajusteFeriadoEl.value || 'proximo_dia' : 'proximo_dia';
-        
-        fullConfig.prazosSettings = prazosSettings;
+            const prazosSettings = fullConfig.prazosSettings || {};
+            
+            const prazoDiasEl = document.getElementById('tratarNovoPrazoInternoDias');
+            if (prazoDiasEl) {
+                const prazoValue = parseInt(prazoDiasEl.value, 10);
+                if (!isNaN(prazoValue) && prazoValue >= -30 && prazoValue <= 0) {
+                    prazosSettings.tratarNovoPrazoInternoDias = prazoValue;
+                } else {
+                    displayStatus(ui.globalStatus, 'Valor inválido para prazo interno (-30 a 0 dias)', true);
+                    return false;
+                }
+            } else {
+                prazosSettings.tratarNovoPrazoInternoDias = -5;
+            }
+            
+            const cobrancaDiasEl = document.getElementById('tratarNovoCobrancaInternaDias');
+            if (cobrancaDiasEl) {
+                const cobrancaValue = parseInt(cobrancaDiasEl.value, 10);
+                if (!isNaN(cobrancaValue) && cobrancaValue >= -30 && cobrancaValue <= 0) {
+                    prazosSettings.tratarNovoCobrancaInternaDias = cobrancaValue;
+                } else {
+                    displayStatus(ui.globalStatus, 'Valor inválido para cobrança interna (-30 a 0 dias)', true);
+                    return false;
+                }
+            } else {
+                prazosSettings.tratarNovoCobrancaInternaDias = -3;
+            }
+            
+            const modoCalculoEl = document.getElementById('tratarNovoModoCalculo');
+            if (modoCalculoEl) {
+                const validModes = ['diasCorridos', 'diasUteis'];
+                if (validModes.includes(modoCalculoEl.value)) {
+                    prazosSettings.tratarNovoModoCalculo = modoCalculoEl.value;
+                } else {
+                    prazosSettings.tratarNovoModoCalculo = 'diasCorridos';
+                }
+            } else {
+                prazosSettings.tratarNovoModoCalculo = 'diasCorridos';
+            }
+            
+            const ajusteFdsEl = document.getElementById('tratarNovoAjusteFds');
+            if (ajusteFdsEl) {
+                const validAdjustments = ['modo1', 'modo2', 'modo3', 'none'];
+                if (validAdjustments.includes(ajusteFdsEl.value)) {
+                    prazosSettings.tratarNovoAjusteFds = ajusteFdsEl.value;
+                } else {
+                    prazosSettings.tratarNovoAjusteFds = 'modo1';
+                }
+            } else {
+                prazosSettings.tratarNovoAjusteFds = 'modo1';
+            }
+            
+            const ajusteFeriadoEl = document.getElementById('tratarNovoAjusteFeriado');
+            if (ajusteFeriadoEl) {
+                const validHolidayAdjustments = ['proximo_dia', 'dia_anterior', 'none'];
+                if (validHolidayAdjustments.includes(ajusteFeriadoEl.value)) {
+                    prazosSettings.tratarNovoAjusteFeriado = ajusteFeriadoEl.value;
+                } else {
+                    prazosSettings.tratarNovoAjusteFeriado = 'proximo_dia';
+                }
+            } else {
+                prazosSettings.tratarNovoAjusteFeriado = 'proximo_dia';
+            }
+            
+            fullConfig.prazosSettings = prazosSettings;
+            return true;
+        } catch (error) {
+            console.error('[Neuron Options] Error collecting settings:', error);
+            displayStatus(ui.globalStatus, 'Erro ao coletar configurações da interface', true);
+            return false;
+        }
     }
 
     function updateGlobalUIEnableState() {
@@ -574,62 +642,204 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        ui.masterEnable.addEventListener('change', updateGlobalUIEnableState);
-        ui.saveAllButton.addEventListener('click', () => {
-            collectSettingsFromUI();
-            saveConfig();
-        });
-        ui.saveRawConfig.addEventListener('click', () => {
-            try {
-                const newConfig = JSON.parse(ui.rawConfigEditor.value);
-                fullConfig = newConfig;
-                saveConfig();
-                populateAllTabs();
-                displayStatus(ui.rawConfigStatus, 'Configuração RAW salva com sucesso!', false);
-            } catch (e) {
-                displayStatus(ui.rawConfigStatus, `Erro no JSON: ${e.message}`, true);
-            }
-        });
-        ui.resetRawConfig.addEventListener('click', () => {
-            if (confirm("Isso irá restaurar TODAS as configurações para o padrão. Deseja continuar?")) {
-                fullConfig = JSON.parse(JSON.stringify(defaultConfig));
-                saveConfig();
-                populateAllTabs();
-            }
-        });
-        ui.exportConfig.addEventListener('click', () => {
-            const blob = new Blob([JSON.stringify(fullConfig, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `neuron_config_${new Date().toISOString().slice(0, 10)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-        });
-        ui.importConfig.addEventListener('click', () => {
-            const file = ui.importFileInput.files[0];
-            if (!file) {
-                displayStatus(ui.importStatus, "Nenhum arquivo selecionado.", true);
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                try {
-                    const importedConfig = JSON.parse(event.target.result);
-                    if (!importedConfig.featureSettings) throw new Error("Arquivo não parece ser uma configuração válida do Neuron.");
-                    fullConfig = importedConfig;
-                    saveConfig();
-                    populateAllTabs();
-                    displayStatus(ui.importStatus, "Configuração importada com sucesso!", false);
-                } catch (e) {
-                    displayStatus(ui.importStatus, `Erro ao importar: ${e.message}`, true);
-                }
-            };
-            reader.readAsText(file);
-        });
-
-        document.querySelector('.tab-link[data-tab="tab-general"]').click();
+        // Note: Event listeners are now handled by setupEventListeners function
+        document.querySelector('.tab-link[data-tab="tab-general"]')?.click();
     }
 
-    initializePage();
+    // Enhanced error handling wrapper
+    function safeExecute(fn, errorContext = 'Unknown operation') {
+        try {
+            return fn();
+        } catch (error) {
+            console.error(`[Neuron Options] Error in ${errorContext}:`, error);
+            displayStatus(ui.globalStatus, `Erro: ${errorContext} falhou`, true);
+            return null;
+        }
+    }
+
+    // Input validation functions
+    function validateNumericInput(value, min = 1, max = 100) {
+        const num = parseInt(value, 10);
+        return !isNaN(num) && num >= min && num <= max;
+    }
+
+    function validateDateInput(dateString) {
+        const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+        if (!regex.test(dateString)) return false;
+        
+        const [day, month, year] = dateString.split('/').map(Number);
+        const date = new Date(year, month - 1, day);
+        return date.getFullYear() === year && 
+               date.getMonth() === month - 1 && 
+               date.getDate() === day;
+    }
+
+    // Enhanced event listener management
+    function addEventListenerWithCleanup(element, event, handler, options = {}) {
+        if (!element) return;
+        element.addEventListener(event, handler, options);
+        eventListeners.push({ element, event, handler, options });
+    }
+
+    function cleanupEventListeners() {
+        eventListeners.forEach(({ element, event, handler, options }) => {
+            if (element) {
+                element.removeEventListener(event, handler, options);
+            }
+        });
+        eventListeners = [];
+    }
+
+    // Enhanced initialization with better error handling
+    async function initializePageSafely() {
+        try {
+            await loadConfig();
+            populateAllTabs();
+            setupEventListeners();
+            
+            // Activate first tab safely
+            const firstTab = document.querySelector('.tab-link[data-tab="tab-general"]');
+            if (firstTab) {
+                firstTab.click();
+            } else {
+                console.warn('[Neuron Options] First tab not found');
+            }
+        } catch (error) {
+            console.error('[Neuron Options] Initialization failed:', error);
+            displayStatus(ui.globalStatus, 'Erro crítico na inicialização da página', true, 10000);
+        }
+    }
+
+    function setupEventListeners() {
+        // Tab navigation with error handling
+        ui.tabs.forEach(tab => {
+            addEventListenerWithCleanup(tab, 'click', () => {
+                safeExecute(() => {
+                    const tabId = tab.dataset.tab;
+                    ui.tabs.forEach(t => t.classList.remove('active'));
+                    ui.tabContents.forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    const targetContent = document.getElementById(tabId);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
+
+                    // Setup specific tab functionality
+                    switch (tabId) {
+                        case 'tab-prazos':
+                            setupHolidaysTab();
+                            break;
+                        case 'tab-respostas':
+                            setupResponsesTab();
+                            break;
+                        case 'tab-textos':
+                            setupTextModelsTab();
+                            break;
+                        case 'tab-pontosfocais':
+                            setupFocalPointsTab();
+                            break;
+                        case 'tab-config-raw':
+                            if (ui.rawConfigEditor) {
+                                ui.rawConfigEditor.value = JSON.stringify(fullConfig, null, 2);
+                            }
+                            break;
+                    }
+                }, `Tab navigation to ${tab.dataset.tab}`);
+            });
+        });
+
+        // Master enable toggle
+        if (ui.masterEnable) {
+            addEventListenerWithCleanup(ui.masterEnable, 'change', updateGlobalUIEnableState);
+        }
+
+        // Save all button
+        if (ui.saveAllButton) {
+            addEventListenerWithCleanup(ui.saveAllButton, 'click', () => {
+                safeExecute(() => {
+                    if (collectSettingsFromUI()) {
+                        saveConfig();
+                    }
+                }, 'Save all settings');
+            });
+        }
+
+        // Raw config operations
+        if (ui.saveRawConfig) {
+            addEventListenerWithCleanup(ui.saveRawConfig, 'click', () => {
+                safeExecute(() => {
+                    if (!ui.rawConfigEditor) {
+                        throw new Error('Editor de configuração não encontrado');
+                    }
+                    const newConfig = JSON.parse(ui.rawConfigEditor.value);
+                    fullConfig = newConfig;
+                    saveConfig();
+                    populateAllTabs();
+                    displayStatus(ui.rawConfigStatus, 'Configuração RAW salva com sucesso!', false);
+                }, 'Save raw configuration');
+            });
+        }
+
+        if (ui.resetRawConfig) {
+            addEventListenerWithCleanup(ui.resetRawConfig, 'click', () => {
+                if (confirm("Isso irá restaurar TODAS as configurações para o padrão. Deseja continuar?")) {
+                    safeExecute(() => {
+                        fullConfig = JSON.parse(JSON.stringify(defaultConfig));
+                        saveConfig();
+                        populateAllTabs();
+                        displayStatus(ui.rawConfigStatus, 'Configurações restauradas para o padrão', false);
+                    }, 'Reset to default configuration');
+                }
+            });
+        }
+
+        // Export/Import functionality
+        if (ui.exportConfig) {
+            addEventListenerWithCleanup(ui.exportConfig, 'click', () => {
+                safeExecute(() => {
+                    const blob = new Blob([JSON.stringify(fullConfig, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `neuron_config_${new Date().toISOString().slice(0, 10)}.json`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    displayStatus(ui.globalStatus, 'Configuração exportada com sucesso!', false);
+                }, 'Export configuration');
+            });
+        }
+
+        if (ui.importConfig) {
+            addEventListenerWithCleanup(ui.importConfig, 'click', () => {
+                safeExecute(() => {
+                    const file = ui.importFileInput?.files[0];
+                    if (!file) {
+                        displayStatus(ui.importStatus, "Nenhum arquivo selecionado.", true);
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const importedConfig = JSON.parse(event.target.result);
+                            if (!importedConfig.featureSettings) {
+                                throw new Error("Arquivo não parece ser uma configuração válida do Neuron.");
+                            }
+                            fullConfig = importedConfig;
+                            saveConfig();
+                            populateAllTabs();
+                            displayStatus(ui.importStatus, "Configuração importada com sucesso!", false);
+                        } catch (e) {
+                            displayStatus(ui.importStatus, `Erro ao importar: ${e.message}`, true);
+                        }
+                    };
+                    reader.readAsText(file);
+                }, 'Import configuration');
+            });
+        }
+    }
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', cleanupEventListeners);
+
+    initializePageSafely();
 });
