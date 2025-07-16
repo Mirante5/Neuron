@@ -2,7 +2,7 @@
   <img src="https://github.com/Mirante5/Neuron/blob/main/images/Intro-Neuron.gif" alt="Neuron Loading Animation" width="500"/>
 </p>
 
-# Neuron Extension v1.1.0
+# Neuron Extension v1.3.0
 
 **Otimizador de fluxos de trabalho na plataforma Fala.br**
 
