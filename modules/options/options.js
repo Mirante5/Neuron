@@ -500,23 +500,101 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // File: modules/options/options.js (substituir/adicionar funções)
+
     function setupFocalPointsTab() {
-        renderFocalPoints();
+        const listEl = document.getElementById('focalPointsList');
         const statusEl = document.getElementById('focalPointsStatus');
+
+        renderFocalPoints();
+
+        // Adiciona novo grupo
         document.getElementById('addFocalPointBtn').addEventListener('click', () => {
             const newKey = `Novo Grupo ${Date.now()}`;
+            if (!fullConfig.focalPoints) fullConfig.focalPoints = {};
             fullConfig.focalPoints[newKey] = ["Novo Ponto Focal"];
             renderFocalPoints();
         });
+
+        // Salva alterações
         document.getElementById('saveFocalPointsBtn').addEventListener('click', () => {
             saveConfig();
             displayStatus(statusEl, 'Pontos Focais salvos com sucesso!', false);
         });
+
+        // Restaura padrão
         document.getElementById('resetFocalPointsBtn').addEventListener('click', () => {
             if (confirm(`Isso restaurará TODOS os Pontos Focais para o padrão. Deseja continuar?`)) {
                 fullConfig.focalPoints = JSON.parse(JSON.stringify(defaultConfig.focalPoints));
                 renderFocalPoints();
                 displayStatus(statusEl, 'Pontos Focais restaurados para o padrão.', false);
+            }
+        });
+
+        // --- DELEGAÇÃO DE EVENTOS PARA TODA A LISTA ---
+        listEl.addEventListener('click', e => {
+            const target = e.target;
+            const groupName = target.dataset.group;
+
+            // Botão de remover grupo
+            if (target.matches('.focal-group-header .remove-btn')) {
+                if (confirm(`Tem certeza que deseja remover o grupo "${groupName}"?`)) {
+                    delete fullConfig.focalPoints[groupName];
+                    renderFocalPoints();
+                }
+            }
+            // Botão de adicionar ponto dentro de um grupo
+            else if (target.matches('.add-point-btn')) {
+                fullConfig.focalPoints[groupName].push("Novo Ponto Focal");
+                renderFocalPoints();
+            }
+            // Botão de remover um ponto específico
+            else if (target.matches('.focal-point-item .remove-btn')) {
+                const index = parseInt(target.dataset.index, 10);
+                fullConfig.focalPoints[groupName].splice(index, 1);
+                renderFocalPoints();
+            }
+        });
+
+        listEl.addEventListener('change', e => {
+            const target = e.target;
+            // Renomear um grupo
+            if (target.matches('.focal-point-group-name')) {
+                const originalName = target.dataset.originalName;
+                const newName = target.value.trim();
+                if (originalName !== newName && newName) {
+                    if (fullConfig.focalPoints[newName]) {
+                        alert(`O nome de grupo "${newName}" já existe.`);
+                        target.value = originalName;
+                        return;
+                    }
+                    // Preserva a ordem das chaves ao recriar o objeto
+                    const newFocalPoints = {};
+                    for (const key in fullConfig.focalPoints) {
+                        if (key === originalName) {
+                            newFocalPoints[newName] = fullConfig.focalPoints[key];
+                        } else {
+                            newFocalPoints[key] = fullConfig.focalPoints[key];
+                        }
+                    }
+                    fullConfig.focalPoints = newFocalPoints;
+                    renderFocalPoints();
+                } else if (!newName) {
+                    target.value = originalName;
+                }
+            }
+        });
+
+        listEl.addEventListener('input', e => {
+            const target = e.target;
+            // Editar o valor de um ponto focal
+            if (target.matches('.focal-point-value')) {
+                const groupName = target.dataset.group;
+                const index = parseInt(target.dataset.index, 10);
+                const currentGroupName = target.closest('.focal-point-group').querySelector('.focal-point-group-name').value;
+                if (fullConfig.focalPoints[currentGroupName]) {
+                    fullConfig.focalPoints[currentGroupName][index] = target.value;
+                }
             }
         });
     }
@@ -528,26 +606,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const points = fullConfig.focalPoints[groupName];
             const groupDiv = document.createElement('div');
             groupDiv.className = 'focal-point-group';
+
             let pointsHTML = '';
             points.forEach((point, index) => {
                 pointsHTML += `
-                    <div class="focal-point-item">
-                        <input type="text" class="focal-point-value" value="${point}" data-group="${groupName}" data-index="${index}">
-                        <button class="remove-btn small" data-group="${groupName}" data-index="${index}">-</button>
-                    </div>
-                `;
-            });
-            groupDiv.innerHTML = `
-                <div class="focal-group-header">
-                    <input type="text" class="focal-point-group-name" value="${groupName}" data-original-name="${groupName}">
-                    <button class="remove-btn" data-group="${groupName}">Remover Grupo</button>
+                <div class="focal-point-item">
+                    <input type="text" class="focal-point-value" value="${point}" data-index="${index}">
+                    <button class="remove-btn small" data-group="${groupName}" data-index="${index}">-</button>
                 </div>
-                <div class="focal-points-container">${pointsHTML}</div>
-                <button class="add-point-btn" data-group="${groupName}">Adicionar Ponto</button>
             `;
+            });
+
+            groupDiv.innerHTML = `
+            <div class="focal-group-header">
+                <input type="text" class="focal-point-group-name" value="${groupName}" data-original-name="${groupName}">
+                <button class="remove-btn" data-group="${groupName}">Remover Grupo</button>
+            </div>
+            <div class="focal-points-container">${pointsHTML}</div>
+            <button class="add-point-btn" data-group="${groupName}">+ Adicionar Ponto</button>
+        `;
             listEl.appendChild(groupDiv);
         }
-        addFocalPointListeners();
     }
 
     function addFocalPointListeners() {

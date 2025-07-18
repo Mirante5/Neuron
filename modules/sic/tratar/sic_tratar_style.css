@@ -1,121 +1,122 @@
-/* --- ESTILO GERAL DO CONTAINER DA TABELA --- */
+/* CSS para transformar a tabela de manifestações do SIC em cards fluentes.
+  Desenvolvido por: Parceiro de Programacao
+*/
+
+/* 1. DEFINIÇÃO DE VARIÁVEIS DE COR E ESTILO */
+:root {
+    --cor-fundo: #f8f9fa;
+    --cor-card: #ffffff;
+    --cor-borda: #dee2e6;
+    --cor-sombra: rgba(0, 0, 0, 0.075);
+    --cor-primaria: #007bff;
+    --cor-texto-titulo: #212529;
+    --cor-texto-corpo: #495057;
+    --cor-texto-suave: #6c757d;
+    --familia-fonte: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --raio-borda: 6px;
+}
+
+/* 2. ESTILO BASE E PREPARAÇÃO DO LAYOUT */
+body {
+    background-color: var(--cor-fundo) !important;
+}
+
 #manifestacoesTable {
-    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
-    width: 100%;
-    border-collapse: separate; /* Essencial para border-radius funcionar */
-    border-spacing: 0;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    overflow: hidden; /* Garante que o conteúdo respeite os cantos arredondados */
-    margin-bottom: 2rem;
+    border-collapse: separate !important; /* Essencial para criar espaçamento */
+    border-spacing: 0 1rem !important;   /* Adiciona espaçamento vertical entre os cards */
+    border: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
 
-/* --- CABEÇALHO DA TABELA --- */
-#manifestacoesTable thead th {
-    background-color: #0056b3; /* Um azul profissional e escuro */
-    color: white;
-    padding: 12px 15px;
-    text-align: left;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #004a99; /* Borda inferior um pouco mais escura */
+/* Oculta o cabeçalho original da tabela */
+#manifestacoesTable thead {
+    display: none;
 }
 
-/* --- CÉLULAS E LINHAS DO CORPO DA TABELA --- */
-#manifestacoesTable tbody td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #e9ecef; /* Linha separadora bem sutil */
-    vertical-align: middle;
-    font-size: 14px;
-    color: #495057;
+/* 3. ESTILIZAÇÃO DAS LINHAS (<tr>) COMO CARDS */
+#manifestacoesTable tbody tr {
+    background-color: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-borda);
+    box-shadow: 0 1px 3px var(--cor-sombra);
+    transition: all 0.2s ease-out;
+    position: relative; /* Necessário para o efeito da borda */
 }
 
-/* Remove a borda da última linha para um visual mais limpo */
-#manifestacoesTable tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* Efeito de "Zebra" para as linhas */
+/* Remove a cor de fundo alternada para um visual de card limpo */
 #manifestacoesTable tbody tr:nth-child(even) {
-    background-color: #f8f9fa;
+    background-color: var(--cor-card);
 }
 
-/* Efeito de hover para destacar a linha sob o mouse */
+/* 4. EFEITOS DE HOVER (FLUENTES) */
 #manifestacoesTable tbody tr:hover {
-    background-color: #e9ecef;
-    transition: background-color 0.2s ease-in-out;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    border-left: 4px solid var(--cor-primaria); /* Borda colorida ao passar o mouse */
 }
 
-/* --- ESTILOS ESPECÍFICOS POR COLUNA --- */
+/* 5. ESTILIZAÇÃO DAS CÉLULAS (<td>) */
+#manifestacoesTable tbody td {
+    border: none !important; /* Remove as bordas internas da tabela */
+    padding: 14px 18px !important;
+    vertical-align: middle !important;
+    color: var(--cor-texto-corpo);
+    font-size: 14px;
+}
 
-/* Link do Protocolo (copiável) */
+/* Ajusta as bordas da primeira e última célula para corresponder ao card */
+#manifestacoesTable tbody tr td:first-child {
+    border-top-left-radius: var(--raio-borda);
+    border-bottom-left-radius: var(--raio-borda);
+}
+
+#manifestacoesTable tbody tr td:last-child {
+    border-top-right-radius: var(--raio-borda);
+    border-bottom-right-radius: var(--raio-borda);
+}
+
+/* 6. ESTILOS DE CONTEÚDO ESPECÍFICO */
+
+/* Estilo para o link do protocolo */
 #manifestacoesTable td:first-child a {
     font-weight: 600;
-    color: #0056b3;
+    font-size: 1.1rem;
+    color: var(--cor-texto-titulo);
     text-decoration: none;
-    cursor: copy;
+    cursor: copy; /* Mantém a funcionalidade de cópia */
 }
 
 #manifestacoesTable td:first-child a:hover {
+    color: var(--cor-primaria);
     text-decoration: underline;
 }
 
-/* Célula da Situação (onde ficarão as tags) */
-#manifestacoesTable td:nth-child(9) {
-    text-align: center;
-}
-
-/* --- TAGS DE STATUS COLORIDAS --- */
-.status-tag {
-    display: inline-block;
-    padding: 5px 12px;
-    border-radius: 15px;
-    color: #fff;
-    font-weight: bold;
-    font-size: 11px;
-    text-align: center;
-    min-width: 110px;
-    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.15);
-    text-transform: uppercase;
-}
-
-.status-em-tratamento { background-color: #0d6efd; }
-.status-respondida { background-color: #198754; }
-.status-prorrogada { background-color: #ffc107; color: #333; }
-.status-encaminhada { background-color: #6f42c1; }
-.status-aguardando-complementacao { background-color: #fd7e14; }
-.status-default { background-color: #6c757d; }
-
-
-/* --- BLOCO DE DATAS INJETADO PELO NEURON --- */
+/* Estilo para o bloco de datas inserido pelo JavaScript */
 .neuron-date-block {
-    background-color: #ffffff;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: var(--raio-borda);
     padding: 8px;
     font-size: 12px;
     line-height: 1.6;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-}
-
-.neuron-date-block > div {
-    margin-bottom: 4px;
+    margin: -5px 0; /* Ajuste para melhor encaixe */
 }
 
 .neuron-date-block strong {
-    color: #343a40;
+    color: var(--cor-texto-titulo);
 }
 
 .neuron-date-block span {
-    font-style: normal; /* Sobrescreve o estilo anterior se houver */
-    color: #6c757d;
+    font-style: normal;
+    color: var(--cor-texto-suave);
+    margin-left: 4px;
 }
 
 .neuron-date-block .modo-calculo {
     font-size: 0.9em;
     text-align: right;
-    color: #888;
+    color: #aaa;
     margin-top: 5px;
 }

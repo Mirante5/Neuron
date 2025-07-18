@@ -45,7 +45,8 @@
         "modules/ouvidoria/tratar-novo/tratar_novo_pagesize.js",
         "modules/ouvidoria/tratar-novo/tratar_novo_copy.js",
         "modules/ouvidoria/tratar-novo/tratar_novo_insert.js"
-      ]
+      ],
+      "css": ["modules/ouvidoria/tratar-novo/tratar_novo.css"]
     },
     {
       "matches": [
