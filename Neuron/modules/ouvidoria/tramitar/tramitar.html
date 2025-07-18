@@ -1,0 +1,19 @@
+<div id="neuron-template-pontos-focais">
+    <div class="panel-heading"><h4 class="panel-title">{{PANEL_TITLE}}</h4></div>
+    <div class="panel-body">
+        <label for="neuronSecretariasList">{{SELECT_SECRETARIA_LABEL}}</label>
+        <select id="neuronSecretariasList" class="form-control">
+            <option value="">{{DEFAULT_SECRETARIA_OPTION_TEXT}}</option>
+        </select>
+        <div class="nomes-relacionados">
+            <label>{{NOMES_RELACIONADOS_LABEL}}</label>
+            <ul id="neuronNomesSecretaria"></ul>
+        </div>
+        <button id="neuronBtnAutotramitar" class="btn btn-info btn-sm" disabled>{{AUTO_TRAMITAR_BUTTON_TEXT}}</button>
+    </div>
+</div>
+<div id="neuron-template-select-mensagens">
+    <select id="neuronSelectMensagensTramitar" class="form-control">
+        <option value="" disabled selected>{{DEFAULT_MESSAGE_OPTION_TEXT}}</option>
+    </select>
+</div>
