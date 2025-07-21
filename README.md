@@ -65,7 +65,7 @@ O Neuron é composto por um conjunto de módulos independentes que podem ser ati
 ## 📦 Instalação
 
 ### Para Desenvolvedores (Instalação Local)
-1.  Faça o download ou clone o repositório: `git clone https://github.com/seu-usuario/Neuron.git`.
+1.  Faça o download ou clone o repositório: `git clone https://github.com/devLucasEmiliano/Neuron.git`.
 2.  Abra o Google Chrome e navegue até `chrome://extensions`.
 3.  Ative o **"Modo do desenvolvedor"** no canto superior direito.
 4.  Clique em **"Carregar sem compactação"**.
