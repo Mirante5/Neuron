@@ -1,113 +1,119 @@
 <p align="center">
-  <img src="https://github.com/Mirante5/Neuron/blob/main/images/Intro-Neuron.gif" alt="Neuron Loading Animation" width="500"/>
+  <img src="https://github.com/Mirante5/Neuron/blob/main/images/Intro-Neuron.gif" alt="Animação de Carregamento do Neuron" width="500"/>
 </p>
 
-# Neuron Extension v1.3.0
+<h1 align="center">Neuron</h1>
 
-**Otimizador de fluxos de trabalho na plataforma Fala.br**
+<p align="center">
+  <strong>Um otimizador de fluxos de trabalho para a plataforma Fala.BR</strong>
+</p>
 
-[![Versão](https://img.shields.io/badge/version-1.1.0-red.svg)](manifest.json)
-[![Manifest V3](https://img.shields.io/badge/Manifest-V3-brightgreen.svg)](manifest.json)
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-[![DeepScan grade](https://deepscan.io/api/teams/27437/projects/29889/branches/958626/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=27437&pid=29889&bid=958626)
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.5.0-blue.svg" alt="Versão 1.5.0">
+  <img src="https://img.shields.io/badge/Manifest-V3-brightgreen.svg" alt="Manifest V3">
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg" alt="Licença CC0 1.0 Universal">
+  </a>
+  <img src="https://img.shields.io/badge/Status-Ativo-success.svg" alt="Status do Projeto: Ativo">
+</p>
 
-## Visão Geral
+<p align="center">
+  <a href="#-sobre-o-projeto">Sobre</a> •
+  <a href="#-principais-funcionalidades">Funcionalidades</a> •
+  <a href="#-instalação">Instalação</a> •
+  <a href="#-como-usar">Uso</a> •
+  <a href="#-tecnologias-e-arquitetura">Arquitetura</a> •
+  <a href="#-como-contribuir">Contribuir</a>
+</p>
 
-Neuron é uma extensão para o Google Chrome projetada para otimizar e agilizar diversas tarefas repetitivas na plataforma Fala.br do Governo Federal brasileiro. Ela injeta scripts em páginas específicas, adicionando funcionalidades, automações e melhorias de interface do usuário para tornar o trabalho dos operadores mais eficiente.
+---
 
-## Plataforma Alvo
+## 🚀 Sobre o Projeto
 
+O **Neuron** é uma extensão para Google Chrome criada para otimizar e agilizar tarefas repetitivas na plataforma **Fala.BR**. A extensão injeta scripts e estilos nas páginas da plataforma, adicionando automações, assistentes inteligentes e melhorias de interface que tornam o trabalho dos operadores mais rápido, intuitivo e eficiente.
+
+### 🎯 Plataforma Alvo
 * **Site:** Controladoria-Geral da União - Fala.BR
 * **URL:** `https://falabr.cgu.gov.br/*`
 
-## Funcionalidades Principais
+## ✨ Principais Funcionalidades
 
-A extensão oferece um conjunto de módulos que podem ser habilitados ou desabilitados individualmente através do popup da extensão ou da página de opções:
+O Neuron é composto por um conjunto de módulos independentes que podem ser ativados ou desativados conforme a sua necessidade.
 
-* **Controle Global:**
-    * Habilitar/Desabilitar o Neuron completamente.
-* **Módulos Específicos:**
-    * **Animação de Loading Personalizada:** Substitui a animação de carregamento padrão do Fala.br por uma customizada com o logo do Neuron e informações da versão. (Arte por Bia)
-    * **Assistente de Arquivamento:** Adiciona um dropdown com modelos de justificativa pré-definidos na tela de arquivamento de manifestações.
-    * **Assistente de Encaminhamento:** Insere um seletor de modelos de texto para as notificações ao destinatário e ao solicitante na tela de encaminhamento.
-    * **Assistente de Prorrogação:** Oferece um dropdown com justificativas pré-definidas para a prorrogação de manifestações.
-    * **Assistente de Tramitação:**
-        * Preenche automaticamente a data de tratamento.
-        * Adiciona um painel para selecionar Secretarias/Pontos Focais (com base no `pontosfocais.json`) e um botão para "Auto-Tramitar" para os nomes relacionados.
-        * Insere um dropdown com modelos de mensagem pré-definidos (do `text.json`) para o campo de mensagem da tramitação, com substituição de placeholders como `{SECRETARIA}` e `{PRAZO}`.
-    * **Melhorias Telas Triar/Tratar:**
-        * Ajusta a quantidade de itens exibidos por página (configurável via popup ou página de opções, padrão 15).
-        * Aplica cores distintas para diferentes situações de manifestação (Complementação Solicitada, Complementada, Prorrogada).
-        * Exibe informações detalhadas de prazos (Original, Cobrança, Tramitar, Prorrogar, Improrrogável) com base em cálculos de dias úteis e feriados configurados.
-        * Remove o link de navegação dos NUPs e adiciona funcionalidade de "copiar ao clicar".
-    * **Melhorias Tela Tratar Manifestação:**
-        * Adiciona botões para "Importar dados do cidadão" (nome, documento, e-mail) para o campo de contribuição.
-        * Adiciona botão para inserir texto padrão de prorrogação (do `text.json`) no campo de contribuição, substituindo `{datalimite}`.
+###  interfaz de usuario e Experiência do Usuário (UI/UX)
+* **Animação de Loading Personalizada:** Substitui a tela de carregamento padrão do Fala.BR por uma animação mais moderna e informativa. (Arte por Bia)
+* **Layout Modernizado (Triar/Tratar):** Renova a interface da tela de tratamento de manifestações, organizando as informações em cards, aplicando um design mais limpo e melhorando a legibilidade.
+* **Cópia Rápida de Protocolo:** Permite copiar o número do protocolo (NUP) com um único clique, eliminando a necessidade de selecionar e copiar manualmente.
 
-* **Configuração Avançada (Página de Opções - `options.html`):**
-    * **Configurações Gerais:**
-        * Chave mestra para habilitar/desabilitar a extensão.
-        * Toggles individuais para cada funcionalidade.
-        * Configuração do número de itens por página para as telas Triar/Tratar.
-    * **Editor de Modelos de Texto:** Permite editar diretamente o conteúdo do `text.json` (usado pelos assistentes).
-    * **Editor de Pontos Focais:** Permite editar diretamente o conteúdo do `pontosfocais.json` (usado pelo assistente de tramitação).
-    * **Gerenciador de Feriados:** Adicionar/remover feriados (DD/MM/AAAA) que são considerados nos cálculos de prazo.
-    * Botão para salvar todas as alterações.
+### 🤖 Assistentes e Automação
+* **Assistente de Tramitação:**
+    * Calcula e preenche automaticamente a data de tratamento com base em regras de negócio configuráveis (dias úteis, feriados, etc.).
+    * Oferece um painel para selecionar **Pontos Focais** e realizar a tramitação para múltiplos destinatários de forma automática.
+    * Disponibiliza modelos de texto customizáveis para o despacho da tramitação, preenchendo variáveis como `{PRAZO}` e `{SECRETARIA}`.
+* **Assistentes de Ações Rápidas:** Para as telas de **Arquivar**, **Encaminhar** e **Prorrogar**, o Neuron adiciona menus com modelos de justificativa pré-definidos, agilizando o preenchimento dos formulários.
+* **Assistente de Resposta:** Na tela de análise, oferece um sistema de respostas rápidas com base no tipo de interação (intermediária, conclusiva, etc.), preenchendo o texto e o responsável com um clique.
 
-## Tecnologias Utilizadas
+### 📅 Gerenciamento Avançado de Prazos
+* **Cálculos Detalhados:** Na tela "Tratar/Triar", exibe um bloco com cálculos detalhados de prazos: Prazo Original, Prazo Interno, Data de Cobrança e Data Improrrogável.
+* **Regras Customizáveis:** Todos os cálculos de data respeitam as configurações de dias úteis vs. corridos, ajuste de fim de semana e a lista de feriados cadastrados na página de opções da extensão.
 
-* Google Chrome Extension Manifest V3
-* JavaScript (ES6+ com `async/await`)
-* HTML5
-* CSS3
-* JSON (para configurações e modelos de texto)
+### 🔔 Sistema de Notificações
+* **Painel de Notificações:** Adiciona um ícone flutuante que centraliza demandas importantes, como aquelas com prazo curto, respondidas pela área técnica, com observações, prorrogadas ou complementadas.
+* **Filtros Inteligentes:** Permite alternar a visualização entre "Minhas Demandas" (atribuídas ao usuário logado) e "Todas as Demandas".
+* **Status Visual:** O ícone muda de cor e pulsa para alertar sobre novas notificações ou prazos críticos.
 
-## Instalação
+## 📦 Instalação
 
-1.  Faça o download
+### Para Desenvolvedores (Instalação Local)
+1.  Faça o download ou clone o repositório: `git clone https://github.com/seu-usuario/Neuron.git`.
 2.  Abra o Google Chrome e navegue até `chrome://extensions`.
-3.  Habilite o "Modo do Desenvolvedor" (Developer mode) no canto superior direito.
-4.  Clique em 
-5.  Selecione o diretório `` 
-6.  A extensão Neuron deverá aparecer na sua lista de extensões e estará pronta para uso.
+3.  Ative o **"Modo do desenvolvedor"** no canto superior direito.
+4.  Clique em **"Carregar sem compactação"**.
+5.  Selecione o diretório onde você clonou ou descompactou o projeto.
+6.  A extensão Neuron aparecerá na sua lista e estará pronta para uso.
 
-## Uso
+## ⚙️ Como Usar
 
-* **Popup:** Clique no ícone da extensão Neuron na barra de ferramentas do Chrome para acessar os toggles rápidos de funcionalidades e o botão "Aplicar e Recarregar Aba".
-* **Página de Opções:** Clique com o botão direito no ícone da extensão e selecione "Opções" para configurações detalhadas, edição de JSONs e gerenciamento de feriados.
-* As funcionalidades ativadas serão aplicadas automaticamente nas páginas correspondentes da plataforma Fala.br.
+* **Popup de Acesso Rápido:** Clique no ícone do Neuron na barra de ferramentas do Chrome para ativar/desativar a extensão e ajustar a quantidade de itens por página.
+* **Página de Opções Avançadas:** Clique com o botão direito no ícone da extensão e selecione **"Opções"** para acessar a página de configurações completas. Lá, você pode:
+    * Habilitar ou desabilitar cada módulo individualmente.
+    * Editar todos os modelos de texto e respostas rápidas.
+    * Gerenciar a lista de Pontos Focais.
+    * Adicionar ou remover feriados para o cálculo de prazos.
+    * Importar ou exportar suas configurações em formato JSON.
 
-## Como Contribuir
+## 🛠️ Tecnologias e Arquitetura
 
-Contribuições são bem-vindas! Se você tem ideias para novas funcionalidades, melhorias ou correções de bugs:
+O Neuron foi construído com tecnologias web modernas e uma arquitetura modular para garantir performance e manutenibilidade.
 
-1.  Faça um Fork do projeto.
-2.  Crie uma branch para sua Feature.
-3.  Commit suas mudanças.
-4.  Push para a Branch.
-5.  Abra um Pull Request.
+* **Tecnologias:**
+    * JavaScript (ES6+ com Async/Await)
+    * Manifest V3 do Google Chrome
+    * HTML5 e CSS3
+    * JSON para configurações dinâmicas
 
-## Licença
+* **Arquitetura:**
+    * **Design Modular:** Cada funcionalidade reside em seu próprio módulo na pasta `/modules`, com seus próprios arquivos JS, CSS e, quando necessário, HTML.
+    * **Fábrica de Módulos (`module_factory.js`):** Um padrão de projeto foi utilizado para criar módulos de forma padronizada, gerenciando o ciclo de vida (ativação, desativação) e a leitura de configurações de forma consistente.
+    * **Orientado a Configuração:** O comportamento da extensão é amplamente controlado pelo arquivo `config/config.json`. Isso permite que textos, regras e parâmetros sejam alterados sem a necessidade de modificar o código-fonte principal.
+    * **Utilitários Compartilhados (`lib/`):** Funções complexas e reutilizáveis, como os cálculos de data, são centralizadas em bibliotecas na pasta `/lib` para evitar duplicação de código.
 
-Este projeto é licenciado sob a Licença Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional (CC BY-NC-SA 4.0).
+## 🤝 Como Contribuir
 
-<p align="center">
-  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
-</p>
+Contribuições são muito bem-vindas! Se você tem ideias para novas funcionalidades, melhorias ou correções:
 
-Isso significa que você é livre para:
+1.  **Faça um Fork** do projeto.
+2.  **Crie uma Branch** para sua modificação (`git checkout -b feature/NovaFuncionalidade`).
+3.  **Faça o Commit** das suas alterações (`git commit -m 'Adiciona NovaFuncionalidade'`).
+4.  **Faça o Push** para a sua branch (`git push origin feature/NovaFuncionalidade`).
+5.  **Abra um Pull Request**.
 
-* **Compartilhar** — copiar e redistribuir o material em qualquer suporte ou formato.
-* **Adaptar** — remixar, transformar, e criar a partir do material.
+## 📄 Licença
 
-Sob os seguintes termos:
+Este projeto é dedicado ao domínio público sob a licença **CC0 1.0 Universal**. Você é livre para copiar, modificar, distribuir e usar a obra, mesmo para fins comerciais, sem pedir permissão.
 
-* **Atribuição** — Você deve dar o crédito apropriado, prover um link para a licença e indicar se mudanças foram feitas. Você pode fazê-lo em qualquer forma razoável, mas não de forma a sugerir que o licenciante o apoia ou aprova o seu uso.
-* **NãoComercial** — Você não pode usar o material para fins comerciais.
-* **CompartilhaIgual** — Se você remixar, transformar, ou criar a partir do material, tem de distribuir as suas contribuições sob a mesma licença que o original.
+Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-Você pode encontrar o texto completo da licença [aqui](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.pt). É recomendável incluir o texto completo da licença em um arquivo `LICENSE` ou `LICENSE.md` no seu repositório.
+## 🙏 Agradecimentos
 
-## Agradecimentos
-
-* **Arte da Animação de Loading:** Bia
+* **Arte da Animação de Loading:** Bia.
