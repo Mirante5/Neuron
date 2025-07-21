@@ -1,4 +1,4 @@
-/* CSS para transformar a tabela de manifestações do SIC em cards fluentes.
+/* CSS para transformar a tabela de manifestações do SIC em cards fluentes com cabeçalho.
   Desenvolvido por: Parceiro de Programacao
 */
 
@@ -12,6 +12,8 @@
     --cor-texto-titulo: #212529;
     --cor-texto-corpo: #495057;
     --cor-texto-suave: #6c757d;
+    --cor-cabecalho-fundo: #e9ecef;
+    --cor-cabecalho-texto: #495057;
     --familia-fonte: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
     --raio-borda: 6px;
 }
@@ -22,16 +24,37 @@ body {
 }
 
 #manifestacoesTable {
-    border-collapse: separate !important; /* Essencial para criar espaçamento */
-    border-spacing: 0 1rem !important;   /* Adiciona espaçamento vertical entre os cards */
+    border-collapse: separate !important;
+    border-spacing: 0 1rem !important;
     border: none !important;
     background-color: transparent !important;
     box-shadow: none !important;
 }
 
-/* Oculta o cabeçalho original da tabela */
+/* ================================================= */
+/* NOVO: ESTILIZAÇÃO DO CABEÇALHO DA TABELA (THEAD)  */
+/* ================================================= */
+
+/* A linha abaixo que ocultava o cabeçalho foi removida.
+   #manifestacoesTable thead { display: none; }
+*/
+
 #manifestacoesTable thead {
-    display: none;
+    background-color: var(--cor-cabecalho-fundo);
+    border-radius: var(--raio-borda);
+    border: 1px solid var(--cor-borda);
+    box-shadow: 0 1px 2px var(--cor-sombra);
+}
+
+#manifestacoesTable th {
+    padding: 12px 18px !important;
+    text-align: center;
+    font-weight: 600;
+    color: var(--cor-cabecalho-texto);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none !important;
 }
 
 /* 3. ESTILIZAÇÃO DAS LINHAS (<tr>) COMO CARDS */
@@ -41,32 +64,30 @@ body {
     border-radius: var(--raio-borda);
     box-shadow: 0 1px 3px var(--cor-sombra);
     transition: all 0.2s ease-out;
-    position: relative; /* Necessário para o efeito da borda */
+    position: relative;
 }
 
-/* Remove a cor de fundo alternada para um visual de card limpo */
 #manifestacoesTable tbody tr:nth-child(even) {
     background-color: var(--cor-card);
 }
 
 /* 4. EFEITOS DE HOVER (FLUENTES) */
 #manifestacoesTable tbody tr:hover {
-    transform: translateY(-4px);
+    transform: translate(5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     z-index: 10;
-    border-left: 4px solid var(--cor-primaria); /* Borda colorida ao passar o mouse */
+    border-left: 4px solid var(--cor-primaria);
 }
 
 /* 5. ESTILIZAÇÃO DAS CÉLULAS (<td>) */
 #manifestacoesTable tbody td {
-    border: none !important; /* Remove as bordas internas da tabela */
+    border: none !important;
     padding: 14px 18px !important;
     vertical-align: middle !important;
     color: var(--cor-texto-corpo);
     font-size: 14px;
 }
 
-/* Ajusta as bordas da primeira e última célula para corresponder ao card */
 #manifestacoesTable tbody tr td:first-child {
     border-top-left-radius: var(--raio-borda);
     border-bottom-left-radius: var(--raio-borda);
@@ -78,14 +99,12 @@ body {
 }
 
 /* 6. ESTILOS DE CONTEÚDO ESPECÍFICO */
-
-/* Estilo para o link do protocolo */
 #manifestacoesTable td:first-child a {
     font-weight: 600;
     font-size: 1.1rem;
     color: var(--cor-texto-titulo);
     text-decoration: none;
-    cursor: copy; /* Mantém a funcionalidade de cópia */
+    cursor: copy;
 }
 
 #manifestacoesTable td:first-child a:hover {
@@ -93,7 +112,6 @@ body {
     text-decoration: underline;
 }
 
-/* Estilo para o bloco de datas inserido pelo JavaScript */
 .neuron-date-block {
     background-color: #f8f9fa;
     border: 1px solid #e9ecef;
@@ -101,7 +119,8 @@ body {
     padding: 8px;
     font-size: 12px;
     line-height: 1.6;
-    margin: -5px 0; /* Ajuste para melhor encaixe */
+    margin: -5px 0;
+    min-width: 250px; /* Define uma largura mínima para a caixa de datas */
 }
 
 .neuron-date-block strong {
@@ -119,4 +138,8 @@ body {
     text-align: right;
     color: #aaa;
     margin-top: 5px;
+}
+#manifestacoesTable th:nth-child(7),
+#manifestacoesTable td:nth-child(7) {
+    display: none;
 }

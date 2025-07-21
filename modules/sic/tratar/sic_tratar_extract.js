@@ -36,12 +36,10 @@
      * Função principal que processa a tabela de manifestações do SIC.
      */
     async function processarTabelaSic() {
-        // Verifica se a biblioteca de datas está disponível
         if (typeof window.DateUtils === 'undefined') {
             console.error('[Neuron|SIC] Erro: A biblioteca date_utils.js não foi encontrada. Verifique o manifest.json.');
             return;
         }
-        // Espera que a biblioteca de datas carregue as suas próprias configurações (feriados, etc.)
         await window.DateUtils.ready;
 
         const DU = window.DateUtils;
@@ -51,7 +49,6 @@
         const linhas = corpoTabela.querySelectorAll('tr');
 
         for (const linha of linhas) {
-            // Se a linha já foi processada, pula para a próxima
             if (linha.dataset.neuronProcessado) continue;
 
             const celulas = linha.querySelectorAll('td');
@@ -64,6 +61,7 @@
                 dataCadastro: celulas[6]?.innerText.trim() || '',
                 prazo: celulas[7]?.innerText.trim() || '',
                 situacao: celulas[8]?.innerText.trim() || '',
+                celulaCadastro: celulas[6], // <-- MODIFICADO: Referência à célula de cadastro
                 celulaPrazo: celulas[7]
             };
 
@@ -89,14 +87,17 @@
                 const prazoInternoBase = funcaoDeCalculo(dataBase, mockPrazosSettings.tratarNovoPrazoInternoDias);
                 const cobrancaBase = funcaoDeCalculo(dataBase, mockPrazosSettings.tratarNovoCobrancaInternaDias);
 
-                // As regras de ajuste para feriados e fins de semana são aplicadas aqui
                 const prazoFinal = DU.ajustarDataFinal(prazoInternoBase);
                 const cobrancaFinal = DU.ajustarDataFinal(cobrancaBase);
                 
-                // Cria o novo bloco de HTML para injetar na célula
                 const nossoBloco = document.createElement('div');
-                nossoBloco.style.cssText = "border: 1px solid #e0e0e0; border-radius: 5px; padding: 5px; margin-top: 5px; font-size: 0.8em; line-height: 1.8;";
+                nossoBloco.className = 'neuron-date-block'; // <-- MODIFICADO: Usa a classe do CSS
+                
+                // --- MODIFICADO: O bloco de HTML foi atualizado para incluir a data de cadastro ---
                 nossoBloco.innerHTML = `
+                    <div style="padding-bottom: 2px; margin-bottom: 2px; border-bottom: 1px dashed #ccc; color: #343a40;">
+                        <strong>Cadastro:</strong> ${manifestacao.dataCadastro}
+                    </div>
                     <div style="padding-bottom: 2px; margin-bottom: 2px; border-bottom: 1px dashed #ccc;">
                         <strong>Prazo Original:</strong> ${DU.formatarData(dataBase)}
                         <span style="color: #6c757d; font-style: italic;"> ${DU.calcularDiasRestantes(dataBase)}</span>
@@ -109,30 +110,29 @@
                         <strong>Cobrança Interna em:</strong> ${DU.formatarData(cobrancaFinal)}
                         <span style="color: #6c757d; font-style: italic;"> ${DU.calcularDiasRestantes(cobrancaFinal)}</span>
                     </div>
-                    <div style="font-size: 0.9em; text-align: right; color: #888;">(Modo: ${modoTexto})</div>
+                    <div class="modo-calculo">(Modo: ${modoTexto})</div>
                 `;
                 
-                // Limpa a célula original e injeta o nosso bloco
                 manifestacao.celulaPrazo.innerHTML = '';
                 manifestacao.celulaPrazo.appendChild(nossoBloco);
+
+                // --- ADICIONADO: Limpa o conteúdo da célula de cadastro original ---
+                if (manifestacao.celulaCadastro) {
+                    manifestacao.celulaCadastro.innerHTML = '';
+                }
             }
 
-            // Marca a linha como processada para não a processarmos novamente
             linha.dataset.neuronProcessado = 'true';
         }
     }
 
-    // Usamos um MutationObserver para esperar a tabela ser carregada na página
     const observer = new MutationObserver((mutations, obs) => {
         const tabela = document.getElementById(TBODY_ID);
         if (tabela) {
-            processarTabelaSic(); // A tabela existe, então processamos
-            // Podemos desconectar o observador se a tabela não for se alterar mais
-            // obs.disconnect(); 
+            processarTabelaSic(); 
         }
     });
 
-    // Começa a observar o corpo do documento por adições de elementos
     observer.observe(document.body, {
         childList: true,
         subtree: true
