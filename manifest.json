@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Neuron",
-  "version": "1.5.0",
+  "version": "2.0",
   "description": "Otimizador de fluxos de trabalho na plataforma Fala.br",
   "author": "MAPA - DF",
   "icons": {
@@ -96,6 +96,10 @@
       "matches": ["https://falabr.cgu.gov.br/web/manifestacao/tratar?*"],
       "js": ["lib/date_utils.js","modules/sic/tratar/sic_tratar_extract.js"],
       "css": ["modules/sic/tratar/sic_tratar_style.css"]
+    },
+    {
+      "matches": ["https://falabr.cgu.gov.br/web/manifestacao/detalhar/*"],
+      "js": ["modules/sic/analisar/sic_analisar_move_buttons.js"]
     }
   ],
   "web_accessible_resources": [

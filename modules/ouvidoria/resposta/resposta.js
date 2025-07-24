@@ -77,17 +77,39 @@
                 item.setAttribute('tabindex', '-1');
                 item.innerHTML = `
                     <div class="br-radio">
-                        <input id="neuron-novoDropdown-item-${index}" type="radio" value="${option.text}">
+                        <input id="neuron-novoDropdown-item-${index}" type="radio" name="neuron-response-option" value="${option.text}">
                         <label for="neuron-novoDropdown-item-${index}">${option.text}</label>
                     </div>`;
                 item.addEventListener('click', () => {
                     dropdownInput.value = option.text || '';
                     txtResposta.value = option.conteudoTextarea || '';
                     inputResponsavel.value = option.responsavel || '';
+                    // Trigger input event to notify other scripts if necessary
+                    txtResposta.dispatchEvent(new Event('input', { bubbles: true }));
+                    inputResponsavel.dispatchEvent(new Event('input', { bubbles: true }));
                     dropdownList.style.display = 'none';
                 });
                 dropdownList.appendChild(item);
             });
+        }
+    }
+
+    /**
+     * NOVO: Verifica o estado inicial do seletor de tipo de resposta.
+     * Se um valor já estiver selecionado na carga da página, aciona a renderização.
+     */
+    function verificarTipoRespostaInicial() {
+        const listaRespostas = document.getElementById(ID_TIPO_RESPOSTA_LIST);
+        if (!listaRespostas) return;
+
+        // O componente br-select pode indicar o valor selecionado no input principal
+        const inputPrincipal = document.querySelector(`#${ID_TIPO_RESPOSTA_SELECT} input[type="text"]`);
+        if (inputPrincipal && inputPrincipal.value) {
+            const textoSelecionado = inputPrincipal.value.trim();
+            if (textoSelecionado) {
+                console.log(`%cNeuron (${SCRIPT_ID}): Estado inicial detectado: "${textoSelecionado}". Renderizando opções.`, "color: purple; font-weight: bold;");
+                renderizarOpcoesDeResposta(textoSelecionado);
+            }
         }
     }
     
@@ -98,14 +120,17 @@
 
         if (!dropdownList || !dropdownInput || !dropdownContainer) return;
 
+        // Abrir/fechar dropdown do Neuron ao clicar no input
         if (event.target === dropdownInput && !dropdownInput.hasAttribute('disabled')) {
             const isHidden = dropdownList.style.display !== 'block';
             dropdownList.style.display = isHidden ? 'block' : 'none';
         } 
+        // Fechar dropdown do Neuron se clicar fora dele
         else if (!dropdownContainer.contains(event.target)) {
             dropdownList.style.display = 'none';
         }
         
+        // Atualizar dropdown do Neuron quando um item do dropdown original é selecionado
         const tipoRespostaItem = event.target.closest(`#${ID_TIPO_RESPOSTA_LIST} .br-item`);
         if (tipoRespostaItem) {
             const selectedText = tipoRespostaItem.querySelector('label')?.textContent.trim();
@@ -120,6 +145,11 @@
         criarUI();
         document.addEventListener('click', handleUiInteraction);
         isFeatureActive = true;
+        
+        // NOVO: Chama a verificação do estado inicial logo após ativar.
+        // Adicionado um pequeno delay para garantir que a UI da página alvo foi totalmente renderizada.
+        setTimeout(verificarTipoRespostaInicial, 200);
+
         console.log(`%cNeuron (${SCRIPT_ID}): Funcionalidade ATIVADA.`, "color: green; font-weight: bold;");
     }
 

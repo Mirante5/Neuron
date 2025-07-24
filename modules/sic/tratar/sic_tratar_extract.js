@@ -9,8 +9,8 @@
         tratarNovoModoCalculo: "diasUteis", // "diasUteis" ou "diasCorridos"
         tratarNovoAjusteFds: "modo3",       // "modo1", "modo2", "modo3", "none"
         tratarNovoAjusteFeriado: "proximo_dia", // "proximo_dia", "dia_anterior", "none"
-        tratarNovoPrazoInternoDias: -10,
-        tratarNovoCobrancaInternaDias: -12
+        tratarNovoPrazoInternoDias: -2,
+        tratarNovoCobrancaInternaDias: -2
     };
 
     /**

@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.0.0-blue.svg" alt="Versão 2.0.0">
+  <img src="https://img.shields.io/badge/version-1.5.0-blue.svg" alt="Versão 1.5.0">
   <img src="https://img.shields.io/badge/Manifest-V3-brightgreen.svg" alt="Manifest V3">
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg" alt="Licença CC0 1.0 Universal">
