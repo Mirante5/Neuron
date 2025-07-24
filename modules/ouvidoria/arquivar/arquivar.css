@@ -1,0 +1,10 @@
+.form-group .neuronLabelArquivar {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#neuronDropdownArquivar {
+    width: 100%;
+    margin-top: 5px;
+}

@@ -69,23 +69,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function populateAllTabs() {
         ui.masterEnable.checked = fullConfig.masterEnableNeuron !== false;
-        
+
         const qtdElement = document.getElementById('qtdItensTratarTriar');
         if (qtdElement) qtdElement.value = fullConfig.generalSettings?.qtdItensTratarTriar || 50;
 
         const prazosSettings = fullConfig.prazosSettings || {};
         const prazoDiasEl = document.getElementById('tratarNovoPrazoInternoDias');
         if (prazoDiasEl) prazoDiasEl.value = prazosSettings.tratarNovoPrazoInternoDias || -5;
-        
+
         const cobrancaDiasEl = document.getElementById('tratarNovoCobrancaInternaDias');
         if (cobrancaDiasEl) cobrancaDiasEl.value = prazosSettings.tratarNovoCobrancaInternaDias || -3;
-        
+
         const modoCalculoEl = document.getElementById('tratarNovoModoCalculo');
         if (modoCalculoEl) modoCalculoEl.value = prazosSettings.tratarNovoModoCalculo || 'corridos';
-        
+
         const ajusteFdsEl = document.getElementById('tratarNovoAjusteFds');
         if (ajusteFdsEl) ajusteFdsEl.value = prazosSettings.tratarNovoAjusteFds || 'modo1';
-        
+
         const ajusteFeriadoEl = document.getElementById('tratarNovoAjusteFeriado');
         if (ajusteFeriadoEl) ajusteFeriadoEl.value = prazosSettings.tratarNovoAjusteFeriado || 'proximo_dia';
 
@@ -94,28 +94,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function collectSettingsFromUI() {
         fullConfig.masterEnableNeuron = ui.masterEnable.checked;
-        
+
         if (!fullConfig.generalSettings) fullConfig.generalSettings = {};
         const qtdElement = document.getElementById('qtdItensTratarTriar');
         fullConfig.generalSettings.qtdItensTratarTriar = qtdElement ? parseInt(qtdElement.value, 10) || 50 : 50;
 
         const prazosSettings = fullConfig.prazosSettings || {};
-        
+
         const prazoDiasEl = document.getElementById('tratarNovoPrazoInternoDias');
         prazosSettings.tratarNovoPrazoInternoDias = prazoDiasEl ? parseInt(prazoDiasEl.value, 10) || -5 : -5;
-        
+
         const cobrancaDiasEl = document.getElementById('tratarNovoCobrancaInternaDias');
         prazosSettings.tratarNovoCobrancaInternaDias = cobrancaDiasEl ? parseInt(cobrancaDiasEl.value, 10) || -3 : -3;
-        
+
         const modoCalculoEl = document.getElementById('tratarNovoModoCalculo');
         prazosSettings.tratarNovoModoCalculo = modoCalculoEl ? modoCalculoEl.value || 'corridos' : 'corridos';
-        
+
         const ajusteFdsEl = document.getElementById('tratarNovoAjusteFds');
         prazosSettings.tratarNovoAjusteFds = ajusteFdsEl ? ajusteFdsEl.value || 'modo1' : 'modo1';
-        
+
         const ajusteFeriadoEl = document.getElementById('tratarNovoAjusteFeriado');
         prazosSettings.tratarNovoAjusteFeriado = ajusteFeriadoEl ? ajusteFeriadoEl.value || 'proximo_dia' : 'proximo_dia';
-        
+
         fullConfig.prazosSettings = prazosSettings;
     }
 
@@ -128,10 +128,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function setupHolidaysTab() {
-        renderHolidays();
+    // File: modules/options/options.js (substituir funções existentes)
 
+    function setupHolidaysTab() {
+        const listEl = document.getElementById('holidaysList');
         const statusEl = document.getElementById('holidaysStatus');
+
+        renderHolidays(); // Renderiza a lista inicial
+
+        // Event listener único no pai da lista para lidar com a remoção
+        listEl.addEventListener('click', (e) => {
+            // Verifica se o clique foi num botão de remover
+            if (e.target.matches('.remove-btn')) {
+                const indexToRemove = parseInt(e.target.dataset.index, 10);
+                fullConfig.holidays.splice(indexToRemove, 1);
+                renderHolidays(); // Re-renderiza a lista após a remoção
+                displayStatus(statusEl, 'Feriado removido. Não se esqueça de salvar.', false);
+            }
+        });
 
         document.getElementById('addHolidayButton').addEventListener('click', () => {
             const dateInput = document.getElementById('holidayInput');
@@ -147,11 +161,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 displayStatus(statusEl, 'A descrição do feriado não pode estar vazia.', true);
                 return;
             }
-
             if (!fullConfig.holidays) {
                 fullConfig.holidays = [];
             }
-
             if (fullConfig.holidays.some(h => h.date === date)) {
                 displayStatus(statusEl, `O feriado na data ${date} já existe.`, true);
                 return;
@@ -164,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return dateA - dateB;
             });
 
-            renderHolidays();
+            renderHolidays(); // Re-renderiza a lista
             dateInput.value = '';
             descriptionInput.value = '';
             displayStatus(statusEl, 'Feriado adicionado à lista. Não se esqueça de salvar.', false);
@@ -187,7 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderHolidays() {
         const listEl = document.getElementById('holidaysList');
         if (!listEl) return;
-        listEl.innerHTML = '';
+
+        listEl.innerHTML = ''; // Limpa a lista antes de re-renderizar
         const holidays = fullConfig.holidays || [];
 
         if (holidays.length === 0) {
@@ -197,26 +210,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         holidays.forEach((holiday, index) => {
             const itemLi = document.createElement('li');
+            // A lógica do botão está agora no listener delegado em setupHolidaysTab
             itemLi.innerHTML = `
-                <span class="holiday-text">${holiday.date} - ${holiday.description}</span>
-                <button class="remove-btn" data-index="${index}">Remover</button>
-            `;
+            <span class="holiday-text">${holiday.date} - ${holiday.description}</span>
+            <button class="remove-btn" data-index="${index}">Remover</button>
+        `;
             listEl.appendChild(itemLi);
         });
-
-        listEl.querySelectorAll('.remove-btn').forEach(btn => {
-            const newBtn = btn.cloneNode(true);
-            btn.parentNode.replaceChild(newBtn, btn);
-            newBtn.addEventListener('click', (e) => {
-                const indexToRemove = parseInt(e.target.dataset.index, 10);
-                fullConfig.holidays.splice(indexToRemove, 1);
-                renderHolidays();
-                const statusEl = document.getElementById('holidaysStatus');
-                displayStatus(statusEl, 'Feriado removido. Não se esqueça de salvar.', false);
-            });
-        });
     }
-
     function setupResponsesTab() {
         const select = document.getElementById('selectTipoRespostaConfig');
         const container = document.getElementById('optionsContainer');
@@ -307,16 +308,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // File: modules/options/options.js (substituir funções)
+
     function setupTextModelsTab() {
         const categorySelect = document.getElementById('selectTextModelCategory');
         const container = document.getElementById('textModelsContainer');
         const statusEl = document.getElementById('textModelsStatus');
+        const listEl = document.getElementById('textModelsList');
 
+        // Preenche o seletor de categorias
         categorySelect.innerHTML = '<option value="">Selecione um Assistente...</option>';
         Object.keys(fullConfig.textModels).sort().forEach(key => {
             categorySelect.innerHTML += `<option value="${key}">${key}</option>`;
         });
 
+        // Mostra/Esconde o container de modelos
         categorySelect.addEventListener('change', () => {
             const category = categorySelect.value;
             if (category) {
@@ -328,6 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Adiciona novo modelo
         document.getElementById('addTextModelBtn').addEventListener('click', () => {
             const category = categorySelect.value;
             if (!category) return;
@@ -336,17 +343,76 @@ document.addEventListener('DOMContentLoaded', () => {
             renderTextModels(category);
         });
 
+        // Salva modelos
         document.getElementById('saveTextModelsBtn').addEventListener('click', () => {
             saveConfig();
             displayStatus(statusEl, 'Modelos de texto salvos com sucesso!', false);
         });
 
+        // Restaura modelos
         document.getElementById('resetTextModelsBtn').addEventListener('click', () => {
             const category = categorySelect.value;
             if (!category || !confirm(`Isso restaurará os modelos de "${category}" para o padrão. Deseja continuar?`)) return;
             fullConfig.textModels[category] = JSON.parse(JSON.stringify(defaultConfig.textModels[category]));
             renderTextModels(category);
             displayStatus(statusEl, 'Modelos restaurados para o padrão.', false);
+        });
+
+        // --- DELEGAÇÃO DE EVENTOS ---
+        listEl.addEventListener('click', (e) => {
+            // Lida com o clique no botão de remover
+            if (e.target.matches('.remove-btn')) {
+                const keyToRemove = e.target.dataset.key;
+                const category = categorySelect.value;
+                if (confirm(`Tem certeza que deseja remover o modelo "${keyToRemove}"?`)) {
+                    delete fullConfig.textModels[category][keyToRemove];
+                    renderTextModels(category);
+                }
+            }
+        });
+
+        listEl.addEventListener('input', (e) => {
+            const category = categorySelect.value;
+            const target = e.target;
+
+            // Lida com a edição do conteúdo de um modelo simples (string)
+            if (target.matches('.model-value')) {
+                const key = target.closest('.option-item').querySelector('.model-key').value;
+                fullConfig.textModels[category][key] = target.value;
+            }
+
+            // Lida com a edição do conteúdo de um sub-item de um modelo complexo (objeto)
+            if (target.matches('.model-sub-value')) {
+                const parentKey = target.dataset.parentKey;
+                const subKey = target.dataset.subKey;
+                fullConfig.textModels[category][parentKey][subKey] = target.value;
+            }
+        });
+
+        listEl.addEventListener('change', (e) => {
+            const category = categorySelect.value;
+            const target = e.target;
+
+            // Lida com a renomeação da chave de um modelo
+            if (target.matches('.model-key')) {
+                const originalKey = target.dataset.originalKey;
+                const newKey = target.value.trim();
+
+                if (originalKey !== newKey && newKey) {
+                    if (fullConfig.textModels[category][newKey]) {
+                        alert('Já existe um modelo com este nome. Por favor, escolha outro.');
+                        target.value = originalKey;
+                        return;
+                    }
+                    const value = fullConfig.textModels[category][originalKey];
+                    delete fullConfig.textModels[category][originalKey];
+                    fullConfig.textModels[category][newKey] = value;
+                    // Re-renderiza para atualizar os 'data-attributes' de todos os elementos
+                    renderTextModels(category);
+                } else if (!newKey) {
+                    target.value = originalKey; // Restaura se o campo for deixado vazio
+                }
+            }
         });
     }
 
@@ -359,40 +425,38 @@ document.addEventListener('DOMContentLoaded', () => {
             const value = models[key];
             const itemDiv = document.createElement('div');
             itemDiv.className = 'option-item';
+
+            // Botão de remover é sempre o mesmo
             const removeBtnHTML = `<button class="remove-btn" data-key="${key}">Remover Modelo</button>`;
+
             if (typeof value === 'string') {
                 itemDiv.innerHTML = `
-                    <div class="form-group">
-                        <label>Chave do Modelo:</label>
-                        <input type="text" class="model-key" value="${key}" data-category="${category}" data-original-key="${key}">
-                    </div>
-                    <div class="form-group mt-2">
-                        <label>Conteúdo:</label>
-                        <textarea class="model-value" rows="5">${value}</textarea>
-                    </div>
-                    ${removeBtnHTML}
-                `;
-            } else if (isObject(value)) {
+                <label>Chave do Modelo:</label>
+                <input type="text" class="model-key" value="${key}" data-original-key="${key}">
+                <label>Conteúdo:</label>
+                <textarea class="model-value" rows="5">${value}</textarea>
+                ${removeBtnHTML}
+            `;
+            } else if (isObject(value)) { // isObject é uma função auxiliar que já tens
                 let nestedHTML = '';
                 for (const subKey in value) {
                     nestedHTML += `
-                        <div class="nested-item form-group mt-2">
-                            <label><strong>Sub-item:</strong> ${subKey}</label>
-                            <textarea class="model-sub-value" data-parent-key="${key}" data-sub-key="${subKey}" rows="5">${value[subKey]}</textarea>
-                        </div>
-                    `;
+                    <div class="nested-item">
+                        <label><strong>Sub-item:</strong> ${subKey}</label>
+                        <textarea class="model-sub-value" data-parent-key="${key}" data-sub-key="${subKey}" rows="5">${value[subKey]}</textarea>
+                    </div>
+                `;
                 }
                 itemDiv.innerHTML = `
-                    <fieldset class="nested-fieldset">
-                        <legend>${key}</legend>
-                        ${nestedHTML}
-                    </fieldset>
-                    ${removeBtnHTML}
-                `;
+                <fieldset>
+                    <legend>${key}</legend>
+                    ${nestedHTML}
+                </fieldset>
+                ${removeBtnHTML}
+            `;
             }
             listEl.appendChild(itemDiv);
         }
-        addTextModelListeners(category);
     }
 
     function addTextModelListeners(category) {
@@ -436,23 +500,101 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // File: modules/options/options.js (substituir/adicionar funções)
+
     function setupFocalPointsTab() {
-        renderFocalPoints();
+        const listEl = document.getElementById('focalPointsList');
         const statusEl = document.getElementById('focalPointsStatus');
+
+        renderFocalPoints();
+
+        // Adiciona novo grupo
         document.getElementById('addFocalPointBtn').addEventListener('click', () => {
             const newKey = `Novo Grupo ${Date.now()}`;
+            if (!fullConfig.focalPoints) fullConfig.focalPoints = {};
             fullConfig.focalPoints[newKey] = ["Novo Ponto Focal"];
             renderFocalPoints();
         });
+
+        // Salva alterações
         document.getElementById('saveFocalPointsBtn').addEventListener('click', () => {
             saveConfig();
             displayStatus(statusEl, 'Pontos Focais salvos com sucesso!', false);
         });
+
+        // Restaura padrão
         document.getElementById('resetFocalPointsBtn').addEventListener('click', () => {
             if (confirm(`Isso restaurará TODOS os Pontos Focais para o padrão. Deseja continuar?`)) {
                 fullConfig.focalPoints = JSON.parse(JSON.stringify(defaultConfig.focalPoints));
                 renderFocalPoints();
                 displayStatus(statusEl, 'Pontos Focais restaurados para o padrão.', false);
+            }
+        });
+
+        // --- DELEGAÇÃO DE EVENTOS PARA TODA A LISTA ---
+        listEl.addEventListener('click', e => {
+            const target = e.target;
+            const groupName = target.dataset.group;
+
+            // Botão de remover grupo
+            if (target.matches('.focal-group-header .remove-btn')) {
+                if (confirm(`Tem certeza que deseja remover o grupo "${groupName}"?`)) {
+                    delete fullConfig.focalPoints[groupName];
+                    renderFocalPoints();
+                }
+            }
+            // Botão de adicionar ponto dentro de um grupo
+            else if (target.matches('.add-point-btn')) {
+                fullConfig.focalPoints[groupName].push("Novo Ponto Focal");
+                renderFocalPoints();
+            }
+            // Botão de remover um ponto específico
+            else if (target.matches('.focal-point-item .remove-btn')) {
+                const index = parseInt(target.dataset.index, 10);
+                fullConfig.focalPoints[groupName].splice(index, 1);
+                renderFocalPoints();
+            }
+        });
+
+        listEl.addEventListener('change', e => {
+            const target = e.target;
+            // Renomear um grupo
+            if (target.matches('.focal-point-group-name')) {
+                const originalName = target.dataset.originalName;
+                const newName = target.value.trim();
+                if (originalName !== newName && newName) {
+                    if (fullConfig.focalPoints[newName]) {
+                        alert(`O nome de grupo "${newName}" já existe.`);
+                        target.value = originalName;
+                        return;
+                    }
+                    // Preserva a ordem das chaves ao recriar o objeto
+                    const newFocalPoints = {};
+                    for (const key in fullConfig.focalPoints) {
+                        if (key === originalName) {
+                            newFocalPoints[newName] = fullConfig.focalPoints[key];
+                        } else {
+                            newFocalPoints[key] = fullConfig.focalPoints[key];
+                        }
+                    }
+                    fullConfig.focalPoints = newFocalPoints;
+                    renderFocalPoints();
+                } else if (!newName) {
+                    target.value = originalName;
+                }
+            }
+        });
+
+        listEl.addEventListener('input', e => {
+            const target = e.target;
+            // Editar o valor de um ponto focal
+            if (target.matches('.focal-point-value')) {
+                const groupName = target.dataset.group;
+                const index = parseInt(target.dataset.index, 10);
+                const currentGroupName = target.closest('.focal-point-group').querySelector('.focal-point-group-name').value;
+                if (fullConfig.focalPoints[currentGroupName]) {
+                    fullConfig.focalPoints[currentGroupName][index] = target.value;
+                }
             }
         });
     }
@@ -464,26 +606,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const points = fullConfig.focalPoints[groupName];
             const groupDiv = document.createElement('div');
             groupDiv.className = 'focal-point-group';
+
             let pointsHTML = '';
             points.forEach((point, index) => {
                 pointsHTML += `
-                    <div class="focal-point-item">
-                        <input type="text" class="focal-point-value" value="${point}" data-group="${groupName}" data-index="${index}">
-                        <button class="remove-btn small" data-group="${groupName}" data-index="${index}">-</button>
-                    </div>
-                `;
-            });
-            groupDiv.innerHTML = `
-                <div class="focal-group-header">
-                    <input type="text" class="focal-point-group-name" value="${groupName}" data-original-name="${groupName}">
-                    <button class="remove-btn" data-group="${groupName}">Remover Grupo</button>
+                <div class="focal-point-item">
+                    <input type="text" class="focal-point-value" value="${point}" data-index="${index}">
+                    <button class="remove-btn small" data-group="${groupName}" data-index="${index}">-</button>
                 </div>
-                <div class="focal-points-container">${pointsHTML}</div>
-                <button class="add-point-btn" data-group="${groupName}">Adicionar Ponto</button>
             `;
+            });
+
+            groupDiv.innerHTML = `
+            <div class="focal-group-header">
+                <input type="text" class="focal-point-group-name" value="${groupName}" data-original-name="${groupName}">
+                <button class="remove-btn" data-group="${groupName}">Remover Grupo</button>
+            </div>
+            <div class="focal-points-container">${pointsHTML}</div>
+            <button class="add-point-btn" data-group="${groupName}">+ Adicionar Ponto</button>
+        `;
             listEl.appendChild(groupDiv);
         }
-        addFocalPointListeners();
     }
 
     function addFocalPointListeners() {
